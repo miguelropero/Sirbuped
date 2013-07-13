@@ -1,0 +1,2219 @@
+*
+{
+	margin:0;
+	padding:0;
+	outline:0;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box}
+html
+{
+	overflow-y: scroll;
+}
+html, body, div, span, h1, h2, h3, h4, h5, h6, p, a, img, dl, dt, dd, ol, ul,
+li, fieldset, form, label, legend, table, tbody, thead, tr, th, td, u, b, i,a 
+{
+     border: 0;
+     font-weight: normal;
+     list-style:none;
+     margin: 0;
+     outline: 0;
+     padding: 0;
+     text-decoration:none;
+}
+body
+{
+	font-family: 'Signika Negative', sans-serif !important;
+	font-size:16px !important;
+}
+a
+{
+	transition-property: all;
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
+    transition-delay: 0.2s;
+}
+
+/************************************************************************************
+ ************************ ESTILOS PARA EL HEADER PRINCIPAL **************************
+ ************************************************************************************/
+ 
+header
+{
+	width: 100%;
+}
+header .boxHeader
+{
+	margin: 0 auto;
+	max-width:984px;
+	padding: 0 1em;
+}
+.boxHeader figure img
+{
+	margin: 1em 0;
+}
+.boxHeader figure, #botonesAcceso
+{
+	display: inline-block;
+	vertical-align:top;
+}
+.boxHeader figure
+{
+	width: 35%;
+}
+#botonesAcceso
+{
+	text-align:right;
+	height: 54px;
+	margin-top: 2em;
+	width: 64%;
+}
+#botonesAcceso .gwt-Hyperlink
+{
+	display: inline-block;
+}
+#botonesAcceso a
+{
+	border: 1px solid #E5E5E5;
+	color: #AAA;
+	font-size: 0.8em;
+	margin-left: 0.8em;
+	padding: 0.5em 1em;
+}
+#botonesAcceso a:hover
+{
+	background: #F1F1F1;
+	color: #888;
+}
+#botonesAcceso img 
+{ 
+	display: none; 
+}
+
+/************************************************************************************
+ ************************* ESTILOS PARA EL MENÚ PRINCIPAL ***************************
+ ************************************************************************************/
+ 
+.boxNavegacion
+{
+	background: url("../image/bg_menu.png");
+	/*border-bottom: 1px solid #706660;*/
+	border-top: 1px solid #BAB1AA;
+	height: 42px;
+}
+header nav
+{
+	margin: 0 auto;
+	max-width: 984px;
+	padding: 0 1em;
+}
+.boxNavegacion .menu li
+{
+	display: inline-block;
+	height: 40px;
+	line-height: 40px;
+	position: relative; 
+	text-align: center;
+}
+.boxNavegacion .menu > li a
+{
+	background: url("../image/separator_menu.png") no-repeat left bottom;
+	color: #FAFAFA;
+	display:block;
+	font-size: 0.8em;
+	padding: 0 1.3em;
+}
+.boxNavegacion .menu > li:last-child a
+{
+	background-image: url("../image/separator_menu.png"), url("../image/separator_menu.png");
+	background-position: left bottom, right bottom;
+	background-repeat: no-repeat;
+}
+.boxNavegacion .menu li a:hover
+{
+	background: #E9E4DE;
+	color: #888;
+	cursor: pointer;
+}
+/* Sub-menu */ 
+.menu li:hover ul 
+{ 
+	/*display: block;*/
+} 
+#submenu
+{  
+	background: #E9E4DE;
+	box-shadow: 1px 1px 2px #A09993;
+	display: none;
+	left: 0px; 
+	padding: 0;
+    position: absolute; 
+    top: 41px; 
+    width: 230px;
+    z-index: 99999; 
+} 
+#submenu li 
+{ 
+    text-align: left !important;
+    width: 100%;
+} 
+#submenu a 
+{ 
+	border-bottom: 1px dotted rgba(189,176,168, 0.45) !important;
+	background-image: none !important;
+	background: #E9E4DE;
+	color: #888 !important;
+} 
+#submenu a:hover 
+{ 
+    background: #bdb0a8 !important;
+    color: #F1F1F1 !important;
+}
+#submenu li:first-child a:after 
+{ 
+    content: ''; 
+    position: absolute; 
+    left: 10px; 
+    top: -10px; 
+    width: 0; 
+    height: 0; 
+    border-left: 5px solid transparent; 
+    border-right: 5px solid transparent; 
+    border-bottom: 8px solid #D8D3CD; 
+}
+.arrow
+{
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 5px solid #F1F1F1;
+	display: inline-block;
+	height: 0;
+	padding-bottom: 2px;
+	vertical-align: center;
+	width: 0;  
+}
+.menu li a:hover .arrow
+{
+	border-top: 5px solid #888;
+}  
+#submenu li:last-child a 
+{ 
+    border: none; 
+} 
+nav a#pull 
+{
+	display: none;
+}
+/************************************************************************************
+ ************************ ESTILOS DE LA CARGA DE CONTENIDOS *************************
+ ************************************************************************************/
+.cargando
+{
+	background: url(../image/cargando.gif) no-repeat center center;
+	margin: 1em auto;
+	height: 150px;
+	text-align: center;
+	width: 100%;
+}
+/************************************************************************************
+ ********************** ESTILOS DEL BANNER PRINCIPAL DEL SITE ***********************
+ ************************************************************************************/
+ 
+.banner
+{
+	width: 100%;
+	/*text-align: center;
+	display: block;*/
+	position: relative;
+}
+.banner:after
+{ 
+	content: "";
+	height: 7px;
+	width: 100%;
+	position: absolute;
+	left: 0;
+	bottom: -7px;
+	background: url("../image/separator_content.png");
+}
+
+/***********************************************************************************
+ ********************* ESTILOS DE LOS ENLACES DE ACCESO RAPIDO *********************
+ ***********************************************************************************/
+
+.enlaces-rapidos
+{
+	background: #FFF;
+	height: auto;
+	margin: 2em auto;
+	max-width: 984px;
+	padding: 0 1em;
+	text-align: center;
+}
+.enlaces-rapidos .gwt-HTML
+{
+	border: 1px solid #D1D1D1;
+	display: inline-block;
+	margin: 1em 1%;
+	vertical-align: top;
+	width: 31.3%;
+}
+.enlaces-rapidos .gwt-HTML .box-header-enlace
+{
+	background: url("../image/bg_header_enlaces.png");
+	border-bottom: 1px solid #D6D6D6;
+	line-height: 49px;
+	height: 49px;
+	text-align: left;
+	width: 100%;
+}
+.enlaces-rapidos .gwt-HTML .box-header-enlace h3
+{
+	color: #777;
+	text-indent: 0.5em;
+}
+.content-enlace
+{
+	border-bottom: 1px dashed #CCC;
+	/*margin: 0.5em 0.5em 0em 0.5em;*/
+	padding: 3%;
+	text-align: left;
+}
+.content-enlace img
+{
+	border: 1px solid #CCC;
+	margin: 0em 0.4em 0.3em 0;
+}
+.content-enlace figcaption
+{
+	color: #AAA;
+	font-size: 0.96em;
+}
+.box-boton-enlace
+{
+	text-align: right;
+	height: 50px;
+	line-height:50px;
+}
+.box-boton-enlace a
+{
+	background: url("../image/bg_boton.png");
+	border-radius: 15px;
+	color: #FFF;
+	font-size: 0.8em;
+	padding: 0.5em 1.2em;
+	margin: 1em;
+}
+.box-boton-enlace a:hover
+{
+	background: url("../image/bg_menu.png");
+}
+
+/***********************************************************************************
+ ************** ESTILOS DEL SEPARATOR QUE CONTIENE EL BOTON VER TODOS **************
+/***********************************************************************************/
+																
+.separator
+{
+	background: url("../image/separator_content.png") center 5px repeat-x;
+	height: 20px;
+	margin: 0;
+	text-align: center;
+	max-width: 100% !important;
+}
+.separator .ver_todos
+{
+	background: url("../image/bg_ver_todo.png") center center no-repeat;
+	height: 30px;
+	line-height: 30px;
+	margin: 0 auto;
+	transition-property: all;
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
+    transition-delay: 0.2s;
+	width: 183px;
+}
+.separator .ver_todos:hover
+{
+	background: url("../image/bg_ver_todo_hover.png") center center no-repeat;
+}
+.separator .ver_todos a
+{
+	color: #FFF;
+	display: block;
+}
+
+/***********************************************************************************
+ ****************** ESTILOS DE LA SECCIÓN ULTIMOS DESAPARECIDOS ********************
+ ***********************************************************************************/
+
+.verDesaparecido
+{
+	margin: 2em auto;
+	max-width: 984px;
+	padding: 0 1em;
+}
+.verDesaparecido > h2 
+{
+	color: #00BEBC;
+	text-align: center;
+	margin: 1em 0 0.5em 0;	
+}
+.verDesaparecido .figure
+{
+	border: 1px solid #CCC;
+	color: #FFF;
+	cursor: pointer;
+	box-shadow: 0 0 2px #CCC;	
+	display: inline-block;
+	margin: 0.5em 1%;
+	position: relative;
+	text-align: center;
+	vertical-align: top;
+	width: 17.8%;
+}
+.verDesaparecido .figure:hover
+{
+	box-shadow: 0 0 5px #999;
+	text-decoration: underline;
+}
+.verDesaparecido .figure > div:nth-child(2)
+{
+	height: 200px;
+	margin-bottom: 3px;
+	overflow: hidden;
+	width: 100%;
+}
+.verDesaparecido .figure img
+{
+	padding: 2%;
+	padding-bottom: 0;
+	width: 100%;
+}
+.verDesaparecido .figure .figcaption
+{
+	background: #00bebc;
+	height: 50px;
+	padding: 0.3em 0;
+	width: 100%;
+}
+
+.verDesaparecido .zonaClick
+{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+/***********************************************************************************
+ ******************** ESTILOS DE LA SECCIÓN DE SUGERENCIAS *************************
+ ***********************************************************************************/
+
+.sugerencias
+{
+	padding: 0 0 1em 0;
+} 
+.sugerencias h2
+{
+	text-align: center;
+	color: #00BEBC;
+}
+.sugerencias > div
+{
+	margin: 0 auto;
+	max-width: 984px;
+	padding: 0 1em;
+}
+.sugerencias .gwt-HTML
+{
+	background: #F5F4F0 url("../image/bg_sugerencias.png") repeat-x;
+	border: 1px solid #e9e4de;
+	display: inline-block;
+	margin: 2em 1%;
+	padding: 0 0 1em 0;
+	vertical-align: top;
+	width: 22.85%;
+}
+.sugerencias .gwt-HTML:last-child 
+{
+	margin-right: 0 !important;
+}
+.sugerencias .gwt-HTML a:hover p 
+{
+	color: #777;
+}
+.sugerencias .gwt-HTML h3
+{
+	border-bottom: 1px solid #e9e4de;
+	color: #00BEBC;
+	margin: 0.7em;
+}
+.sugerencias .gwt-HTML p
+{
+	color: #ACA097;
+	font-size: 0.9em;
+	padding: 0 0.7em;
+}
+.sugerencias .gwt-HTML p span
+{
+	font-weight: bold;
+}
+
+/************************************************************************************
+ ****************** ESTILOS GENERALES DE LOS CONTENIDOS DINAMICOS *******************
+ ************************************************************************************/
+
+/*Encabezado de los Contenidos Dinamicos */
+ 																
+.encabezado_contenido
+{
+	background: url("../image/bg_banner.png");
+	width: 100%
+}
+.encabezado_contenido:after
+{ 
+	content: "";
+	height: 7px;
+	width: 100%;
+	position: absolute;
+	left: 0;
+	background: url("../image/separator_content.png");
+}
+.box_titulo
+{
+	line-height: 85px;
+	margin: 0 auto;
+	max-width: 984px;
+	padding: 0 1em;
+}
+.box_titulo h2
+{
+	color: #FFF;
+	font-size: 1.9em;
+}
+.box_titulo h2:first-letter
+{
+	text-transform: uppercase;
+}
+
+/* Estilos para los Errores */
+.div_error
+{
+	border: 1px solid #ccc;
+	color: #B40404;
+	margin: 0 0 1em 0;
+	padding: 1em;
+}
+.div_error .gwt-Label
+{
+	background: url("../image/error.png") no-repeat left center;
+	margin: 0 0 0 0.75em;
+	padding: 0 0 0 1.5em;
+}
+
+/***********************************************************************************
+ ******************** ESTILOS DE LA PÁGINA DE INICIO DE SESIÓN *********************
+ ***********************************************************************************/
+
+.div_sesion
+{
+	background: #FFF;
+	border: 1px solid #CCC;
+	margin: auto auto;
+	max-width: 350px;
+	padding: 1em 0 0;
+	text-align: center;
+}
+.div_sesion h2
+{
+	color: #666;
+	margin: 1em 0 1.5em 0;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+.boton_google
+{
+	background: #E1E1E1 url("../image/bg_boton_google.png") no-repeat center -3px;
+	border: 1px solid #DDD;
+	border-radius: 6px;
+	box-shadow: 1px 1px 1px #ccc, -1px 0px 1px #ccc;
+	color: #757575;
+	font-size: 0.9em;
+	line-height: 50px;
+	height: 48px;
+	opacity: 0.85;
+	width: 72%;
+}
+.boton_google:hover
+{
+	border: 1px solid #BBB;
+	border-bottom: 2px solid #BBB;
+	border-top: 0px;
+	opacity: 1;
+}
+.div_sesion .div_separator
+{
+	background: none;
+	color: #858585;
+	margin: 1.5em auto;
+	width: 72%;
+}
+.div_sesion .div_separator span
+{
+	letter-spacing: -2px;
+	color: #CCC;
+}
+.div_sesion .gwt-TextBox
+{
+	font-size: 0.85em;
+	text-indent: 10px;
+	width: 72%;
+}
+.div_sesion .div_boton
+{
+	margin: 0 auto 1em;
+	text-align: right;
+	width: 72%;
+}
+.div_sesion .div_boton .gwt-CheckBox
+{
+	color: #999;
+	font-size: 0.95em;
+	display: inline-block;
+	margin-right: 2em;
+}
+.div_sesion .div_footer
+{
+	background: #F6F6F6;
+	border-top: 1px solid #DDD;
+	line-height: 50px;
+	height: 50px;
+}
+.div_sesion .div_footer .gwt-Button
+{
+	background: none;
+	border: none;
+	color: #00bebc;
+}
+.div_sesion .gwt-Button
+{
+	margin: 0;
+}
+.div_sesion .div_footer .gwt-Button:hover, .div_sesion .div_footer .gwt-Button:active
+{
+	background: none;
+	box-shadow:none;
+	text-decoration: underline;
+}
+
+/***********************************************************************************
+******************************** ESTILOS GENERALES *********************************
+************************************************************************************/
+
+/*********** Estilos de los contenedores ************/
+.content_content, .usario_personales, .contacto, .desaparecido, .verDesaparecido
+{
+	height: auto;
+	margin: 2em auto;
+	max-width: 984px;
+	padding: 0 1em;
+}
+
+/************** Estilos de los Fieldset *************/
+fieldset 
+{
+	background: #F5F5F5 url("../image/bg_header_enlaces.png");
+	border: 1px solid #CCC;
+	color: #777;
+	margin: 0 0 1em 0;
+	padding: 2% 3%;
+}
+fieldset legend 
+{
+	font-size: 1.2em;
+	padding: 0 5px 0 2px;
+}
+fieldset fieldset legend
+{
+	color: #666;
+	font-size: 1.1em;
+}
+
+/************** Estilos de los campos de texto *************/
+.gwt-TextBox, select, .gwt-PasswordTextBox, .edad, TextArea
+{
+	border: 1px solid #CCC;
+	border-radius: 0.3em;
+	color: #888;
+	height: 36px;
+	margin: 0 0 1em 0;
+	text-indent: 5px;
+}
+select
+{
+	height: 34px;
+}
+TextArea
+{
+	height: 40px;	
+}
+.gwt-TextBox:hover, select:hover, .gwt-PasswordTextBox:hover, .date_dia:hover, .edad:hover, TextArea:hover, 
+{
+	border: 1px solid #AAA;
+	outline: none;
+}
+.gwt-TextBox:focus, .gwt-TextBox:active, select:focus, select:active, .date_dia:focus, .date_dia:active,
+.gwt-PasswordTextBox:focus, .gwt-PasswordTextBox:active, TextArea:focus, TextArea:active, .edad:active, .edad:focus
+{
+	border: 1px solid #45BFE5;
+	outline: none;
+	box-shadow: none;
+}
+.date_dia, .select_mes, .select_anio
+{
+	display: inline-block;
+	vertical-align: top;
+}
+.gwt-CheckBox
+{
+	display: block;
+	margin: 0 0 0.5em 0;
+}
+input[type="checkbox"], input[type="radio"]
+{
+	margin: 0 0.5em 0 0;
+}
+
+/************** Estilos de los RichText *************/
+fieldset > div > table.RichTextToolbar 
+{
+	background: #E5E5E5 url("../image/bg_text_area.png") repeat-y;
+	border: 1px solid #CCC;
+	border-bottom: none;
+	margin:0px;
+	width: 100.1%;
+}
+fieldset > div > table.RichTextToolbar > tbody > tr:last-child
+{
+	border-top: 1px solid #CCC;
+}
+.RichTextToolbar .gwt-ListBox
+{
+	font-size: 0.8em;
+	height: 24px;
+}
+.RichTextToolbar tr td div:nth-child(1)
+{
+	padding-left: 2px;
+}
+.RichTextToolbar tr td select:nth-child(1)
+{
+	margin: 3px 0 3px 5px;
+	width: auto;
+}
+.RichTextToolbar .gwt-ToggleButton, .RichTextToolbar .gwt-PushButton, .RichTextToolbar .gwt-HTML
+{
+	display: inline-block;
+	margin: 3px 1px 0 1px;
+	opacity: 1;
+}
+.RichTextToolbar .gwt-ToggleButton-up-hovering, .RichTextToolbar .gwt-PushButton-up-hovering 
+{
+	box-shadow: 0px 1px 1px #BBB;
+	cursor: pointer;
+	opacity: 1;
+}
+.RichTextToolbar .gwt-ToggleButton-down, .RichTextToolbar .gwt-PushButton-down 
+{
+	opacity: 0.5;
+}
+.RichTextToolbar .gwt-ToggleButton-down-hovering, .RichTextToolbar .gwt-PushButton-down-hovering 
+{
+	cursor: pointer;
+	opacity: 1;
+}
+
+/************* Estilos de los Botones ***************/
+.gwt-Button
+{
+	margin:0 1em 0 0;
+	padding:7px 20px;
+	border-radius:5px;
+	font-size:14px;
+	color:#666;
+	display:inline-block;
+	/*display:inline;/*IE ONLY*/
+	border:1px solid #ccc;
+	background: rgb(252,252,252); /* Old browsers */
+	background: -moz-linear-gradient(top, rgba(252,252,252,1) 0%, rgba(224,224,224,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(224,224,224,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(252,252,252,1) 0%,rgba(224,224,224,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(252,252,252,1) 0%,rgba(224,224,224,1) 100%); /* Opera11.10+ */
+	background: -ms-linear-gradient(top, rgba(252,252,252,1) 0%,rgba(224,224,224,1) 100%); /* IE10+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#e0e0e0',GradientType=0 ); /* IE6-9 */
+	background: linear-gradient(top, rgba(252,252,252,1) 0%,rgba(224,224,224,1) 100%); /* W3C */
+}
+.gwt-Button:active
+{
+	box-shadow:inset 0px 3px 5px rgba(0,0,0,0.2),inset 0px -10px 20px rgba(0,0,0,0.07);
+}
+.gwt-Button:hover
+{
+	border:1px solid #bbb;
+	background: rgb(252,252,252); /* Old browsers */
+	background: -moz-linear-gradient(top, rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera11.10+ */
+	background: -ms-linear-gradient(top, rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+	background: linear-gradient(top, rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+}
+
+/************ Estilos de los DialogBox **************/
+.gwt-DialogBox
+{
+	height: 100% !important;
+	left: 0 !important;
+	position: fixed !important;
+	top: 0 !important;
+	width: 100% !important;
+  	z-index: 10 !important;
+}
+.fade
+{
+	background-color: black;
+	filter: alpha(opacity=70);
+	height: 100%;
+    left: 0%;
+    opacity: .70;
+    position: fixed;
+    top: 0%; 
+    width: 100%;
+    z-index: 90;
+}
+.divModal
+{
+	background-color: #ffffff;
+	border: 2px solid black;
+	height: 70%;
+	left: 20%;
+	margin: 0 auto;
+	overflow-y: scroll !important;
+	position: fixed;
+    padding: 25px;
+    top: 15%;
+    width: 60%;
+    z-index: 100;
+}
+.gwt-DialogBox .titulo
+{
+	color: #00BEBC;
+	margin: 1em 0;
+}
+.gwt-DialogBox .parrafo
+{
+	border-bottom: 1px dashed #777;
+	color: #777;
+	margin: 1.5em 0;
+	padding: 0 0 1em 0;
+}
+.divModalError
+{
+	background-color: #FEE7F1;
+	background-image: url(../images/formato/error.png);
+	border: 1px solid #FF0033;
+	border-radius: 6px;
+	height: auto;
+	left: 32.5%;
+	padding: 12px 25px;
+	position: fixed;
+	top: 25%;
+	width: 35%;
+	z-index: 100;
+}
+.divModalError .titulo
+{
+	margin: 0.1em 0 0.5em 0;
+	font-size: 1.5em;
+}
+.divModalError .contenido
+{
+	border-bottom: 1px dashed #777;
+	color: #777;
+	margin: 1em 0;
+	padding: 0 0 1.5em 0;
+}
+
+input[type="file"]
+{
+	background: #FFF;
+	border: 1px solid #CCC;
+	border-radius: 5px;
+	font-size: 0.96em;
+	margin-top: 3px;
+	padding: 7px 10px;
+	width: 100%;
+}
+
+/***********************************************************************************
+ ***************************** ESTILOS PARA EL FOOTER ******************************
+ ***********************************************************************************/
+ 																
+footer
+{
+	/*background: #bdb0a8 url("../image/separator_content.png") repeat-x top;*/
+	background: #E9E4DE;
+	border-top: 1px solid #D8D3CC;
+}
+footer a
+{
+	color: #888;
+	font-size: 0.8em;
+}
+footer a:hover
+{
+	color: #555;
+	text-decoration: underline;
+}
+footer .boxFooter
+{
+	margin: 0 auto;
+	max-width: 984px;
+	padding: 2em 1em; 
+}
+footer .boxFooter article
+{
+	display: inline-block;
+	vertical-align: top;
+	padding: 0 1%;
+	width: 24.5%;
+}
+footer .boxFooter article h4
+{
+	color: #888;
+	font-weight: bold;
+	margin: 0 0 1em 0;
+}
+footer .boxFooter article span
+{
+	width:0px;
+	height: 0px;
+	border: 2px solid #00BEBC;
+	display: inline-block;
+	margin-bottom: 2px;
+}
+footer .boxFooter .social > div
+{
+	padding: 0.3em 0;
+}
+footer .boxFooter .social > div > div
+{
+	background-size: 100% !important;
+	display: inline-block;
+	height: 46px;
+	margin-right: 0.5em;
+	width: 45px;
+}
+footer .boxFooter article li > a
+{
+	margin-left: 10px;
+}
+footer .boxFooter .social a
+{
+	border: 2px solid #FFF;
+	border-radius: 28px;
+	box-shadow: 0px 0px 5px #BABABA;
+	display: block;
+	height: 100%;
+	padding: 0 21px;
+}
+footer div .social > div > div:nth-child(1) a
+{
+	background: url("../image/social/facebook.png") no-repeat center center;
+}
+footer div .social > div > div:nth-child(1) a:hover
+{
+	background: url("../image/social/facebook2.png") no-repeat center center;
+}
+footer div .social > div > div:nth-child(2) a
+{
+	background: url("../image/social/youtube.png") no-repeat center center;
+}
+footer div .social > div > div:nth-child(2) a:hover
+{
+	background: url("../image/social/youtube2.png") no-repeat center center;
+}
+footer div .social > div > div:nth-child(3) a
+{
+	background: url("../image/social/twitter.png") no-repeat center center;
+}
+footer div .social > div > div:nth-child(3) a:hover
+{
+	background: url("../image/social/twitter2.png") no-repeat center center;
+}
+footer div article input
+{
+	border: 1px solid #CCC;
+	border-right: none !important;
+	border-radius: 0.5em 0 0 0.5em !important;
+	font-size: 0.9em;
+	height: 36px;
+	outline: none;
+	padding: 0 0 0 2%;
+	width: 62%;
+}
+footer div article:nth-child(4)
+{
+	margin-right: 0;
+}
+footer div .suscribirse imput, footer div .suscribirse button
+{
+	display: inline-block;
+	vertical-align: top;
+}
+footer div .suscribirse button
+{
+	background: #09ACA7 url("../image/bg_boton.jpg") repeat-x !important;
+	border: none !important;
+	border-radius: 0 0.5em 0.5em 0;
+	color: #FFF;
+	line-height: 11px;
+	height: 36px;
+	margin: 0;
+	text-shadow: none;
+	padding: 0;
+	width: 38%;
+}
+footer div .suscribirse button label
+{
+	cursor: pointer;
+}
+footer div .suscribirse button:hover
+{
+	text-decoration: none;
+}
+footer div .suscribirse button label:last-child
+{
+	display: none;
+}
+footer .institucional
+{
+	border-top: 1px solid #CCC; 
+	margin: 0 auto;
+	padding: 0.1em 0;
+	text-align: center;
+	width: 984px;
+}
+footer .institucional > div a
+{
+	background-size: 65% !important;
+	display: inline-block;
+	margin: 0.3em 0.5em 0 0;
+	padding: 2em 2em;
+}
+footer .institucional div a:nth-child(1)
+{
+	background: url("../image/institucional/ing_sistemas.png") no-repeat center center;
+}
+footer .institucional div a:nth-child(1):hover
+{
+	background: url("../image/institucional/ing_sistemas_hover.png") no-repeat center center;
+}
+footer .institucional div a:nth-child(2)
+{
+	background: url("../image/institucional/ufps.png") no-repeat center center;
+}
+footer .institucional div a:nth-child(2):hover
+{
+	background: url("../image/institucional/ufps_hover.png") no-repeat center center;
+}
+footer .institucional div a:nth-child(3)
+{
+	background: url("../image/institucional/ing_sistemas.png") no-repeat center center;
+}
+footer .institucional div a:nth-child(3):hover
+{
+	background: url("../image/institucional/ing_sistemas_hover.png") no-repeat center center;
+}
+footer .institucional div a:nth-child(4)
+{
+	background: url("../image/institucional/ufps.png") no-repeat center center;
+}
+footer .institucional div a:nth-child(4):hover
+{
+	background: url("../image/institucional/ufps_hover.png") no-repeat center center;
+}
+footer .institucional div a:nth-child(5)
+{
+	background: url("../image/institucional/ing_sistemas.png") no-repeat center center;
+}
+footer .institucional div a:nth-child(6)
+{
+	background: url("../image/institucional/ufps.png") no-repeat center center;
+}
+footer nav
+{
+	border-top: 1px solid #CCC;
+	margin: 0 auto;
+	max-width: 984px;
+	padding: 0.6em 1em;	
+}
+footer nav span, footer nav ul
+{
+	display: inline-block;
+	vertical-align: top;
+	width: 49%;
+}
+footer nav span
+{
+	color: #777;
+	font-size: 0.9em;
+	line-height: 23px;
+}
+footer nav ul
+{
+	text-align: right;
+}
+footer nav li
+{
+	background: url("../image/separator_menu_small.png") no-repeat right center;
+	display: inline-block;
+	line-height: 15px;
+	text-align: center;
+}
+footer nav li:last-child 
+{ 
+	background: none;
+}
+footer nav li a
+{
+	display:block;
+	padding: 0 1em;
+}
+footer nav li:last-child a
+{
+	padding: 0 0  0 1.3em;
+}
+
+/***********************************************************************************
+ ****************** ESTILOS PARA LA PAGINA DE REGISTRAR USUARIOS *******************
+ ***********************************************************************************/
+ 
+.fieldset_personales, .fieldset_contacto
+{
+	display: inline-block;
+	vertical-align: top;
+	width: 48.5%;
+}
+.fieldset_personales
+{
+	margin-right: 3%;
+}
+.fieldset_personales .gwt-TextBox, .fieldset_contacto .gwt-TextBox
+{
+	width: 100%;
+}
+.fieldset_password .gwt-PasswordTextBox
+{
+	width: 43.5%;
+}
+.fieldset_personales .gwt-ListBox, .fieldset_contacto .gwt-ListBox  
+{
+	width: 99%;
+}
+.fieldset_personales .date_dia, .fieldset_personales .select_mes, .fieldset_personales .select_anio 
+{
+	margin: 0 3% 1em 0;
+	width: 31%;
+}
+.fieldset_personales .select_anio
+{
+	margin: 0 0% 1em 0;
+}
+.fieldset_opciones span:nth-child(2)
+{
+	display: initial;
+	margin: 0;
+}
+.fieldset_opciones .gwt-Button
+{
+	background: none;
+	border: none;
+	color: #00bebc;
+}
+.fieldset_opciones .gwt-Button:hover, .fieldset_opciones .gwt-Button:active
+{
+	background: none;
+	box-shadow:none;
+	text-decoration: underline;
+}
+
+/***********************************************************************************
+ *********************** ESTILOS PARA LA PAGINA DE CONTACTO ************************
+ ***********************************************************************************/
+ 
+.contacto .gwt-TextBox
+{
+ 	width: 43.5%;
+}
+.contacto .gwt-RichTextArea
+{
+ 	background: #FFF;
+ 	border: 1px solid #CCC;
+ 	height: 180px;
+ 	overflow-y: scroll;
+ 	width: 100%;
+}
+ 
+/**********************************************************************************
+ ******************** ESTILOS PARA LA PAGINA DE DESAPARECIDOS *********************
+ **********************************************************************************/
+ 
+.desaparecido > div:first-child
+{
+ 	background: url("../image/bg_div_flechas.png") repeat-x;
+ 	border: 1px solid #CCC;
+ 	border-radius: 5px;
+ 	height: 42px;
+ 	width: 100%;
+}
+.desaparecido .encabezado div
+{
+ 	display: inline-block;
+ 	font-size: 0.9em;
+ 	height: 100%;
+ 	line-height: 40px;
+ 	text-align: center;
+ 	vertical-align: top;
+ 	width: 16.5%;
+}
+.desaparecido div .flecha_presente
+{
+ 	background-image: url("../image/bg_flecha_presente.png");
+ 	color: #F5F5F5;
+}
+.desaparecido div .punta_flecha_presente
+{
+ 	background-image: url("../image/bg_punta_flecha_presente.png"), url("../image/bg_flecha_futuro.png");
+ 	height: 40px;
+ 	width: 30px;
+}
+.desaparecido div .flecha_futuro
+{
+ 	background-image: url("../image/bg_flecha_futuro.png");
+ 	color: #777;
+}
+.desaparecido div .punta_flecha_futuro
+{
+ 	background-image: url("../image/bg_punta_flecha_futuro.png"), url("../image/bg_flecha_futuro.png");
+ 	height: 40px;
+ 	width: 30px;
+}
+.desaparecido div .flecha_pasado
+{
+ 	background-image: url("../image/bg_flecha_pasado.png");
+ 	color: #AAA;
+}
+.desaparecido div .punta_flecha_pasado
+{
+ 	background-image: url("../image/bg_punta_flecha_pasado.png"), url("../image/bg_flecha_pasado.png");
+ 	height: 40px;
+ 	width: 30px;
+}
+.desaparecido div .punta_flecha_pasado_ultima
+{
+ 	background-image: url("../image/bg_punta_flecha_pasado.png"), url("../image/bg_flecha_presente.png");
+ 	height: 40px;
+ 	width: 30px;
+}
+ 
+/* Estilos de la Navegación por pasos */
+.desaparecido .navegacion
+{
+ 	background: #f1f1f1 url("../image/otro.png");
+ 	border: 1px solid #CCC;
+	border-bottom: none;
+	color: #555;
+	margin-bottom: -0.7em;
+	margin-top: 1em;
+ 	padding: 1em;
+ 	position: relative;
+ 	z-index: -1;
+}
+.desaparecido .navegacion h2
+{
+ 	margin: 0 0 1em 0;
+}
+.desaparecido .navegacion .gwt-Label
+{
+ 	color: #656565;
+ 	margin: 0 0 1em 0;
+}
+.desaparecido .navegacion .pasos
+{
+ 	height: 50px;
+ 	position: absolute;
+ 	right: 10px;
+ 	text-align: right;
+ 	top: 10px;
+ 	width: 55%;
+}
+.desaparecido .navegacion .pasos div
+{
+ 	display: inline-block;
+ 	font-size: 0.8em;
+ 	margin: 0 5px;
+ 	padding: 2.5em 0 0 0;
+ 	text-align: center;
+ 	width: 42px;
+}
+.desaparecido .navegacion .pasos .paso_pasado
+{
+ 	background: url("../image/paso_pasado.png") no-repeat center top;	
+}
+.desaparecido .navegacion .pasos .paso_presente
+{
+ 	background: url("../image/paso_presente.png") no-repeat center top;	
+}
+.desaparecido .navegacion .pasos .paso_futuro
+{
+ 	background: url("../image/paso_futuro.png") no-repeat center top;	
+}
+ 
+/****************************************************************
+ ****** ESTILOS PARA LOS DATOS PERSONALES DE DESAPARECIDOS ******
+ ****************************************************************/
+
+.desaparecido .divPersonales > div
+{
+ 	display: inline-block;
+ 	margin: 0 auto;
+ 	vertical-align: top;
+ 	width: 46%;
+}
+ .desaparecido .divPersonales > div:first-child
+{
+ 	margin-right: 3%;
+ 	position: relative;
+}
+.desaparecido .divPersonales > div:first-child:after 
+{
+	content:"";
+	border-right: 1px solid #CCC;
+	width: 0;
+	height: 100%;
+	display: inline-block;
+	position: absolute;
+	right: -7%;
+	top: 0%;
+}
+.desaparecido .divPersonales > div:last-child
+{
+ 	margin-left: 3%;
+}
+.desaparecido .divPersonales .gwt-TextBox, .desaparecido .divPersonales select
+{
+ 	width: 99.5%;
+}
+.desaparecido .divPersonales .pais, .desaparecido .divPersonales .departamento, .desaparecido .divPersonales .ciudad,
+.desaparecido .divPersonales .date_dia, .desaparecido .divPersonales .select_mes, .desaparecido .divPersonales .select_anio,    
+{
+ 	display: inline-block;
+ 	margin: 0 2% 1em 0;
+ 	width: 31.3%;
+}
+.divPersonales .ciudad, .desaparecido .divPersonales .select_anio
+{
+ 	margin-right: 0;
+}
+ 
+/*****************************************************************
+ *********** ESTILOS DE LA MORFOLOGÍA DEL DESAPARECIDO ***********
+ *****************************************************************/
+
+.morfologia fieldset > div > div
+{
+	display: inline-block;
+	vertical-align: top;
+	width: 34%;
+}
+.morfologia fieldset > div > div .gwt-TextBox
+{
+	width: 93%;
+}
+.morfologia fieldset fieldset 
+{
+	display: inline-block;
+	margin-right: 3%; 
+	min-height: 220px;
+	opacity: 0.9;
+	padding: 2% 0 1% 2% ;
+	vertical-align: top;
+	width: 31.2%;
+}
+.morfologia fieldset fieldset:hover
+{
+	box-shadow: 0px 2px 2px #DDD;
+	opacity: 1;
+}
+.morfologia fieldset:nth-child(1) fieldset
+{
+	min-height: 190px;
+}
+.morfologia fieldset:nth-child(2) fieldset
+{
+	min-height: 195px;
+}
+.morfologia fieldset:nth-child(3) fieldset
+{
+	min-height: 250px;
+}
+.morfologia fieldset:nth-child(4) fieldset
+{
+	min-height: 248px;
+}
+.morfologia fieldset:nth-child(5) fieldset, .morfologia fieldset:nth-child(6) fieldset
+{
+	min-height: 165px;
+}
+.morfologia fieldset > div fieldset:nth-child(3)
+{
+	margin-right: 0%;
+}
+.morfologia > fieldset:nth-child(1) > div fieldset:nth-child(5)
+{
+	margin-right: 0%;
+}
+.morfologia > fieldset:nth-child(1) > div fieldset:nth-child(3)
+{
+	margin-right: 3%;
+}
+.morfologia fieldset fieldset .gwt-RadioButton
+{
+	display: block;
+	margin-bottom: 0.5em;
+}
+ 
+/*****************************************************************
+ *********** ESTILOS DE LAS SEÑALES DEL DESAPARECIDO *************
+ *****************************************************************/
+
+.senales .encabezado-senales, .prendas .encabezado-prendas 
+{
+ 	background: #f1f1f1 url("../image/otro.png");
+ 	border: 1px solid #D1D1D1;
+ 	height: 50px;
+	width: 100%;
+}
+.senales .encabezado-senales .gwt-Label, .prendas .encabezado-prendas .gwt-Label 
+{
+ 	border-right: 1px solid #CCC; 
+ 	display: inline-block;
+ 	line-height: 50px;
+ 	height: 100%;
+ 	text-align: center;
+}
+.senales .encabezado-senales .gwt-Label:first-child, .prendas .encabezado-prendas .gwt-Label:first-child
+{
+ 	font-size: 0.7em;
+}
+.senales .encabezado-senales .gwt-Label:first-child, .senales .opcion-senales div:first-child,
+.prendas .encabezado-prendas .gwt-Label:first-child,.prendas .opcion-prendas > div:first-child 
+{
+ 	width: 8%;
+}
+.senales .encabezado-senales .gwt-Label:nth-child(2), .senales .opcion-senales div:nth-child(2)
+{
+ 	width: 27.5%;
+}
+.senales .encabezado-senales .gwt-Label:nth-child(3), .senales .opcion-senales div:nth-child(3)
+{
+ 	width: 31%;
+}
+.senales .encabezado-senales .gwt-Label:nth-child(4), .senales .opcion-senales div:nth-child(4)
+{
+ 	border-right: none;
+ 	width: 33.5%;
+}
+.senales .opcion-senales, .prendas .opcion-prendas
+{
+ 	border: 1px solid #D1D1D1;
+ 	height: 75px;
+	width: 100%;
+}
+ .senales .opcion-senales > div, .prendas .opcion-prendas > div
+{		
+ 	border-right: 1px solid #D1D1D1;
+ 	display: inline-block;
+ 	height: 75px;
+ 	vertical-align: top;
+}
+.senales .opcion-senales div:nth-child(1) .gwt-CheckBox,
+.prendas .opcion-prendas div:nth-child(1) .gwt-CheckBox 
+{
+ 	line-height: 75px;
+ 	text-align: center;
+}
+.senales .opcion-senales div:nth-child(2) .gwt-Label, .prendas .opcion-prendas div:nth-child(2) .gwt-Label
+{
+ 	line-height: 75px;
+ 	margin-left: 5%;
+ 	width: 100%;
+}
+.senales .opcion-senales div .gwt-TextArea
+{
+ 	margin: 15px 5% 15px 3%;
+ 	width: 94%;	
+}
+.senales .opcion-senales div .gwt-CheckBox input, .prendas .opcion-prendas div .gwt-CheckBox input
+{
+ 	margin: 0;
+}
+.senales .opcion-senales div label, .prendas .opcion-prendas div label
+{
+ 	display: none;
+}
+ 
+/*****************************************************************
+ ************** ESTILOS DE LAS PRENDAS DE VERSTIR ****************
+ *****************************************************************/
+
+.prendas .opcion-prendas > div
+{
+	text-align: center;
+}
+.prendas .opcion-prendas > div:nth-child(2)
+{
+	text-align: left;
+}
+.prendas .opcion-prendas div .gwt-TextBox, .prendas .opcion-prendas div .gwt-TextArea
+{
+ 	margin: 18px 0;
+ 	width: 88%;
+}
+.prendas .opcion-prendas div:nth-child(2), .prendas .encabezado-prendas .gwt-Label:nth-child(2)
+{
+	width: 15%;
+}
+.prendas .opcion-prendas div:nth-child(3), .prendas .encabezado-prendas .gwt-Label:nth-child(3),
+.prendas .opcion-prendas div:nth-child(5), .prendas .encabezado-prendas .gwt-Label:nth-child(5)
+{
+	width: 15%;
+}
+.prendas .opcion-prendas div:nth-child(4), .prendas .encabezado-prendas .gwt-Label:nth-child(4)
+{
+	width: 10%;
+}
+.prendas .opcion-prendas div:nth-child(6), .prendas .encabezado-prendas .gwt-Label:nth-child(6)
+{
+	border-right: none;
+	width: 37%;
+}
+
+/*****************************************************************
+ ************ ESTILOS DE LOS DATOS DE DESAPARICIÓN ***************
+ *****************************************************************/
+  
+.desaparicion .gwt-TextBox, .desaparicion select 
+{
+ 	width: 43.5%;
+}
+.desaparicion .gwt-RichTextArea
+{
+ 	background: #FFF;
+ 	border: 1px solid #CCC;
+ 	height: 180px;
+ 	overflow-y: scroll;
+ 	width: 100%;
+}
+.desaparicion .gwt-RichTextArea select
+{
+	width: auto;
+}
+.desaparicion .date_dia, .desaparicion .select_mes, .desaparicion .select_anio    
+{
+ 	display: inline-block;
+ 	margin: 0 1% 1em 0;
+ 	width: 14%;
+}
+
+/************************************************************************************
+ ************************ ESTILOS MOSTAR DESAPARECIDO UNICO *************************
+ ************************************************************************************/
+ 
+.verDesaparecido .imagen, .verDesaparecido .datos
+{
+	display: inline-block;
+	vertical-align: top;
+}
+.verDesaparecido .imagen
+{
+	margin-right: 15px;
+	width: 212px;
+}
+.verDesaparecido .imagen img
+{
+	border: 4px solid #FFF;
+	box-shadow: 0 0 3px #888; 
+}
+.verDesaparecido fieldset h2
+{
+	font-size: 1.8em;
+	margin-bottom: 10px;
+}
+.verDesaparecido .gwt-Label
+{
+	border: none;
+	font-size: 1em;
+	font-weight: normal;
+	margin-bottom: 1em;		
+}
+.verDesaparecido .negrita
+{
+	color: #555;
+	font-size: 0.9em;
+	font-weight: bold;
+	margin:0;
+}
+
+.verDesaparecido .senales > div > div
+{
+	display: inline-block;
+	margin: 0 3% 1em 0;
+	vertical-align: top;
+	width: 30.3%;
+}
+.verDesaparecido .senales > div > div h3
+{
+	border-bottom: 1px solid #BBB;
+	margin-bottom: 1em;
+}
+.verDesaparecido .senales > div > div .gwt-HTML
+{
+	margin: 8px 0;
+}
+.verDesaparecido .senales > div > div b
+{
+	color: #555;
+	font-size: 1.1em;
+	margin-left: 8px;
+}
+.verDesaparecido .senales > div > div .vineta
+{
+	width: 0px;
+	height: 0px;
+	border: 3px solid #00BEBC;
+	display: inline-block;
+	margin-bottom: 2px;
+}
+
+
+
+.verDesaparecido .encabezado-senales 
+{
+ 	background: #f1f1f1 url("../image/otro.png");
+ 	border: 1px solid #D1D1D1;
+ 	height: 50px;
+	width: 100%;
+}
+.verDesaparecido .encabezado-senales .gwt-Label 
+{
+ 	border-right: 1px solid #CCC; 
+ 	display: inline-block;
+ 	line-height: 50px;
+ 	height: 100%;
+ 	text-align: center;
+}
+.verDesaparecido .encabezado-senales .gwt-Label:last-child 
+{
+ 	border-right: none; 
+}
+.verDesaparecido .opcion-senales
+{
+	border: 1px solid #D1D1D1;
+	height: 80px;
+	width: 100%;
+}
+.verDesaparecido .opcion-senales > div
+{ 
+	border-right: 1px solid #D1D1D1;
+	display: inline-block;
+	height: 100%;
+	padding: 1em 0.5em;
+	vertical-align: top;
+}
+.verDesaparecido .encabezado-senales .gwt-Label:first-child, .verDesaparecido .opcion-senales > div:first-child 
+{
+ 	width: 20%;
+}
+.verDesaparecido .encabezado-senales .gwt-Label:nth-child(2), .verDesaparecido .opcion-senales > div:nth-child(2) 
+{
+ 	width: 30%;
+}
+.verDesaparecido .encabezado-senales .gwt-Label:last-child, .verDesaparecido .opcion-senales > div:last-child
+{
+ 	width: 50%;
+}
+.verDesaparecido .opcion-senales > div:last-child
+{
+	border-right: none;
+}
+
+
+/************************************************************************************
+ ************************ ESTILOS DEL MAPA DE DESAPARECIDOS *************************
+ ************************************************************************************/
+.div-mapa
+{
+	border: 1px solid #CCC;
+	height: 500px;
+	margin: 2em auto;
+	max-width: 952px;
+	padding: 1em;
+	position: relative;
+}
+.info-mapa, .mapa-desaparecidos
+{
+	display: inline-block;
+	vertical-align: top;
+}
+.info-mapa
+{
+	border: 1px solid #CCC;
+	height: 100%;
+	width: 32%;
+}
+.info-mapa .titulo
+{
+	background: url("../image/bg_header_enlaces.png");
+	border-bottom: 1px solid #E5E5E5;
+	color: #00BEBC;
+	height: 100px;
+	line-height: 100px;
+	text-indent: 1em;
+}
+.info-mapa > div:nth-child(2), 
+.info-mapa > div:nth-child(3), 
+.info-mapa > div:nth-child(4), 
+.info-mapa > div:nth-child(5), 
+.info-mapa > div:nth-child(6)
+{
+	border-bottom: 1px solid #E5E5E5;
+	height: 73px;
+	padding: 0.5em;
+}
+.info-mapa > div:nth-child(6)
+{
+	border: none;
+}
+.info-mapa > div > div:nth-child(1), .info-mapa > div > div:nth-child(2)
+{
+	display: inline-block;
+	vertical-align: top;
+}
+.info-mapa > div > div
+{
+	height: 100%;
+	width: 25%;
+}
+.info-mapa div > div:nth-child(2), .info-mapa > div:nth-child(2)
+{
+	color: #777;
+	font-size: 0.9em;
+	width: 75%;
+}
+.info-mapa > div:nth-child(2) 
+{
+	padding: 1em;
+	width: 100%;	
+}
+.info-mapa > div:nth-child(3) div:nth-child(1) 
+{
+	background: url("http://google-maps-icons.googlecode.com/files/redblank.png") no-repeat center;	
+}
+.info-mapa > div:nth-child(4) div:nth-child(1) 
+{
+	background: url("../image/info_maps_3.png") no-repeat center;	
+}
+.info-mapa > div:nth-child(5) div:nth-child(1) 
+{
+	background: url("http://google-maps-icons.googlecode.com/files/red10.png") no-repeat center;		
+}
+.info-mapa > div:nth-child(6) div:nth-child(1) 
+{
+	/*background: url("../image/info_maps_3.png") no-repeat center;*/
+	background: url("http://google-maps-icons.googlecode.com/files/blueX.png") no-repeat center;
+}
+
+.mapa-desaparecidos
+{
+	border: 5px solid #FFF;
+	box-shadow: 0 0 2px #AAA;
+	height: 100%;
+	margin-left: 3%;
+	width: 65%;
+}
+
+
+
+
+
+
+@media screen and (max-width: 900px)
+ {
+ .desaparecido .encabezado div:last-child
+	{
+		display: none;
+	}
+}
+ @media screen and (max-width: 880px)
+ {
+	.desaparecido .encabezado
+	{
+		display: none;
+	}
+	
+}
+@media screen and (max-width: 770px)
+ {
+ 	footer div .suscribirse button label:last-child
+	{
+		display: inline;
+	}
+	footer div .suscribirse button label:first-child
+	{
+		display: none;
+	}
+	.desaparecido .pasos
+	{
+		display: none;
+	}
+	/* ENLACES DEL HOME */
+	.enlaces-rapidos .gwt-HTML
+	{
+		margin: 0.5em auto;
+		width: 90%;
+	}
+	.enlaces-rapidos .gwt-HTML .content-enlace
+	{
+		border: none;
+		padding: 1.5%;
+	}
+	.enlaces-rapidos .gwt-HTML .content-enlace img
+	{
+		width: 100px;
+	}
+	/* SUGERENCIAS DEL HOME */
+	.sugerencias h2
+	{
+		margin: 0.5 0 1em 0;
+	}
+	.sugerencias .gwt-HTML
+	{
+		margin: 0.5em 1%;		
+		width: 47%;
+	}
+}
+
+
+@media screen and (max-width: 600px)
+{
+	
+	/***********************************************************************
+ 	*********************** ESTILOS DEL MENU PRINCIPAL *********************
+ 	************************************************************************/
+	header nav
+	{
+		padding: 0;
+	}
+	.boxNavegacion
+	{
+		background: #bdb0a8;
+		height: auto;
+	}
+  	nav ul {
+  		width: 100%;
+  		display: block;
+  		height: auto;
+  	}
+  	nav li {
+  		width: 50%;
+  		display: inline-block;
+  		position: relative;
+  	}
+  	nav li a {
+  		border-bottom: 1px solid #aca097;
+  		padding: 0 !important;
+	}
+	nav li:last-child a
+	{
+		border-bottom: none;
+	}
+  	nav a {
+	  	text-align: left;
+	  	width: 100%;
+	  	text-indent: 7px;
+  	}
+  	
+  	/***********************************************************************
+ 	*************************** ESTILOS DEL FOOTER *************************
+ 	************************************************************************/	
+	footer .boxFooter article, footer div article:nth-child(4)
+	{
+		margin-bottom: 1.5em;
+		width: 47%;
+	}
+	footer .boxFooter article:nth-child(2), footer .boxFooter article:nth-child(4)
+	{
+		text-align: right;
+	}
+	footer .boxFooter article:nth-child(3), footer .boxFooter article:nth-child(4)
+	{
+		margin-bottom: 0em;
+	}
+	
+  	/***********************************************************************
+ 	***************** ESTILOS PARA LA PAGINA DE CONTACTO *******************
+ 	************************************************************************/
+ 	
+ 	.contacto .gwt-TextBox
+ 	{
+ 		width: 98%;
+ 	}
+ 	/***********************************************************************
+ 	************ ESTILOS PARA LA PAGINA DE REGISTRAR USUARIOS **************
+ 	************************************************************************/
+ 
+	.fieldset_personales, .fieldset_contacto
+	{
+		width: 100%;
+	}
+	.fieldset_personales
+	{
+		margin-right: 0%;
+	}
+	.fieldset_password .gwt-PasswordTextBox 
+	{
+		width: 98%;
+	}
+ 	/***********************************************************************
+  	********** ESTILOS PARA LOS DATOS PERSONALES DE DESAPARECIDOS **********
+  	************************************************************************/
+
+ 	.desaparecido .divPersonales > div
+ 	{
+ 		width: 100%;
+ 	}
+ 	.desaparecido .divPersonales > div:first-child
+ 	{
+ 		margin-right: 0;
+ 	}
+ 	.desaparecido .divPersonales > div:first-child:after
+ 	{
+ 		display: none;
+ 	}
+ 	.desaparecido .divPersonales > div:last-child
+ 	{
+ 		margin-left: 0;
+ 	} 	
+ 	
+ 	/***********************************************************************
+  	************** ESTILOS DE LA MORFOLOGÍA DEL DESAPARECIDO ***************
+  	************************************************************************/
+	.morfologia fieldset fieldset 
+	{
+		min-height: auto !important;
+		width: 100%;
+	}
+	.morfologia fieldset > div > div
+	{
+		width: 100%;
+	}
+	.morfologia fieldset > div > div .gwt-TextBox
+	{
+		width: 100%;
+	}
+	/*****************************************************************
+ 	************ ESTILOS DE LOS DATOS DE DESAPARICIÓN ***************
+ 	*****************************************************************/
+  
+	.desaparicion .gwt-TextBox, .desaparicion select 
+	{
+ 		width: 98%;
+	}
+	
+	.desaparicion .date_dia, .desaparicion .select_mes, .desaparicion .select_anio    
+	{
+	 	display: inline-block;
+	 	margin: 0 1% 1em 0;
+	 	width: 32%;
+	}
+	
+}
+
+
+@media screen and (max-width: 480px)
+{
+ 	button
+ 	{
+ 		width: 100%;
+ 	}
+ 	.sugerencias .gwt-HTML
+	{
+		width: 97%;
+	}
+	
+	/***********************************************************************
+ 	********************* ESTILOS DEL FOOTER PRINCIPAL *********************
+ 	************************************************************************/
+ 	footer .boxFooter 
+ 	{
+ 		padding: 2em 1em 1em 1em;
+ 	}
+ 	footer .boxFooter article
+ 	{
+ 		margin: 0.5em 0;
+ 		width: 100%;
+ 	}
+ 	footer .boxFooter article h4
+ 	{
+ 		border-bottom: 1px solid #BBB;
+ 	}
+ 	footer .boxFooter article ul li
+ 	{
+ 		display: inline-block;
+ 		vertical-align: top;
+ 		width: 48%;
+ 	}
+ 	footer .boxFooter article:nth-child(2), footer .boxFooter article:nth-child(4) 
+ 	{
+ 		text-align: left;
+ 	}
+	footer .boxFooter article:nth-child(3), footer .boxFooter article:nth-child(4)
+	{
+		margin-bottom: 0.5em;
+		width: 100%;
+	}
+	footer .boxFooter .social > div > div 
+ 	{
+		margin-right: 1em;
+ 	}
+	
+ 	/***********************************************************************
+ 	********************* ESTILOS DEL HEADER PRINCIPAL *********************
+ 	************************************************************************/
+ 	header .boxHeader
+ 	{
+ 		height: 60px;
+ 		padding: 0;
+ 	}
+ 	.boxHeader figure img
+ 	{
+ 		margin: 5px 0 0 0;
+ 		width: 180px;
+ 	}
+ 	.boxHeader figure
+ 	{
+ 		width: 52%
+ 	}
+ 	#botonesAcceso
+ 	{
+ 		height: 60px;
+ 		margin: 0;
+ 		width: 45%;
+ 	}
+ 	#botonesAcceso a
+ 	{
+ 		border: 1px solid #E5E5E5;
+		margin: 0;
+		padding: 1.8em 1.5em;
+		line-height: 4.6em;
+		border-bottom: none;
+		border-top: none;
+ 	}
+ 	#botonesAcceso a:first-child
+ 	{
+ 		margin-right: -2px;
+ 		border-right: none;
+ 	}
+ 	#botonesAcceso .gwt-Hyperlink span
+ 	{
+ 		display: none;
+ 	}
+ 	#botonesAcceso img
+ 	{
+ 		display: inline;
+ 		margin: 0;
+ 	}
+ 	/***********************************************************************
+ 	*********************** ESTILOS DEL MENU PRINCIPAL *********************
+ 	************************************************************************/
+	.boxNavegacion .menu > li a 
+	{
+		font-size: 0.8em;
+	}
+	nav ul {
+		display: none;
+		height: auto;
+	}
+	nav a#pull {
+		background: #aca097;
+		border-top: 1px solid #aca097;
+		color: #FFF;
+		display: block;
+		padding: 0.6em 0;
+		position: relative;
+		width: 100%;
+	}
+	nav a#pull:after {
+		content:"";
+		background: url("../image/nav-icon.png") no-repeat;
+		width: 30px;
+		height: 30px;
+		display: inline-block;
+		position: absolute;
+		right: 15px;
+		top: 10px;
+	}
+	
+ 	/***********************************************************************
+  	*************** ESTILOS DELA PÁGINA DE INICIO DE SESIÓN ****************
+  	************************************************************************/
+  	
+	.div_sesion .div_boton button
+	{
+		display: block;
+		width: 100%;
+	}
+	.div_sesion .div_boton .gwt-CheckBox
+	{
+		display: block;
+		text-align: left;
+	}
+	
+	/***********************************************************************
+  	****************** ESTILOS GENERALES DEL DESAPARECIDO ******************
+  	************************************************************************/
+  	
+	.desaparecido .navegacion h2 
+	{
+		margin: 0 0 0.5em 0;
+	}
+	
+ 	/***********************************************************************
+ 	********** ESTILOS DE LAS SEÑALES PARICULARES DEL DESAPARECIDO *********
+ 	************************************************************************/
+ 	
+	.senales .encabezado-senales, .prendas .encabezado-prendas
+	{
+		display: none;
+	}
+	.senales .encabezado-senales .gwt-Label:nth-child(2), .senales .opcion-senales div:nth-child(2),
+	.prendas .encabezado-prendas .gwt-Label:nth-child(2), .prendas .opcion-prendas div:nth-child(2)
+	{
+		display: none;
+	}
+ 	.senales .opcion-senales div:nth-child(1) .gwt-CheckBox,
+ 	.prendas .opcion-prendas div:nth-child(1) .gwt-CheckBox
+ 	{
+ 		line-height: 0px;
+ 		margin: 15px 0 0 15px;
+ 		text-align: left;
+ 	}
+ 	.prendas .opcion-prendas div:nth-child(1) .gwt-CheckBox
+ 	{
+ 		margin: 1em 0 0em 25px;
+ 	}
+ 	.senales .opcion-senales div Label,
+ 	.prendas .opcion-prendas div Label
+ 	{
+ 		display: inline;
+ 		margin-left: 15px;
+ 	}
+ 	.senales .opcion-senales, .senales .opcion-senales div,
+ 	.prendas .opcion-prendas, .prendas .opcion-prendas div
+ 	{
+ 		height: auto;
+		min-height: 2em;
+ 	}
+ 	.senales .opcion-senales,
+ 	.prendas .opcion-prendas
+ 	{
+ 		border: 2px solid #D1D1D1;
+ 		border-bottom: none;
+ 	}
+ 	.senales .opcion-senales:last-child,
+ 	.prendas .opcion-prendas:last-child
+ 	{
+ 		border-bottom: 2px solid #D1D1D1 !important;
+ 	}
+ 	.senales .opcion-senales div:nth-child(1),
+ 	.senales .opcion-senales div:nth-child(3),
+ 	.senales .opcion-senales div:nth-child(4),
+ 	.prendas .opcion-prendas div:nth-child(1),
+ 	.prendas .opcion-prendas div:nth-child(3),
+ 	.prendas .opcion-prendas div:nth-child(4),
+ 	.prendas .opcion-prendas div:nth-child(5),
+ 	.prendas .opcion-prendas div:nth-child(6),
+ 	.prendas .opcion-prendas div:nth-child(7)
+ 	{
+ 		border: none;
+ 		display:block;
+ 		width: 100%;
+ 	}
+ 	.prendas .opcion-prendas div .gwt-TextBox
+ 	{
+ 		margin: 0.3em 0;
+ 	}
+ 	.prendas .opcion-prendas div .gwt-TextArea
+ 	{
+ 		margin: 0.3em 0 1em 0; 
+ 	}
+ 	
+}
+@media only screen and (max-width : 320px)
+{
+	nav li{
+		display: block;
+		float: none;
+		width: 100%;
+	}
+	.boxHeader
+	{
+		height: 88px !important;
+	}
+	.boxHeader figure, #botonesAcceso
+	{
+		text-align: center;
+		width: 100%;
+	}
+	#botonesAcceso .gwt-Hyperlink
+	{
+		border: 1px solid #DDD;
+		border-bottom: none;
+		display: inline-block;
+		width: 49.5%;
+	}
+	#botonesAcceso .gwt-Hyperlink:last-child
+	{
+		border-left: none;
+	}
+	#botonesAcceso a
+	{
+		border: none;
+		line-height: 10px;
+		padding: 0.75em 0;
+		display: block;
+	}
+	#botonesAcceso .gwt-Hyperlink span
+	{
+		display: inline;
+	}
+	#botonesAcceso .gwt-Hyperlink img
+	{
+		display: none;
+	}
+	
+	footer articule
+}
