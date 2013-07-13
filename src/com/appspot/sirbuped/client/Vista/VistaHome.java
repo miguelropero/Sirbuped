@@ -174,7 +174,7 @@ public class VistaHome extends Composite
 			    			public void onClick(final ClickEvent event) 
 			    			{
 			    				subContent.getElement().setAttribute("style", "display:none");
-								History.newItem("detalle-de-desaparecion");
+								History.newItem("detalle-de-desaparicion");
 								RootPanel.get("content").add(new VistaConsultarDesaparecido(desaparecido));
 			    			}
 			    		});

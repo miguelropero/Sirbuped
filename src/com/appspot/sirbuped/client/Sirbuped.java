@@ -15,7 +15,6 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -86,8 +85,8 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	}
 	
 	public void procesarSolicitud(String token)
-	{
-		if(token.equals("individual"))
+	{			
+		if(token.equals("detalle-desaparicion"))
 	    {
 			return;
 	    }

@@ -40,18 +40,19 @@ public class VistaConsultarDesaparecido extends Composite
 		content = new HTMLPanel("");
 		content.setStyleName("verDesaparecido");
 		
-		HTMLPanel cargando = new HTMLPanel("");
-		cargando.setStyleName("cargando");
-		RootPanel.get("content").add(cargando);
-		
 		if(desaparecido == null)
 		{
+			final HTMLPanel cargando = new HTMLPanel("");
+			cargando.setStyleName("cargando");
+			RootPanel.get("content").add(cargando);
+			
 			DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
 			desaparecidoService.consultar(true, new AsyncCallback<ArrayList<Desaparecido>>()
 			{
 			    public void onSuccess(ArrayList<Desaparecido> desaparecidos) 
 			    {
 			    	content.add(mostarTodos(desaparecidos));
+			    	cargando.getElement().setAttribute("style", "display:none");
 			    }
 			    public void onFailure(Throwable error) 
 				{
@@ -66,7 +67,6 @@ public class VistaConsultarDesaparecido extends Composite
 			content.add(this.devolverSenales(desaparecido.getSenalParticular()));
 			content.add(this.devolverDatoDesaparicion(desaparecido.getDatoDesaparicion()));
 		}
-		//cargando.getElement().setAttribute("style", "display:none");
 		return content;
 	}
 	
@@ -393,11 +393,10 @@ public class VistaConsultarDesaparecido extends Composite
     				content.add(devolverMorfologia(desaparecido));
 					content.add(devolverSenales(desaparecido.getSenalParticular()));
 					content.add(devolverDatoDesaparicion(desaparecido.getDatoDesaparicion()));
-					History.newItem("individual");
+					History.newItem("detalle-desaparicion");
     			}
     		});
     	}
-		
 		return divDesaparecidos;
 	}
 }
