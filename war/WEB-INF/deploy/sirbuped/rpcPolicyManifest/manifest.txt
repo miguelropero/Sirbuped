@@ -1,4 +1,2 @@
 # Module sirbuped
 # RPC service class, partial path of RPC policy file
-com.appspot.sirbuped.client.Interfaz.DesaparecidoService, AE4D67D590FBD29123D83A5D50E4B7D0.gwt.rpc
-com.appspot.sirbuped.client.Interfaz.UploadImage, 82DCDD137C6E2796F544F0661FFD5F81.gwt.rpc

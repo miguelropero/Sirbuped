@@ -27,31 +27,59 @@ public class VistaConsultarDesaparecido extends Composite
 	
 	public VistaConsultarDesaparecido()
 	{
-		initWidget(this.retornardesaparecido(null));
+		this.retornardesaparecido(null, "");
+		initWidget(content);
 	}
 	
 	public VistaConsultarDesaparecido(Desaparecido desaparecido)
 	{
-		initWidget(this.retornardesaparecido(desaparecido));
+		this.retornardesaparecido(desaparecido, "");
+		initWidget(content);
+	}
+	public VistaConsultarDesaparecido(String documento)
+	{
+		this.retornardesaparecido(null, documento);
+		initWidget(content);
 	}
 	
-	public HTMLPanel retornardesaparecido(Desaparecido desaparecido)
+	public HTMLPanel retornardesaparecido(Desaparecido desaparecido, String documento)
 	{	
 		content = new HTMLPanel("");
 		content.setStyleName("verDesaparecido");
 		
-		if(desaparecido == null)
+		final HTMLPanel cargando = new HTMLPanel("");
+		cargando.setStyleName("cargando");
+		RootPanel.get("content").add(cargando);
+		
+		if(!documento.isEmpty())
 		{
-			final HTMLPanel cargando = new HTMLPanel("");
-			cargando.setStyleName("cargando");
-			RootPanel.get("content").add(cargando);
-			
+			DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
+			desaparecidoService.consultar(documento, new AsyncCallback<Desaparecido>()
+			{
+			    public void onSuccess(Desaparecido desaparecido) 
+			    {
+			    	History.newItem(desaparecido.getNumeroDocumento());
+    				RootPanel.get("verDesaparecido").add(devolverDatosPersonales(desaparecido));
+    				RootPanel.get("verDesaparecido").add(devolverMorfologia(desaparecido));
+    				RootPanel.get("verDesaparecido").add(devolverSenales(desaparecido.getSenalParticular()));
+    				RootPanel.get("verDesaparecido").add(devolverDatoDesaparicion(desaparecido.getDatoDesaparicion()));
+			    	cargando.getElement().setAttribute("style", "display:none");
+			    }
+			    public void onFailure(Throwable error) 
+				{
+					Window.alert(error.toString());
+				}
+	        });
+		}
+		else if(desaparecido == null)
+		{
 			DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
 			desaparecidoService.consultar(true, new AsyncCallback<ArrayList<Desaparecido>>()
 			{
 			    public void onSuccess(ArrayList<Desaparecido> desaparecidos) 
 			    {
-			    	content.add(mostarTodos(desaparecidos));
+			    	//content.add();
+			    	mostarTodos(desaparecidos);
 			    	cargando.getElement().setAttribute("style", "display:none");
 			    }
 			    public void onFailure(Throwable error) 
@@ -66,6 +94,7 @@ public class VistaConsultarDesaparecido extends Composite
 			content.add(this.devolverMorfologia(desaparecido));
 			content.add(this.devolverSenales(desaparecido.getSenalParticular()));
 			content.add(this.devolverDatoDesaparicion(desaparecido.getDatoDesaparicion()));
+			cargando.getElement().setAttribute("style", "display:none");
 		}
 		return content;
 	}
@@ -356,10 +385,8 @@ public class VistaConsultarDesaparecido extends Composite
 	  	return fieldsetDesaparicion; 
 	}
 	
-	public HTMLPanel mostarTodos(final ArrayList<Desaparecido> desaparecidos)
-	{
-		final HTMLPanel divDesaparecidos = new HTMLPanel("");
-		
+	public void mostarTodos(final ArrayList<Desaparecido> desaparecidos)
+	{		
 		for(byte i=0; i < desaparecidos.size(); i++)
     	{
 			final Desaparecido desaparecido = desaparecidos.get(i);
@@ -382,21 +409,20 @@ public class VistaConsultarDesaparecido extends Composite
     		figure.add(zonaClick);
     		figure.add(divImagen);
     		figure.add(figcaption);
-    		divDesaparecidos.add(figure);
+    		content.add(figure);
     		
     		zonaClick.addClickHandler(new ClickHandler() 
     		{
     			public void onClick(final ClickEvent event) 
     			{
-    				divDesaparecidos.getElement().setAttribute("style", "display:none");
-    				content.add(devolverDatosPersonales(desaparecido));
-    				content.add(devolverMorfologia(desaparecido));
-					content.add(devolverSenales(desaparecido.getSenalParticular()));
-					content.add(devolverDatoDesaparicion(desaparecido.getDatoDesaparicion()));
-					History.newItem("detalle-desaparicion");
+    				History.newItem(desaparecido.getNumeroDocumento());
+    				//RootPanel.get("verDesaparecido").add(devolverDatosPersonales(desaparecido));
+    				//RootPanel.get("verDesaparecido").add(devolverMorfologia(desaparecido));
+    				//RootPanel.get("verDesaparecido").add(devolverSenales(desaparecido.getSenalParticular()));
+    				//RootPanel.get("verDesaparecido").add(devolverDatoDesaparicion(desaparecido.getDatoDesaparicion()));
     			}
     		});
     	}
-		return divDesaparecidos;
+		//RootPanel.get("content").add(content);
 	}
 }

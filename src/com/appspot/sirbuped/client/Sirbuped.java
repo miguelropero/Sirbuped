@@ -15,6 +15,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -43,7 +44,11 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	    }
 	    else
 	    {
-	    	procesarSolicitud(History.getToken());
+	    	String subToken = String.valueOf(History.getToken().charAt(0));
+	    	if(subToken.equals("1") || subToken.equals("2") || subToken.equals("3") || subToken.equals("4") || subToken.equals("5"))
+	    		procesarSolicitud("-"+History.getToken());
+	    	else
+	    		procesarSolicitud(History.getToken());
 	    }
 	}
 	
@@ -86,11 +91,6 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	
 	public void procesarSolicitud(String token)
 	{			
-		if(token.equals("detalle-desaparicion"))
-	    {
-			return;
-	    }
-		
 		RootPanel.get("content").clear();
 		RootPanel.get("content").add(new Utilidades().actualizarEncabezadoContenido(token));
 		
@@ -102,7 +102,7 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 		}
 		else if(token.equals("consultar"))
 	    {
-			RootPanel.get("content").add(new VistaConsultarDesaparecido(null));
+			RootPanel.get("content").add(new VistaConsultarDesaparecido());
 	    }
 		else if(token.equals("iniciar-sesion"))
 	    {
@@ -124,13 +124,27 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	    {
 			RootPanel.get("content").add(new VistaDesaparecido());
 	    }
-		else if(token.equals(""))
-	    {
-			
-	    }
 		else if(token.equals("mapa-de-desaparecidos"))
 	    {
 			RootPanel.get("content").add(new VistaMapaDesaparecidos());
+	    }
+		else
+	    {
+			RootPanel.get("content").clear();
+			String subToken = String.valueOf(token.charAt(0));
+			if(subToken.equals("-"))
+			{
+				subToken = token.replace("-", "");
+				RootPanel.get("content").add(new Utilidades().actualizarEncabezadoContenido("detalle-de-desaparicion"));
+				RootPanel.get("content").add(new HTMLPanel("<div id='verDesaparecido' class='verDesaparecido'></div>"));
+				RootPanel.get("content").add(new VistaConsultarDesaparecido(subToken));
+			}
+			else
+			{
+				RootPanel.get("content").add(new Utilidades().actualizarEncabezadoContenido("detalle-de-desaparicion"));
+				RootPanel.get("content").add(new HTMLPanel("<div id='verDesaparecido' class='verDesaparecido'></div>"));
+				RootPanel.get("content").add(new VistaConsultarDesaparecido(token));
+			}
 	    }
 	}
 	

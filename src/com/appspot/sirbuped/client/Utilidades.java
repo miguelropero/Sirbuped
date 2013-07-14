@@ -34,6 +34,10 @@ public class Utilidades
 		{
 			accion = "cont\u00E1ctenos";
 		}
+		if(accion.equals("detalle-de-desaparicion"))
+		{
+			accion = "Detalle de desaparici\u00F3n";
+		}
 		
 		if(accion.contains("-"))
 		{

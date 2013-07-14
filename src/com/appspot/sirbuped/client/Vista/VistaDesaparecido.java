@@ -331,6 +331,68 @@ public class VistaDesaparecido extends Composite
 		{
 			public void onClick(ClickEvent event) 
 			{
+				divError.clear();
+				error = false;
+				IsWidget esWidget = null;
+				com.google.gwt.user.client.Element elemento = null;
+				
+				for(byte i=0; i<listaSenales.size(); i++)
+				{
+					elemento = DOM.getElementById("checkBox"+listaSenales.get(i));
+					esWidget = getWidget(elemento);
+					
+					if(esWidget != null)
+					{
+						CheckBox seleccionado = (CheckBox) esWidget;
+						if(seleccionado.getValue())
+						{
+							elemento = DOM.getElementById("textAreaUbicacion"+listaSenales.get(i));
+							esWidget = getWidget(elemento);
+							final TextArea ubicacion = (TextArea) esWidget;
+							
+							elemento = DOM.getElementById("textAreaCaracteristica"+listaSenales.get(i));
+							esWidget = getWidget(elemento);
+							final TextArea caracteristica = (TextArea) esWidget;
+							
+							if(caracteristica.getValue().isEmpty() || ubicacion.getValue().isEmpty())
+							{
+								error = true;
+								ubicacion.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
+								caracteristica.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
+								
+								ubicacion.addBlurHandler(new BlurHandler()
+								{
+									@Override
+							        public void onBlur(BlurEvent event)
+							        {
+										ubicacion.getElement().setAttribute("style", "");
+							        	divError.setVisible(false);
+							        }
+							    });
+								
+								caracteristica.addBlurHandler(new BlurHandler()
+								{
+									@Override
+							        public void onBlur(BlurEvent event)
+							        {
+										caracteristica.getElement().setAttribute("style", "");
+							        	divError.setVisible(false);
+							        }
+							    });
+							}
+						}
+					}
+				}
+				if(error)
+				{
+					Label errores = new Label("Si selecciona una se\u0148al debe completar los campos asociados de Ubicaci\u00F3n y Caracter\u00EDstica.");
+					divError.add(errores);
+					divError.setVisible(true);
+					return;
+				}
+				
+				divError.setVisible(false);
+				
 				encabezado.getElementById("punta_morfologia").setClassName("punta_flecha_pasado");
 				encabezado.getElementById("senales").setClassName("flecha_pasado");
 				encabezado.getElementById("punta_senales").setClassName("punta_flecha_pasado_ultima");

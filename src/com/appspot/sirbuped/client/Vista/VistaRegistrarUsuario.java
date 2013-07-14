@@ -52,12 +52,10 @@ public class VistaRegistrarUsuario extends Composite
 			selectGenero.addItem("Seleccione...");
 			selectGenero.addItem("Masculino");
 			selectGenero.addItem("Femenino");
-		final TextBox dateDia		= new TextBox();
-			dateDia.setStyleName("date_dia");
-			dateDia.getElement().setAttribute("placeHolder", "entre 1 y 31");
+		final ListBox selectDia		= new ListBox();
+			selectDia.addItem("Dia...");
 		final ListBox selectMes		= new ListBox();
-			selectMes.setStyleName("select_mes");
-			selectMes.addItem("Seleccione...");
+			selectMes.addItem("Mes...");
 			selectMes.addItem("Enero");
 			selectMes.addItem("Febrero");
 			selectMes.addItem("Marzo");
@@ -71,8 +69,7 @@ public class VistaRegistrarUsuario extends Composite
 			selectMes.addItem("Noviembre");
 			selectMes.addItem("Diciembre");
 		final ListBox selectAnio	= new ListBox();
-			selectAnio.setStyleName("select_anio");
-			selectAnio.addItem("Seleccione...");
+			selectAnio.addItem("Anio...");
 			for(int i=1910; i<2014; i++)
 			{
 				selectAnio.addItem(String.valueOf(i));
@@ -91,7 +88,7 @@ public class VistaRegistrarUsuario extends Composite
 		divPersonales.add(lblGenero);
 		divPersonales.add(selectGenero);
 		divPersonales.add(lblFechaNacimiento);
-		divPersonales.add(dateDia);
+		divPersonales.add(selectDia);
 		divPersonales.add(selectMes);
 		divPersonales.add(selectAnio);
 		
@@ -112,19 +109,21 @@ public class VistaRegistrarUsuario extends Composite
 		Label lblTelefono1 				= new Label("Tel\u00E9fono 1:");
 		Label lblTelefono2				= new Label("Tel\u00E9fono 2:");
 		Label lblTelefonoMovil			= new Label("Tel\u00E9fono Celular:");
-		Label lblDepartamento			= new Label("Departamento:");
-		Label lblCiudad					= new Label("Ciudad:");
-		Label lblDireccion				= new Label("Direcci\u00F3n:");
+		Label lblResidencia			= new Label("Lugar de Residencia:");
+		//Label lblDireccion				= new Label("Direcci\u00F3n:");
 		
 		final TextBox textEmail			= new TextBox();
 		final TextBox textTelefono1		= new TextBox();
 		final TextBox textTelefono2		= new TextBox();
 		final TextBox textTelefonoMovil = new TextBox();
+		final ListBox selectPais		= new ListBox();
+			selectPais.addItem("Pais...");
 		final ListBox selectDepartamento= new ListBox();
-			selectDepartamento.addItem("Seleccione...");
+			selectDepartamento.addItem("Departamento...");
 		final ListBox selectCiudad		= new ListBox();
-			selectCiudad.addItem("Seleccione...");
+			selectCiudad.addItem("Ciudad...");
 		final TextBox textDireccion		= new TextBox();
+		textDireccion.getElement().setAttribute("placeHolder", "Direcci\u00F3n");
 		
 		selectCiudad.addChangeHandler(new ChangeHandler()
 		{
@@ -142,11 +141,10 @@ public class VistaRegistrarUsuario extends Composite
 		divContacto.add(textTelefono2);
 		divContacto.add(lblTelefonoMovil);
 		divContacto.add(textTelefonoMovil);
-		divContacto.add(lblDepartamento);
+		divContacto.add(lblResidencia);
+		divContacto.add(selectPais);
 		divContacto.add(selectDepartamento);
-		divContacto.add(lblCiudad);
 		divContacto.add(selectCiudad);
-		divContacto.add(lblDireccion);
 		divContacto.add(textDireccion);
 		
 		fieldsetContacto.add(divContacto);
@@ -281,7 +279,7 @@ public class VistaRegistrarUsuario extends Composite
 				Date fechaNacimiento = new Date();
 				fechaNacimiento.setYear(Integer.parseInt(selectAnio.getValue(selectAnio.getSelectedIndex()))-1900); 
 				fechaNacimiento.setMonth((selectMes.getSelectedIndex()-1));
-				fechaNacimiento.setDate(Integer.parseInt(dateDia.getValue()));
+				fechaNacimiento.setDate(selectDia.getSelectedIndex());
 				
 				/*
 				 * Realización asincrona para guardar los datos
@@ -323,7 +321,7 @@ public class VistaRegistrarUsuario extends Composite
 				textApellido2.setText("");
 				textDocumento.setText("");
 				selectGenero.setItemSelected(0, true);
-				dateDia.setText("");
+				selectDia.setItemSelected(0, true);
 				selectMes.setItemSelected(0, true);
 				selectAnio.setItemSelected(0, true);
 				

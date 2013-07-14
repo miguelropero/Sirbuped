@@ -1,7 +1,6 @@
 package com.appspot.sirbuped.client.Vista;
 
 import java.util.ArrayList;
-
 import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.Interfaz.DesaparecidoService;
 import com.appspot.sirbuped.client.Interfaz.DesaparecidoServiceAsync;
@@ -15,7 +14,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.RootPanel;
 
 public class VistaHome extends Composite 
 {
@@ -174,13 +172,13 @@ public class VistaHome extends Composite
 			    			public void onClick(final ClickEvent event) 
 			    			{
 			    				subContent.getElement().setAttribute("style", "display:none");
-								History.newItem("detalle-de-desaparicion");
-								RootPanel.get("content").add(new VistaConsultarDesaparecido(desaparecido));
+								History.newItem(desaparecido.getNumeroDocumento());
+								//RootPanel.get("content").add(new VistaConsultarDesaparecido(desaparecido));
 			    			}
 			    		});
 			    	}
-			    	cargando.getElement().setAttribute("style", "display:none");
 		    	}
+		    	cargando.getElement().setAttribute("style", "display:none");
 		    }
 		    public void onFailure(Throwable error) 
 			{

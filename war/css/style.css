@@ -189,7 +189,6 @@ header nav
 	display: inline-block;
 	height: 0;
 	padding-bottom: 2px;
-	vertical-align: center;
 	width: 0;  
 }
 .menu li a:hover .arrow
@@ -521,27 +520,33 @@ nav a#pull
 	border: 1px solid #CCC;
 	margin: auto auto;
 	max-width: 350px;
-	padding: 1em 0 0;
+	padding: 0 1em;
 	text-align: center;
+}
+.div_sesion div:nth-child(1)
+{
+	background: url("../image/bg_header_enlaces.png");
+	border-bottom: 1px solid #CCC;
+	height: 90px;
+	margin-bottom: 2em;
+	width: 100%;
 }
 .div_sesion h2
 {
-	color: #666;
-	margin: 1em 0 1.5em 0;
-	font-size: 1.2em;
-	font-weight: bold;
+	color: #00BEBC;
+	line-height: 90px;	
 }
 .boton_google
 {
 	background: #E1E1E1 url("../image/bg_boton_google.png") no-repeat center -3px;
-	border: 1px solid #DDD;
+	border: 1px solid #BBB;
 	border-radius: 6px;
-	box-shadow: 1px 1px 1px #ccc, -1px 0px 1px #ccc;
+	box-shadow: 0 0 1px #CCC;
 	color: #757575;
 	font-size: 0.9em;
 	line-height: 50px;
 	height: 48px;
-	opacity: 0.85;
+	opacity: 0.9;
 	width: 72%;
 }
 .boton_google:hover
@@ -550,6 +555,11 @@ nav a#pull
 	border-bottom: 2px solid #BBB;
 	border-top: 0px;
 	opacity: 1;
+}
+.boton_google:active 
+{
+	border: 1px solid #BBB;
+	box-shadow: none;
 }
 .div_sesion .div_separator
 {
@@ -571,7 +581,7 @@ nav a#pull
 }
 .div_sesion .div_boton
 {
-	margin: 0 auto 1em;
+	margin: 0 auto 2em;
 	text-align: right;
 	width: 72%;
 }
@@ -580,7 +590,7 @@ nav a#pull
 	color: #999;
 	font-size: 0.95em;
 	display: inline-block;
-	margin-right: 2em;
+	margin-right: 1.9em;
 }
 .div_sesion .div_footer
 {
@@ -657,7 +667,7 @@ TextArea
 {
 	height: 40px;	
 }
-.gwt-TextBox:hover, select:hover, .gwt-PasswordTextBox:hover, .date_dia:hover, .edad:hover, TextArea:hover, 
+.gwt-TextBox:hover, select:hover, .gwt-PasswordTextBox:hover, .date_dia:hover, .edad:hover, TextArea:hover 
 {
 	border: 1px solid #AAA;
 	outline: none;
@@ -744,13 +754,13 @@ fieldset > div > table.RichTextToolbar > tbody > tr:last-child
 	display:inline-block;
 	/*display:inline;/*IE ONLY*/
 	border:1px solid #ccc;
-	background: rgb(252,252,252); /* Old browsers */
+	background: rgb(252,252,252);
 	background: -moz-linear-gradient(top, rgba(252,252,252,1) 0%, rgba(224,224,224,1) 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(224,224,224,1))); /* Chrome,Safari4+ */
 	background: -webkit-linear-gradient(top, rgba(252,252,252,1) 0%,rgba(224,224,224,1) 100%); /* Chrome10+,Safari5.1+ */
 	background: -o-linear-gradient(top, rgba(252,252,252,1) 0%,rgba(224,224,224,1) 100%); /* Opera11.10+ */
 	background: -ms-linear-gradient(top, rgba(252,252,252,1) 0%,rgba(224,224,224,1) 100%); /* IE10+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#e0e0e0',GradientType=0 ); /* IE6-9 */
+	/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#e0e0e0',GradientType=0 ); /* IE6-9 */
 	background: linear-gradient(top, rgba(252,252,252,1) 0%,rgba(224,224,224,1) 100%); /* W3C */
 }
 .gwt-Button:active
@@ -783,7 +793,7 @@ fieldset > div > table.RichTextToolbar > tbody > tr:last-child
 .fade
 {
 	background-color: black;
-	filter: alpha(opacity=70);
+	/*filter: alpha(opacity=70);*/
 	height: 100%;
     left: 0%;
     opacity: .70;
@@ -1110,7 +1120,7 @@ footer nav li:last-child a
 {
 	margin-right: 3%;
 }
-.fieldset_personales .gwt-TextBox, .fieldset_contacto .gwt-TextBox
+.fieldset_personales .gwt-TextBox, .fieldset_contacto .gwt-TextBox, .fieldset_personales .gwt-ListBox, .fieldset_contacto .gwt-ListBox
 {
 	width: 100%;
 }
@@ -1118,18 +1128,9 @@ footer nav li:last-child a
 {
 	width: 43.5%;
 }
-.fieldset_personales .gwt-ListBox, .fieldset_contacto .gwt-ListBox  
-{
-	width: 99%;
-}
-.fieldset_personales .date_dia, .fieldset_personales .select_mes, .fieldset_personales .select_anio 
-{
-	margin: 0 3% 1em 0;
-	width: 31%;
-}
 .fieldset_personales .select_anio
 {
-	margin: 0 0% 1em 0;
+	
 }
 .fieldset_opciones span:nth-child(2)
 {
@@ -1315,13 +1316,6 @@ footer nav li:last-child a
 .desaparecido .divPersonales .gwt-TextBox, .desaparecido .divPersonales select
 {
  	width: 99.5%;
-}
-.desaparecido .divPersonales .pais, .desaparecido .divPersonales .departamento, .desaparecido .divPersonales .ciudad,
-.desaparecido .divPersonales .date_dia, .desaparecido .divPersonales .select_mes, .desaparecido .divPersonales .select_anio,    
-{
- 	display: inline-block;
- 	margin: 0 2% 1em 0;
- 	width: 31.3%;
 }
 .divPersonales .ciudad, .desaparecido .divPersonales .select_anio
 {
@@ -1807,7 +1801,7 @@ footer nav li:last-child a
 	/* SUGERENCIAS DEL HOME */
 	.sugerencias h2
 	{
-		margin: 0.5 0 1em 0;
+		margin: 0.5em 0 1em 0;
 	}
 	.sugerencias .gwt-HTML
 	{

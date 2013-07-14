@@ -112,23 +112,65 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 		return (results);
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Desaparecido consultar(String documento)
 	{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-	    Desaparecido copyDesaparecido = null, desaparecido = null;
+		Query query = pm.newQuery(Desaparecido.class);
+		query.setFilter("numeroDocumento == documento");
+	    query.declareParameters("String documento");
+	    
+	    List<Desaparecido> desaparecidos = null;
+	    ArrayList<Desaparecido> desaparecidosDetached = null;
 	    
 		try 
 		{
-			desaparecido = pm.getObjectById(Desaparecido.class, documento);
-			copyDesaparecido = (pm.detachCopy(desaparecido));
+			desaparecidos = (List<Desaparecido>) query.execute(documento);
+			desaparecidosDetached = new ArrayList<Desaparecido>();
+			Desaparecido des = new Desaparecido();
+			for(Desaparecido x : desaparecidos)
+			{
+				des = (pm.detachCopy(x));
+				ArrayList<Morfologia> morfologia = x.getMorfologia();
+				ArrayList<Morfologia> morfologiaDetached = new ArrayList<Morfologia>();
 				
-			ArrayList<Morfologia> morfologia = desaparecido.getMorfologia();
-			ArrayList<Morfologia> morfologiaDetached = new ArrayList<Morfologia>();
+				for(Morfologia y : morfologia)
+					morfologiaDetached.add(pm.detachCopy(y));
 				
-			for(Morfologia y : morfologia)
-				morfologiaDetached.add(pm.detachCopy(y));
+				ArrayList<SenalParticular> senal = x.getSenalParticular();
+				ArrayList<SenalParticular> SenalDetached = new ArrayList<SenalParticular>();
 				
-			copyDesaparecido.setMorfologia(morfologiaDetached);
+				for(SenalParticular y : senal)
+					SenalDetached.add(pm.detachCopy(y));
+				
+				DatoDesaparicion dato = x.getDatoDesaparicion();
+				DatoDesaparicion datoDetached = new DatoDesaparicion();
+				
+				datoDetached = pm.detachCopy(dato);
+				
+				Collections.sort(morfologiaDetached, new Comparator() {  
+					  
+				    public int compare(Object o1, Object o2) {  
+				        Morfologia e1 = (Morfologia) o1;  
+				        Morfologia e2 = (Morfologia) o2;  
+				        
+				        if (Integer.parseInt(e1.getId()) > Integer.parseInt(e2.getId())) {  
+				            return 1;  
+				        } else if (Integer.parseInt(e1.getId()) < Integer.parseInt(e2.getId())) {  
+				            return -1;  
+				        } else {  
+				            return 0;  
+				        } 
+				        
+				    }  
+				}); 
+				
+				des.setMorfologia(morfologiaDetached);
+				des.setSenalParticular(SenalDetached);
+				des.setDatoDesaparicion(datoDetached);
+				
+				desaparecidosDetached.add(des);
+			}
         }
 		catch(Exception e)
 		{
@@ -137,8 +179,9 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 		finally 
         {
             pm.close();
+            query.closeAll();
         }
 		
-		return copyDesaparecido;
+		return (desaparecidosDetached.get(0));
 	}
 }
