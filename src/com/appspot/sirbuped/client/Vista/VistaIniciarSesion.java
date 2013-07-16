@@ -5,22 +5,28 @@ package com.appspot.sirbuped.client.Vista;
 //import sirbuped.client.facade.LoginService;
 //import sirbuped.client.facade.LoginServiceAsync;
 
+import com.appspot.sirbuped.client.DTO.LoginInfo;
+import com.appspot.sirbuped.client.Interfaz.LoginService;
+import com.appspot.sirbuped.client.Interfaz.LoginServiceAsync;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class VistaIniciarSesion extends Composite {
-	
+public class VistaIniciarSesion extends Composite 
+{	
 	public VistaIniciarSesion() 
 	{
 		final HTMLPanel subContent = new HTMLPanel("");
@@ -68,7 +74,7 @@ public class VistaIniciarSesion extends Composite {
 		
 		subContent.add(divSesion);
 		
-		/*btnIniciarGoogle.addClickHandler(new ClickHandler() 
+		btnIniciarGoogle.addClickHandler(new ClickHandler() 
 		{
 			public void onClick(ClickEvent event) 
 			{	
@@ -77,44 +83,51 @@ public class VistaIniciarSesion extends Composite {
 			    String x = GWT.getHostPageBaseURL()+"#" + History.getToken();
 			    Window.alert(x);
 			    loginService.login(x, new AsyncCallback<LoginInfo>() 
+			    {
+			    	public void onSuccess(LoginInfo result) 
+			    	{
+			    		LoginInfo loginInfo = result;
+			    		VerticalPanel loginPanel = new VerticalPanel();
+			    		Label loginLabel = new Label("Please sign in to your Google Account to access the StockWatcher application.");
+			    		Anchor signInLink = new Anchor("Sign In");
+			    		Anchor signOutLink = new Anchor("Sign Out");
+			    							    				
+			    		if(loginInfo.isLoggedIn()) 
 			    		{
-			    			public void onFailure(Throwable error) 
-			    			{
-			    				TextBox x = new TextBox();
-			    				x.setText(error.toString());
-			    				RootPanel.get("footer").add(x);
-			    			}
-			    			public void onSuccess(LoginInfo result) 
-			    			{
-			    				LoginInfo loginInfo = result;
-			    				/*VerticalPanel loginPanel = new VerticalPanel();
-			    				Label loginLabel = new Label("Please sign in to your Google Account to access the StockWatcher application.");
-			    				Anchor signInLink = new Anchor("Sign In");
-			    				Anchor signOutLink = new Anchor("Sign Out");*/
-			    				/*			    				
-			    				if(loginInfo.isLoggedIn()) 
-			    				{
-			    					// Set up sign out hyperlink.
-			    				    //signOutLink.setHref(loginInfo.getLogoutUrl());
-			    				    Window.Location.replace(loginInfo.getLogoutUrl());
-			    				    // Assemble Main panel.
-			    				    //loginPanel.add(signOutLink);
-			    				    //loginPanel.add(signOutLink);
-			    				    //RootPanel.get("content").clear();
-			    				    //RootPanel.get("footer").add(loginPanel);
-			    				} else {
-			    					// Assemble login panel.
-			    					//RootPanel.get("content").clear();
-			    					Window.Location.replace(loginInfo.getLoginUrl());
-			    					//signInLink.setHref(loginInfo.getLoginUrl());
-			    				    //loginPanel.add(loginLabel);
-			    				    //loginPanel.add(signInLink);
-			    				    //RootPanel.get("footer").add(loginPanel);
-			    				}
-			    			}
-			    });
+			    			
+			    			Window.alert("esta Logueado");
+			    			Window.alert(loginInfo.getLogoutUrl());
+			    			Window.Location.replace(loginInfo.getLogoutUrl());
+			    			// Set up sign out hyperlink.
+			    		    //signOutLink.setHref(loginInfo.getLogoutUrl());
+			    		    //Window.Location.replace(loginInfo.getLogoutUrl());
+			    		    // Assemble Main panel.
+			    		    //loginPanel.add(signOutLink);
+			    		    //loginPanel.add(signOutLink);
+			    		    //RootPanel.get("content").clear();
+			    		    //RootPanel.get("content").add(loginPanel);
+			    		} 
+			    		else 
+			    		{
+			    			Window.alert("No esta Logueado");
+			    			Window.alert(loginInfo.getLoginUrl()+"#registrarse");
+			    			Window.Location.replace(loginInfo.getLoginUrl()+"#registrarse");
+			    			// Assemble login panel.
+			    			//RootPanel.get("content").clear();
+			    			//Window.Location.replace(loginInfo.getLoginUrl());
+			    			//signInLink.setHref(loginInfo.getLoginUrl());
+			    		    //loginPanel.add(loginLabel);
+			    		    //loginPanel.add(signInLink);
+			    		    //RootPanel.get("content").add(loginPanel);
+			    		}
+			    	}
+			    	public void onFailure(Throwable error) 
+			    	{
+			    		Window.alert(error.toString());
+			    	}
+			   });
 			}
-		});*/
+		});
 		
 		initWidget(subContent);
 	}

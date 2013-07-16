@@ -34,6 +34,27 @@
     <url-pattern>/sirbuped/desaparecido</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>usuario</servlet-name>
+    <servlet-class>com.appspot.sirbuped.server.UsuarioServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>usuario</servlet-name>
+    <url-pattern>/sirbuped/usuario</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>loginService</servlet-name>
+    <servlet-class>com.appspot.sirbuped.server.LoginServiceImpl</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>loginService</servlet-name>
+    <url-pattern>/sirbuped/login</url-pattern>
+  </servlet-mapping>
+  
+  
   
   <servlet>
     <servlet-name>SystemServiceServlet</servlet-name>

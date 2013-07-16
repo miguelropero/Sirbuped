@@ -7,7 +7,7 @@ import com.appspot.sirbuped.client.Vista.VistaHome;
 import com.appspot.sirbuped.client.Vista.VistaIniciarSesion;
 import com.appspot.sirbuped.client.Vista.VistaMapaDesaparecidos;
 import com.appspot.sirbuped.client.Vista.VistaNosotros;
-import com.appspot.sirbuped.client.Vista.VistaRegistrarUsuario;
+import com.appspot.sirbuped.client.Vista.VistaUsuario;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -33,7 +33,7 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	{
 		this.crearBotonesAcceso();
 		this.crearFormularioBoletin();
-
+		
 		// Add history listener
 	    History.addValueChangeHandler(this);
 	    
@@ -118,7 +118,7 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	    }
 		else if(token.equals("registrarse"))
 	    {
-			RootPanel.get("content").add(new VistaRegistrarUsuario());
+			RootPanel.get("content").add(new VistaUsuario());
 	    }
 		else if(token.equals("registrar-desaparecido"))
 	    {

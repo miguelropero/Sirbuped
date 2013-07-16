@@ -1,132 +1,151 @@
 package com.appspot.sirbuped.client.DTO;
 
+import java.io.Serializable;
 import java.util.Date;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
-public class Usuario 
+@PersistenceCapable(identityType = IdentityType.APPLICATION)
+public class Usuario implements Serializable
 {
-	@Persistent
-	private String nombre_1;
+	private static final long serialVersionUID = 1L; 
+	
+	@PrimaryKey
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private long key;
 	
 	@Persistent
-	private String nombre_2;
+	private String nombres;
 	
 	@Persistent
-	private String apellido_1;
+	private String apellido1;
 	
 	@Persistent
-	private String apellido_2;
+	private String apellido2;
 	
 	@Persistent
-	private String documento;
+	private String tipoDocumento;
+	
+	@Persistent
+	private String numeroDocumento;
 	
 	@Persistent
 	private Date fechaNacimiento;
 	
 	@Persistent
-	private String genero;
-	
-	@Persistent
-	private String telefono;
-	
-	@Persistent
 	private String email;
 	
+	@Persistent
+	private String telefono1;
+	
+	@Persistent
+	private String telefono2;
+	
+	@Persistent
+	private String telefonoCel;
+	
+	@Persistent
+	private String direccion;
+	
+	@Persistent
+	private String password;
+	
+	private boolean estado;
+	
 	public Usuario()
+	{}
+
+	public Usuario(String nombres, String apellido1, String apellido2, String tipoDocumento, String numeroDocumento, 
+				   Date fechaNacimiento, String email, String telefono1, String telefono2, String telefonoCel, String direccion, 
+				   String password) 
 	{
-		
+		this.nombres = nombres;
+		this.apellido1 = apellido1;
+		this.apellido2 = apellido2;
+		this.tipoDocumento = tipoDocumento;
+		this.numeroDocumento = numeroDocumento;
+		this.fechaNacimiento = fechaNacimiento;
+		this.email = email;
+		this.telefono1 = telefono1;
+		this.telefono2 = telefono2;
+		this.telefonoCel = telefonoCel;
+		this.direccion = direccion;
+		this.password = password;
+		this.estado = false;
 	}
 	
-	public Usuario(String nombre_1, String nombre_2, String apellido_1, String apellido_2, String documento, Date fechaNacimiento, String genero) 
+	public long getKey() 
 	{
-		this.nombre_1 = nombre_1;
-		this.nombre_2 = nombre_2;
-		this.apellido_1 = apellido_1;
-		this.apellido_2 = apellido_2;
-		this.documento = documento;
-		this.fechaNacimiento = fechaNacimiento;
-		this.genero = genero;
+		return key;
 	}
 
-	public String getNombre_1() 
+	public void setKey(long key) 
 	{
-		return nombre_1;
+		this.key = key;
+	}
+	
+	public String getNombres() 
+	{
+		return nombres;
 	}
 
-	public void setNombre_1(String nombre_1) 
+	public void setNombres(String nombres) 
 	{
-		this.nombre_1 = nombre_1;
+		this.nombres = nombres;
 	}
 
-	public String getNombre_2() 
+	public String getApellido1() 
 	{
-		return nombre_2;
+		return apellido1;
 	}
 
-	public void setNombre_2(String nombre_2) 
+	public void setApellido1(String apellido1) 
 	{
-		this.nombre_2 = nombre_2;
+		this.apellido1 = apellido1;
 	}
 
-	public String getApellido_1() 
+	public String getApellido2() 
 	{
-		return apellido_1;
+		return apellido2;
 	}
 
-	public void setApellido_1(String apellido_1) 
+	public void setApellido2(String apellido2) 
 	{
-		this.apellido_1 = apellido_1;
+		this.apellido2 = apellido2;
 	}
 
-	public String getApellido_2() 
+	public String getTipoDocumento() 
 	{
-		return apellido_2;
+		return tipoDocumento;
 	}
 
-	public void setApellido_2(String apellido_2) 
+	public void setTipoDocumento(String tipoDocumento) 
 	{
-		this.apellido_2 = apellido_2;
+		this.tipoDocumento = tipoDocumento;
 	}
 
-	public String getDocumento() 
+	public String getNumeroDocumento() 
 	{
-		return documento;
+		return numeroDocumento;
 	}
 
-	public void setDocumento(String documento) 
+	public void setNumeroDocumento(String numeroDocumento) 
 	{
-		this.documento = documento;
+		this.numeroDocumento = numeroDocumento;
 	}
 
-	public Date getFecha_nacimiento() 
+	public Date getFechaNacimiento() 
 	{
 		return fechaNacimiento;
 	}
 
-	public void setFecha_nacimiento(Date fechaNacimiento) 
+	public void setFechaNacimiento(Date fechaNacimiento) 
 	{
 		this.fechaNacimiento = fechaNacimiento;
-	}
-
-	public String getGenero() 
-	{
-		return genero;
-	}
-
-	public void setGenero(String genero) 
-	{
-		this.genero = genero;
-	}
-
-	public String getTelefono() 
-	{
-		return telefono;
-	}
-
-	public void setTelefono(String telefono) 
-	{
-		this.telefono = telefono;
 	}
 
 	public String getEmail() 
@@ -137,5 +156,65 @@ public class Usuario
 	public void setEmail(String email) 
 	{
 		this.email = email;
+	}
+
+	public String getTelefono1() 
+	{
+		return telefono1;
+	}
+
+	public void setTelefono1(String telefono1) 
+	{
+		this.telefono1 = telefono1;
+	}
+
+	public String getTelefono2() 
+	{
+		return telefono2;
+	}
+
+	public void setTelefono2(String telefono2) 
+	{
+		this.telefono2 = telefono2;
+	}
+
+	public String getTelefonoCel() 
+	{
+		return telefonoCel;
+	}
+
+	public void setTelefonoCel(String telefonoCel) 
+	{
+		this.telefonoCel = telefonoCel;
+	}
+
+	public String getDireccion() 
+	{
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) 
+	{
+		this.direccion = direccion;
+	}
+
+	public String getPassword() 
+	{
+		return password;
+	}
+
+	public void setPassword(String password) 
+	{
+		this.password = password;
+	}
+
+	public boolean isEstado() 
+	{
+		return estado;
+	}
+
+	public void setEstado(boolean estado) 
+	{
+		this.estado = estado;
 	}
 }

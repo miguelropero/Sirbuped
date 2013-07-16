@@ -2,7 +2,9 @@ package com.appspot.sirbuped.client.Vista;
 
 import java.util.ArrayList;
 import java.util.Date;
+
 import com.appspot.sirbuped.client.RichTextToolbar;
+import com.appspot.sirbuped.client.Utilidades;
 import com.appspot.sirbuped.client.DTO.DatoDesaparicion;
 import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.DTO.Morfologia;
@@ -18,7 +20,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.DOM;
@@ -30,7 +31,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
@@ -736,7 +736,7 @@ public class VistaDesaparecido extends Composite
 						{
 						    public void onSuccess(Void ignore) 
 						    {
-						    	History.newItem("Registro-Correcto");
+						    	History.newItem(desaparecido.getNumeroDocumento());
 						    	RootPanel.get("content").add(new VistaConsultarDesaparecido(desaparecido));
 						    }
 						    public void onFailure(Throwable error) 
@@ -862,9 +862,9 @@ public class VistaDesaparecido extends Composite
 		ListBox selectCiudad 			= new ListBox();
 		ListBox selectGenero 			= new ListBox();
 		final TextBox textEdad 			= new TextBox();
-		ListBox dateDia 				= this.diaAnio(true);
-		ListBox selectMes 				= this.listaMeses();
-		ListBox selectAnio 				= this.diaAnio(false);
+		ListBox dateDia 				= new Utilidades().diaAnio(true);
+		ListBox selectMes 				= new Utilidades().listaMeses();
+		ListBox selectAnio 				= new Utilidades().diaAnio(false);
 	    //ListBox selectGsanguineo 		= new ListBox();
 		//TextBox textDireccion			= new TextBox();
 		FileUpload fotografia 			= new FileUpload();
@@ -985,7 +985,7 @@ public class VistaDesaparecido extends Composite
 		        }
 		        catch(NumberFormatException ex)
 		        {
-		        	ventanaModal("Error", "El valor Ingresado debe ser num\u00E9rico, y corresponde al numero de identidad de la" +
+		        	new Utilidades().ventanaModal("Error", "El valor Ingresado debe ser num\u00E9rico, y corresponde al numero de identidad de la" +
 		        				 " persona desaparecida", "error");
 		        	textDocumento.setText("");
 		        }
@@ -1004,7 +1004,7 @@ public class VistaDesaparecido extends Composite
 		        }
 		        catch(NumberFormatException ex)
 		        {
-		        	ventanaModal("Error", "El valor Ingresado debe ser num\u00E9rico, comprendido entre los n\u00FAmeros" +
+		        	new Utilidades().ventanaModal("Error", "El valor Ingresado debe ser num\u00E9rico, comprendido entre los n\u00FAmeros" +
 		        				 " 1 y 99", "error");
 		        	textEdad.setText("");
 		        }
@@ -1324,7 +1324,7 @@ public class VistaDesaparecido extends Composite
 				        }
 				        catch(NumberFormatException ex)
 				        {
-				        	ventanaModal("Error", "El valor Ingresado debe ser num\u00E9rico, estatura" +
+				        	new Utilidades().ventanaModal("Error", "El valor Ingresado debe ser num\u00E9rico, estatura" +
 				        				 " ", "error");
 				        	textEstatura.setText("");
 				        }
@@ -1343,7 +1343,7 @@ public class VistaDesaparecido extends Composite
 				        }
 				        catch(NumberFormatException ex)
 				        {
-				        	ventanaModal("Error", "El valor Ingresado debe ser num\u00E9rico y representa el peso aproximado en kilogramos" +
+				        	new Utilidades().ventanaModal("Error", "El valor Ingresado debe ser num\u00E9rico y representa el peso aproximado en kilogramos" +
 				        				 " persona desaparecido en kilogramos", "error");
 				        	textPeso.setText("");
 				        }
@@ -1594,9 +1594,9 @@ public class VistaDesaparecido extends Composite
         Label lblInspeccion					= new Label("Inspecci\u00F3n de Polic\u00EDa: ");
         Label lblDescrip					= new Label("Descripci\u00F3n del Hecho: ");
         
-        ListBox diaDesaparicion				= this.diaAnio(true);
-        ListBox  mesDesaparicion			= this.listaMeses();
-        ListBox anioDesaparicion			= this.diaAnio(false);
+        ListBox diaDesaparicion				= new Utilidades().diaAnio(true);
+        ListBox  mesDesaparicion			= new Utilidades().listaMeses();
+        ListBox anioDesaparicion			= new Utilidades().diaAnio(false);
         //ListBox paisDes 					= new ListBox();
         ListBox departamentoDesaparicion	= new ListBox();
         ListBox ciudadDesaparicion			= new ListBox();
@@ -1610,7 +1610,6 @@ public class VistaDesaparecido extends Composite
         //paisDes.setStyleName("pais");
         departamentoDesaparicion.addItem("Seleccione...");
         departamentoDesaparicion.setStyleName("departamento");
-        diaDesaparicion.setStyleName("date_dia");
         diaDesaparicion.getElement().setAttribute("placeHolder", "entre 1 y 31");
         ciudadDesaparicion.addItem("Seleccione...");
         ciudadDesaparicion.setStyleName("ciudad");
@@ -1705,107 +1704,5 @@ public class VistaDesaparecido extends Composite
 	        return (Widget) listener;
 	    }
 	    return null;
-	}
-	
-	
-	public ListBox listaMeses()
-	{
-		ListBox selectMes = new ListBox();
-		
-		selectMes.setStyleName("select_mes");
-		selectMes.addItem("Mes...");
-		selectMes.addItem("Enero");
-		selectMes.addItem("Febrero");
-		selectMes.addItem("Marzo");
-		selectMes.addItem("Abril");
-		selectMes.addItem("Mayo");
-		selectMes.addItem("Junio");
-		selectMes.addItem("Julio");
-		selectMes.addItem("Agosto");
-		selectMes.addItem("Septiembre");
-		selectMes.addItem("Octubre");
-		selectMes.addItem("Noviembre");
-		selectMes.addItem("Diciembre");
-		
-		return selectMes;
-	}
-	
-	
-	public ListBox diaAnio(boolean dia)
-	{
-		ListBox select = new ListBox();
-		if(dia)
-		{
-			select.addItem("Dia...");
-			for(int i=1; i < 32; i++)
-			{
-				select.addItem(String.valueOf(i));
-			}
-		}
-		else
-		{
-			select.setStyleName("select_anio");
-			select.addItem("A\u0148o...");
-			for(int i=2013; i > 1909; i--)
-			{
-				select.addItem(String.valueOf(i));
-			}
-		}
-		return select;
-	}
-	
-	
-	public DialogBox ventanaModal(String titulo, String contenido, String tipo) 
-	{
-		final DialogBox dialogBox  = new DialogBox();
-		dialogBox.setAnimationEnabled(true);
-		final Button closeButton = new Button("Cerrar");
-		closeButton.getElement().setId("closeButton");
-		
-		final HTMLPanel divDialogbox = new HTMLPanel("");
-		final HTMLPanel fade = new HTMLPanel("");
-		final HTMLPanel overlay = new HTMLPanel("");
-		fade.setStyleName("fade");
-		
-		final HTMLPanel divTitulo = new HTMLPanel(titulo);
-		divTitulo.setStyleName("titulo");
-		
-		final HTMLPanel divContenido = new HTMLPanel(contenido);
-		divContenido.setStyleName("contenido");
-		
-		overlay.add(divTitulo);
-		overlay.add(divContenido);
-		overlay.add(closeButton);
-		divDialogbox.add(fade);
-		divDialogbox.add(overlay);
-		
-		dialogBox.setWidget(divDialogbox);
-		dialogBox.center();
-		
-		if(tipo.equals("error"))
-		{	
-			overlay.setStyleName("divModalError");
-		}
-		
-		closeButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				dialogBox.removeFromParent();
-			}
-		});
-		
-		closeButton.addKeyUpHandler(new KeyUpHandler()
-		{
-			@Override
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) 
-				{
-					dialogBox.removeFromParent();
-				}
-			}
-		});
-		
-		closeButton.setFocus(true);
-		
-		return dialogBox;
 	}
 }
