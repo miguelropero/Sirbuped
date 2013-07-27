@@ -1,33 +1,33 @@
 package com.appspot.sirbuped.client.Vista;
 
-
-//import sirbuped.client.dto.LoginInfo;
-//import sirbuped.client.facade.LoginService;
-//import sirbuped.client.facade.LoginServiceAsync;
-
+import com.appspot.sirbuped.client.Utilidades;
 import com.appspot.sirbuped.client.DTO.LoginInfo;
-import com.appspot.sirbuped.client.Interfaz.LoginService;
-import com.appspot.sirbuped.client.Interfaz.LoginServiceAsync;
+import com.appspot.sirbuped.client.DTO.Usuario;
+import com.appspot.sirbuped.client.Interfaz.UsuarioService;
+import com.appspot.sirbuped.client.Interfaz.UsuarioServiceAsync;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class VistaIniciarSesion extends Composite 
 {	
-	public VistaIniciarSesion() 
+	public VistaIniciarSesion(final String token) 
 	{
 		final HTMLPanel subContent = new HTMLPanel("");
 		subContent.setStyleName("content_content");
@@ -37,29 +37,32 @@ public class VistaIniciarSesion extends Composite
 		
 		final HTML divTitulo = new HTML("<h2>Inicie sesi\u00F3n con su cuenta<h2>");
 		
-		final HTMLPanel divGoogle = new HTMLPanel("");
-		final Button btnIniciarGoogle = new Button("Iniciar sesi\u00F3n con Google");
+		HTMLPanel divGoogle = new HTMLPanel("");
+		Button btnIniciarGoogle = new Button("Iniciar sesi\u00F3n con Google");
 		btnIniciarGoogle.setStyleName("boton_google");
 		divGoogle.add(btnIniciarGoogle);
 		
-		final HTMLPanel divSeparator = new HTMLPanel("<span>---------------------</span> \u00F3 " +
+		HTMLPanel divSeparator = new HTMLPanel("<span>---------------------</span> \u00F3 " +
 										"<span>--------------------</span>");
 		divSeparator.setStyleName("div_separator");
 		final TextBox textUsuario = new TextBox();
-		textUsuario.getElement().setAttribute("placeHolder", "Nombre de usuario");
+		textUsuario.getElement().setAttribute("placeHolder", "Correo electr\u00F3nico");
 		textUsuario.setFocus(true);
-		final TextBox textPassword = new TextBox();
+		final PasswordTextBox textPassword = new PasswordTextBox();
 		textPassword.getElement().setAttribute("placeHolder", "Contrase\u00F1a");
-		final HTMLPanel divBoton = new HTMLPanel("");
+		HTMLPanel divBoton = new HTMLPanel("");
 		divBoton.setStyleName("div_boton");
-		final CheckBox checkBoxRecordarme = new CheckBox("Recordarme");
-		final Button btnIniciar = new Button("Iniciar sesi\u00F3n");
+		CheckBox checkBoxRecordarme = new CheckBox("Recordarme");
+		Button btnIniciar = new Button("Iniciar sesi\u00F3n");
 		divBoton.add(checkBoxRecordarme);
 		divBoton.add(btnIniciar);
 		
-		final HTMLPanel divFooter = new HTMLPanel("");
+		final HTMLPanel divError = new HTMLPanel("");
+		divError.setVisible(false);
+		
+		HTMLPanel divFooter = new HTMLPanel("");
 		divFooter.setStyleName("div_footer");
-		final Button btnRecContrasena = new Button("Olvid\u00F3 su contrase\u00F1a?");
+		Button btnRecContrasena = new Button("Olvid\u00F3 su contrase\u00F1a?");
 		divFooter.add(btnRecContrasena);
 		
 		divSesion.add(divTitulo);
@@ -68,57 +71,73 @@ public class VistaIniciarSesion extends Composite
 		divSesion.add(textUsuario);
 		divSesion.add(textPassword);
 		divSesion.add(divBoton);
+		divSesion.add(divError);
 		divSesion.add(divFooter);
 		
 		//divBgSesion.add(divSesion);
 		
 		subContent.add(divSesion);
 		
+		textUsuario.addBlurHandler(new BlurHandler()
+		{
+			@Override
+			public void onBlur(BlurEvent event)
+		    {
+				if(!textUsuario.getValue().isEmpty() && !textUsuario.getValue().matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"))
+				{
+					new Utilidades().ventanaModal("Error", "El correo electr\u00F3nico ingresado no tiene una sintaxis valida	", "error");
+				}
+			}
+		});
+		
+		
 		btnIniciarGoogle.addClickHandler(new ClickHandler() 
 		{
 			public void onClick(ClickEvent event) 
 			{	
-				//Check login status using login service.
-			    LoginServiceAsync loginService = GWT.create(LoginService.class);
-			    String x = GWT.getHostPageBaseURL()+"#" + History.getToken();
-			    Window.alert(x);
-			    loginService.login(x, new AsyncCallback<LoginInfo>() 
+			    UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
+			    String url = GWT.getHostPageBaseURL()+"#login-google";
+			    
+			    usuarioService.loginGoogle(url, new AsyncCallback<LoginInfo>() 
 			    {
-			    	public void onSuccess(LoginInfo result) 
+			    	@Override
+					public void onSuccess(LoginInfo loginInfo) 
 			    	{
-			    		LoginInfo loginInfo = result;
-			    		VerticalPanel loginPanel = new VerticalPanel();
-			    		Label loginLabel = new Label("Please sign in to your Google Account to access the StockWatcher application.");
-			    		Anchor signInLink = new Anchor("Sign In");
-			    		Anchor signOutLink = new Anchor("Sign Out");
-			    							    				
 			    		if(loginInfo.isLoggedIn()) 
 			    		{
-			    			
-			    			Window.alert("esta Logueado");
-			    			Window.alert(loginInfo.getLogoutUrl());
-			    			Window.Location.replace(loginInfo.getLogoutUrl());
-			    			// Set up sign out hyperlink.
-			    		    //signOutLink.setHref(loginInfo.getLogoutUrl());
-			    		    //Window.Location.replace(loginInfo.getLogoutUrl());
-			    		    // Assemble Main panel.
-			    		    //loginPanel.add(signOutLink);
-			    		    //loginPanel.add(signOutLink);
-			    		    //RootPanel.get("content").clear();
-			    		    //RootPanel.get("content").add(loginPanel);
+			    			//Window.alert("Logueado");
+			    			if(loginInfo.getRegistrado())
+			    			{
+			    				new Utilidades().crearSesion("logout", loginInfo.getLogoutUrl());
+			    				
+				    		    if(token != null)
+				    			{
+				    				new Utilidades().deleteSesion("token");
+				    				History.newItem(token);
+				    			}
+				    			else
+				    			{
+				    				History.newItem("mi-cuenta");
+				    			}
+			    			}
+			    			else
+			    			{
+			    				new Utilidades().ventanaModal("Error", "usted se ecuentra logueado con la cuenta de google "+ loginInfo.getEmailAddress() +",  sin embargo, su correo electronico no se encuentra registrado en el sistema. Debe registrarse para iniciar sesi\u00F3n", "error" );
+			    			}
 			    		} 
 			    		else 
 			    		{
-			    			Window.alert("No esta Logueado");
-			    			Window.alert(loginInfo.getLoginUrl()+"#registrarse");
-			    			Window.Location.replace(loginInfo.getLoginUrl()+"#registrarse");
-			    			// Assemble login panel.
-			    			//RootPanel.get("content").clear();
-			    			//Window.Location.replace(loginInfo.getLoginUrl());
-			    			//signInLink.setHref(loginInfo.getLoginUrl());
-			    		    //loginPanel.add(loginLabel);
-			    		    //loginPanel.add(signInLink);
-			    		    //RootPanel.get("content").add(loginPanel);
+			    			//Window.alert("No Logueado");
+			    			if(token != null)
+			    			{
+			    				new Utilidades().crearSesion("token", token);
+			    			}
+			    			else
+			    			{
+			    				new Utilidades().crearSesion("token", "mi-cuenta");
+			    			}
+			    			
+			    			Window.Location.replace(loginInfo.getLoginUrl());
 			    		}
 			    	}
 			    	public void onFailure(Throwable error) 
@@ -128,6 +147,87 @@ public class VistaIniciarSesion extends Composite
 			   });
 			}
 		});
+		
+		class MyHandler implements ClickHandler, KeyUpHandler 
+		{
+			public void onClick(ClickEvent event) 
+			{
+				iniciarSesion();
+			}
+
+			public void onKeyUp(KeyUpEvent event) 
+			{
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) 
+				{
+					iniciarSesion();
+				}
+			}	
+			    
+			private void iniciarSesion() 
+			{
+				
+				if(textUsuario.getValue().isEmpty() || textPassword.getValue().isEmpty())
+				{
+					Label error = new Label("No ha ingresado los datos de su cuenta");
+	    			error.getElement().setAttribute("style", "color: #B40404; padding: 0 0 2em 0");
+	    			divError.add(error);
+	    			divError.setVisible(true);
+					return;
+				}
+				
+				final HTMLPanel cargando = new HTMLPanel("");
+				cargando.setStyleName("cargando");
+				divSesion.setVisible(false);
+				subContent.add(cargando);
+				
+				UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
+		    
+			    Usuario usuario = new Usuario();
+			    usuario.setEmail(textUsuario.getValue());
+			    usuario.setPassword(textPassword.getValue());
+			    usuarioService.iniciarSesion(usuario, new AsyncCallback<Usuario>() 
+			    {
+			    	public void onSuccess(Usuario result) 
+			    	{
+			    		if(result != null)
+			    		{
+			    			new Utilidades().crearBotonesDeSesion(true);
+			    			
+			    			if(token != null)
+			    			{
+			    				new Utilidades().deleteSesion("token");
+			    				History.newItem(token);
+			    			}
+			    			else
+			    			{
+			    				History.newItem("mi-cuenta");
+			    			}
+			    		}
+			    		else
+			    		{
+			    			divSesion.setVisible(true);
+							cargando.setVisible(false);
+			    			Label error = new Label("Datos no validos o cuenta inactiva");
+			    			error.getElement().setAttribute("style", "color: #B40404; padding: 0 0 2em 0");
+			    			divError.add(error);
+			    			divError.setVisible(true);
+			    		}
+			    	}
+			    	public void onFailure(Throwable error) 
+			    	{
+			    		divSesion.setVisible(true);
+						cargando.setVisible(false);
+			    		Window.alert(error.toString());
+			    	}
+			   });
+			
+			}
+			
+		}
+		// Add a handler to send the name to the server
+		MyHandler handler = new MyHandler();
+		btnIniciar.addClickHandler(handler);
+		textPassword.addKeyUpHandler(handler);
 		
 		initWidget(subContent);
 	}

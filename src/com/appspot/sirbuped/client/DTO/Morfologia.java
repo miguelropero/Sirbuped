@@ -1,6 +1,7 @@
 package com.appspot.sirbuped.client.DTO;
 
 import java.io.Serializable;
+
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 

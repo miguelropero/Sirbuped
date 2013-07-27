@@ -736,8 +736,8 @@ public class VistaDesaparecido extends Composite
 						{
 						    public void onSuccess(Void ignore) 
 						    {
-						    	History.newItem(desaparecido.getNumeroDocumento());
-						    	RootPanel.get("content").add(new VistaConsultarDesaparecido(desaparecido));
+						    	History.newItem("-" + desaparecido.getNumeroDocumento());
+						    	//RootPanel.get("content").add(new VistaConsultarDesaparecido(desaparecido));
 						    }
 						    public void onFailure(Throwable error) 
 							{

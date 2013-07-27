@@ -1,6 +1,7 @@
 package com.appspot.sirbuped.client.Vista;
 
 import java.util.ArrayList;
+
 import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.Interfaz.DesaparecidoService;
 import com.appspot.sirbuped.client.Interfaz.DesaparecidoServiceAsync;
@@ -43,14 +44,13 @@ public class VistaHome extends Composite
 									  		"</ul>");
 		
 		HTML enlaceRegistrar		= new HTML("<div class='box-header-enlace'>" +
-												"<h3>Registre un Desaparecido</h3>" +
+												"<h4>Registre un Desaparecido</h4>" +
 	    									"</div>" +
 	    									"<div class='content-enlace'>" +
 	    										"<figure>" +
-	    											"<img alt='Registrar Desaparecido' src='image/registrar_desaparecido.gif' align='left' >" +
+	    											"<div><img alt='Registrar Desaparecido' src='image/registrar_desaparecido.png' ></div>" +
 	    											"<figcaption>" +
-	    												"Sirbuped permite el registro de personas desaparecidas capturando los datos relevenates de la persona " +
-	    												"los cuales son utilizados para filtar los resultados de b&uacute;squeda en nuestras Base de Datos." +
+	    												"Regitre una persona desaparecida y permita que cientos de personas contribuyan a su busqueda." +
 	    											"</figcaption>" +
 	    										"</figure>" +
 	    									"</div>" +
@@ -59,14 +59,13 @@ public class VistaHome extends Composite
 	    									"</div>");
 		
 		HTML enlaceConsultar		= new HTML("<div class='box-header-enlace'>" +
-												"<h3>Realice una B\u00FAsqueda</h3>" +
+												"<h4>Realice una B\u00FAsqueda</h4>" +
 											"</div>" +
 											"<div class='content-enlace'>" +
 												"<figure>" +
-													"<img alt='Buscar una Persona Desaparecida' src='image/buscar_desaparecido.gif' align='left' >" +
+													"<div><img alt='Buscar una Persona Desaparecida' src='image/buscar_desaparecido.png' ></div>" +
 													"<figcaption>" +
-														"Sirbuped le ofrece un completo sistema de b&uacute;squeda de personas desaparecidas, permitiendo filtrar los " +
-														"resultados por los nombres, apellidos, caracteristicas fisicas o morfologicas, prendas de vestir etc." +
+														"Realice la busqueda de una persona desaparecida, no pierda la esperanza de encontrarla." +
 													"</figcaption>" +
 												"</figure>" +
 											"</div>" +
@@ -75,20 +74,34 @@ public class VistaHome extends Composite
 											"</div>");
 		
 		HTML enlaceColaborar		= new HTML("<div class='box-header-enlace'>" +
-												"<h3>Colabore con Nosotros</h3>" +
+												"<h4>Colabore con Nosotros</h4>" +
 											"</div>" +
 											"<div class='content-enlace'>" +
 												"<figure>" +
-													"<img alt='Colabore con nosotros' src='image/colabore_con_nosotros.gif' align='left' >" +
+													"<div><img alt='Colabore con nosotros' src='image/colabore_con_nosotros.png' ></div>" +
 													"<figcaption>" +
-														"Si desea colaborar con nosotros, Sirbuped le ofrece tres opciones, registrando pistas de una persona " +
-														"desaparecida, recibiendo nuestro boletines mensuales o generando e imprimiendo carteles." +
+														"Genere e imprima un cartel, suscribase a nuestro boletin mensual de desaparecidos, registre una pista." +
 													"</figcaption>" +
 												"</figure>" +
 											"</div>" +
 											"<div class='box-boton-enlace'>" +
 												"<a href='#colaborar'>Colaborar</a>" +
 											"</div>");
+		
+		HTML suscribase		= new HTML("<div class='box-header-enlace'>" +
+											"<h4>Colabore con Nosotros</h4>" +
+										"</div>" +
+										"<div class='content-enlace'>" +
+											"<figure>" +
+												"<div><img alt='Colabore con nosotros' src='image/suscribase.png' ></div>" +
+												"<figcaption>" +
+													"Suscriba se a nuestro boletin mensual de desaparecidos y comparta la informacion con sus contactos." +
+												"</figcaption>" +
+											"</figure>" +
+										"</div>" +
+										"<div class='box-boton-enlace'>" +
+											"<a href='#colaborar'>Colaborar</a>" +
+										"</div>");
 		
 		
 		
@@ -172,7 +185,7 @@ public class VistaHome extends Composite
 			    			public void onClick(final ClickEvent event) 
 			    			{
 			    				subContent.getElement().setAttribute("style", "display:none");
-								History.newItem(desaparecido.getNumeroDocumento());
+								History.newItem("-" + desaparecido.getNumeroDocumento());
 								//RootPanel.get("content").add(new VistaConsultarDesaparecido(desaparecido));
 			    			}
 			    		});
@@ -196,6 +209,7 @@ public class VistaHome extends Composite
 		enlaces.add(enlaceRegistrar);
 		enlaces.add(enlaceConsultar);
 		enlaces.add(enlaceColaborar);
+		enlaces.add(suscribase);
 		
 		subContent.add(banner);
 		subContent.add(enlaces);

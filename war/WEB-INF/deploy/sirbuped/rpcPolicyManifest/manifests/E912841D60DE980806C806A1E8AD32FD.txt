@@ -1,0 +1,2 @@
+serviceClass: com.appspot.sirbuped.client.Interfaz.ListaBoletinService
+path: 9ED6E18745810B0F3E06B79371ABEFC4.gwt.rpc

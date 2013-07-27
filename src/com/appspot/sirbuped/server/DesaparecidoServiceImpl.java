@@ -10,11 +10,14 @@ import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.appspot.sirbuped.client.DTO.DatoDesaparicion;
 import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.DTO.Morfologia;
 import com.appspot.sirbuped.client.DTO.SenalParticular;
+import com.appspot.sirbuped.client.DTO.Usuario;
 import com.appspot.sirbuped.client.Interfaz.DesaparecidoService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -29,9 +32,15 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 		
 		try 
 		{
+			HttpServletRequest request = this.getThreadLocalRequest();
+    		HttpSession session = request.getSession();
+			
+			String keyUsuario = session.getAttribute("keyUsuario").toString();
+			
+			Usuario u = pm.getObjectById(Usuario.class, keyUsuario);
 			desaparecido.setFechaRegistro(new Date());
-			pm.makePersistent(desaparecido);
-        }
+			u.getDesaparecidos().add(desaparecido);
+		}
 		finally 
         {
             pm.close();
@@ -44,6 +53,7 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query query = pm.newQuery(Desaparecido.class);
 		query.setOrdering("fechaRegistro desc");
+		
 		if(!todos)
 			query.setRange(0, 5);
 	    
@@ -131,6 +141,7 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 			for(Desaparecido x : desaparecidos)
 			{
 				des = (pm.detachCopy(x));
+				
 				ArrayList<Morfologia> morfologia = x.getMorfologia();
 				ArrayList<Morfologia> morfologiaDetached = new ArrayList<Morfologia>();
 				
@@ -148,9 +159,10 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 				
 				datoDetached = pm.detachCopy(dato);
 				
-				Collections.sort(morfologiaDetached, new Comparator() {  
-					  
-				    public int compare(Object o1, Object o2) {  
+				Collections.sort(morfologiaDetached, new Comparator() 
+				{  
+				    public int compare(Object o1, Object o2) 
+				    {  
 				        Morfologia e1 = (Morfologia) o1;  
 				        Morfologia e2 = (Morfologia) o2;  
 				        
@@ -181,7 +193,6 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
             pm.close();
             query.closeAll();
         }
-		
 		return (desaparecidosDetached.get(0));
 	}
 }

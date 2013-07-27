@@ -37,6 +37,11 @@
     			document.getElementById("submenu").style.display="block";
     	}
     	
+    	function ocultarSubMenu()
+    	{
+    		document.getElementById("submenu").style.display="none";
+    	}
+    	
     	function displaySubMenu()
     	{
     		
@@ -81,15 +86,15 @@
 		<div class="boxNavegacion">
 			<nav class="clearfix">
 				<ul class="menu clearfix">
-					<li><a href="#home">HOME</a>
+					<li><a href="#home" onclick="ocultarSubMenu()">HOME</a>
 					<li><a onclick="displaymenu()">DESAPARECIDOS <span class="arrow"></span></a>
 						<ul id="submenu">
 							<li><a onclick="displaySubMenu()" href="#registrar-desaparecido">Registre un desaparecido</a></li>
 							<li><a onclick="displaySubMenu()" href="#consultar">Consulte un desaparecido</a></li>
 						</ul>
-					<li><a href="#estadisticas">ESTADÍSTICAS</a>
-					<li><a href="#mapa-de-desaparecidos">MAPA DE DESAPARECIDOS</a>
-					<li><a href="#cartel">CARTELES</a>
+					<li><a href="#estadisticas" onclick="ocultarSubMenu()">ESTADÍSTICAS</a>
+					<li><a href="#mapa-de-desaparecidos" onclick="ocultarSubMenu()">MAPA DE DESAPARECIDOS</a>
+					<li><a href="#cartel" onclick="ocultarSubMenu()">CARTELES</a>
 				</ul>
 				<a href="#" id="pull">Menu</a>
 			</nav>
@@ -152,16 +157,3 @@
     
   </body>
 </html>
-
-
-
-
-	    
-	    	    
-    <!-- RECOMMENDED if your web app will not function without JavaScript enabled 
-    <noscript>
-      <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
-        Su Navegador web tiene bloqueado la ejecución de código Javascript,
-        esto impide que la aplicación se ejecute correctamente.
-      </div>
-    </noscript>-->

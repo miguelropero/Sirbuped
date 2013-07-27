@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
-  <application>sirbuped1</application>
-  <version>31</version>
+  <application>sirbuped</application>
+  <version>35</version>
 
   <!--
     Allows App Engine to send multiple requests to one instance in parallel:
@@ -11,6 +11,8 @@
   <!-- Configure serving/caching of GWT files -->
   <static-files>
     <include path="**" />
+    <include path="**images**" />
+    <include path="**.css" />
 
     <!-- The following line requires App Engine 1.3.2 SDK -->
     <include path="**.nocache.*" expiration="0s" />
@@ -19,6 +21,8 @@
     <exclude path="**.gwt.rpc" />
   </static-files>
 
+  <sessions-enabled>true</sessions-enabled>
+  
   <!-- Configure java.util.logging -->
   <system-properties>
     <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>

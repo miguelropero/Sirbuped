@@ -89,7 +89,7 @@ public class VistaMapaDesaparecidos extends Composite
 				  //Zoom
 				  map.setDoubleClickZoom(true);
 				  map.setScrollWheelZoomEnabled(true);	
-
+				  
 				  //Marcadores y Ventanas
 				  final Marker mrk=new Marker(coordenadas);
 				  map.addOverlay(mrk);  

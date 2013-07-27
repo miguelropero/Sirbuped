@@ -1,6 +1,7 @@
 package com.appspot.sirbuped.client.Vista;
 
 import java.util.ArrayList;
+
 import com.appspot.sirbuped.client.DTO.DatoDesaparicion;
 import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.DTO.Morfologia;
@@ -58,7 +59,6 @@ public class VistaConsultarDesaparecido extends Composite
 			{
 			    public void onSuccess(Desaparecido desaparecido) 
 			    {
-			    	History.newItem(desaparecido.getNumeroDocumento());
     				RootPanel.get("verDesaparecido").add(devolverDatosPersonales(desaparecido));
     				RootPanel.get("verDesaparecido").add(devolverMorfologia(desaparecido));
     				RootPanel.get("verDesaparecido").add(devolverSenales(desaparecido.getSenalParticular()));
@@ -115,6 +115,7 @@ public class VistaConsultarDesaparecido extends Composite
 		
     	divImagen.add(image);
     	
+    	/**/
 		HTMLPanel datos = new HTMLPanel("");
 		datos.setStyleName("datos");
 		
@@ -415,7 +416,7 @@ public class VistaConsultarDesaparecido extends Composite
     		{
     			public void onClick(final ClickEvent event) 
     			{
-    				History.newItem(desaparecido.getNumeroDocumento());
+    				History.newItem("-" + desaparecido.getNumeroDocumento());
     				//RootPanel.get("verDesaparecido").add(devolverDatosPersonales(desaparecido));
     				//RootPanel.get("verDesaparecido").add(devolverMorfologia(desaparecido));
     				//RootPanel.get("verDesaparecido").add(devolverSenales(desaparecido.getSenalParticular()));

@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee           http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-  </welcome-file-list>
   
   <servlet>
     <servlet-name>uploadBlobImagen</servlet-name>
@@ -45,17 +41,35 @@
   </servlet-mapping>
   
   <servlet>
-    <servlet-name>loginService</servlet-name>
-    <servlet-class>com.appspot.sirbuped.server.LoginServiceImpl</servlet-class>
+   	<servlet-name>boletinService</servlet-name>
+   	<servlet-class>com.appspot.sirbuped.server.BoletinServiceImpl</servlet-class>
   </servlet>
-
+ 
   <servlet-mapping>
-    <servlet-name>loginService</servlet-name>
-    <url-pattern>/sirbuped/login</url-pattern>
+   	<servlet-name>boletinService</servlet-name>
+   	<url-pattern>/sirbuped/boletin</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+   	<servlet-name>listaBoletinService</servlet-name>
+   	<servlet-class>com.appspot.sirbuped.server.BoletinServiceImpl</servlet-class>
+  </servlet>
   
+  <servlet-mapping>
+   	<servlet-name>listaBoletinService</servlet-name>
+   	<url-pattern>/sirbuped/agregar-email</url-pattern>
+  </servlet-mapping>
   
+  <servlet>
+   	<servlet-name>activarCuenta</servlet-name>
+   	<servlet-class>com.appspot.sirbuped.server.UsuarioServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+   	<servlet-name>activarCuenta</servlet-name>
+   	<url-pattern>/activar-cuenta</url-pattern>
+  </servlet-mapping>
+
   <servlet>
     <servlet-name>SystemServiceServlet</servlet-name>
     <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
@@ -69,5 +83,9 @@
     <servlet-name>SystemServiceServlet</servlet-name>
     <url-pattern>/_ah/spi/*</url-pattern>
   </servlet-mapping>
+   
+   <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
 
 </web-app>

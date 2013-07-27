@@ -3,15 +3,13 @@ package com.appspot.sirbuped.client.DTO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@PersistenceCapable
 public class Desaparecido implements Serializable
 {
 	private static final long serialVersionUID = 1L;

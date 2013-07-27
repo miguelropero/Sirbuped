@@ -1,21 +1,55 @@
 package com.appspot.sirbuped.client;
 
+import com.appspot.sirbuped.client.DTO.Usuario;
+import com.appspot.sirbuped.client.Interfaz.UsuarioService;
+import com.appspot.sirbuped.client.Interfaz.UsuarioServiceAsync;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RootPanel;
 
 public class Utilidades 
 {
-	
+	public Usuario usuario;
 	public Utilidades()
-	{}
+	{
+		usuario = new Usuario();
+	}
+	
+	
+	public void crearBotonesDeSesion(boolean sesion)
+	{
+		RootPanel.get("botonesAcceso").clear();
+		
+		Hyperlink btn1;
+		Hyperlink btn2;
+		if(sesion)
+		{
+			btn1 = new Hyperlink("<img src='image/sesion/cuenta.png' align='absmiddle' /><span>Mi Cuenta<span/>", true, "mi-cuenta");
+			btn2 = new Hyperlink("<img src='image/sesion/cerrar.png' align='absmiddle' /><span>Cerrar Sesi\u00F3n<span/>", true, "cerrar-sesion");
+		}
+		else 
+		{
+			btn1 = new Hyperlink("<img src='image/sesion/registrarse.png' align='absmiddle' /><span>Registrarse<span/>", true, "registrarse");
+			btn2 = new Hyperlink("<img src='image/sesion/login.png' align='absmiddle' /><span>Iniciar Sesion<span/>", true, "iniciar-sesion");
+		}
+		 
+		RootPanel.get("botonesAcceso").add(btn1);;
+		RootPanel.get("botonesAcceso").add(btn2);
+	}
+	
 	
 	/*
 	 * Agrega el encabezado de acuerdo al contenido mostrado
@@ -162,11 +196,53 @@ public class Utilidades
 		
 		return selectMes;
 	}
+	
 	public String salto()
     {
-            int dato1=(int)(Math.random()*30+60);
-            int dato2=(int)(Math.random()*30+60);
-            return ((char)dato1+(char)dato2+"");
-            
+		int dato1=(int)(Math.random()*30+60);
+        int dato2=(int)(Math.random()*30+60);
+        
+        return ((char)dato1+(char)dato2+"");
     }
+	
+	/* Metodos de Sesion */
+	
+	public native String deleteSesion(String key) 
+	/*-{
+		var value = sessionStorage.getItem(key);
+		sessionStorage.removeItem(key);
+		return value;
+	}-*/;
+	
+	public void cerrarSesion(String key)
+	{
+		UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
+	    
+	    usuarioService.cerrarSesion(new AsyncCallback<Void>() 
+	    {
+	    	@Override
+			public void onSuccess(Void result) 
+	    	{
+	    		crearBotonesDeSesion(false);
+	    		History.newItem("iniciar-sesion");
+			}
+	    	public void onFailure(Throwable error) 
+	    	{
+	    		Window.alert(error.toString());
+	    	}
+	   });
+	    
+	    if(this.getSesion("logout") != null)
+	    	Window.Location.replace(this.getSesion("logout"));
+	}
+	
+	public native String getSesion(String key) 
+	/*-{
+		return sessionStorage.getItem(key);
+	}-*/;
+	
+	public native void crearSesion(String key, String value) 
+	/*-{
+		sessionStorage.setItem(key, value);
+	}-*/;
 }

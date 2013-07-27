@@ -31,7 +31,7 @@ a
 	transition-property: all;
     transition-duration: 0.3s;
     transition-timing-function: linear;
-    transition-delay: 0.2s;
+    transition-delay: 0.2s;    
 }
 
 /************************************************************************************
@@ -71,14 +71,18 @@ header .boxHeader
 #botonesAcceso .gwt-Hyperlink
 {
 	display: inline-block;
+	height: 32px;
+	margin-left: 0.8em;
 }
 #botonesAcceso a
 {
 	border: 1px solid #E5E5E5;
+	box-shadow: 0 0 1px #F7F7F7;
 	color: #AAA;
+	display: block;
 	font-size: 0.8em;
-	margin-left: 0.8em;
-	padding: 0.5em 1em;
+	line-height: 32px;
+	padding: 0em 1em;
 }
 #botonesAcceso a:hover
 {
@@ -87,7 +91,8 @@ header .boxHeader
 }
 #botonesAcceso img 
 { 
-	display: none; 
+	margin: -2px 0.5em 0 0;
+	width: 15px;
 }
 
 /************************************************************************************
@@ -203,9 +208,11 @@ nav a#pull
 {
 	display: none;
 }
+
 /************************************************************************************
  ************************ ESTILOS DE LA CARGA DE CONTENIDOS *************************
  ************************************************************************************/
+ 
 .cargando
 {
 	background: url(../image/cargando.gif) no-repeat center center;
@@ -214,6 +221,7 @@ nav a#pull
 	text-align: center;
 	width: 100%;
 }
+
 /************************************************************************************
  ********************** ESTILOS DEL BANNER PRINCIPAL DEL SITE ***********************
  ************************************************************************************/
@@ -254,53 +262,58 @@ nav a#pull
 	border: 1px solid #D1D1D1;
 	display: inline-block;
 	margin: 1em 1%;
+	text-align: center;
 	vertical-align: top;
-	width: 31.3%;
+	width: 23.2%;
+}
+.enlaces-rapidos .gwt-HTML:first-child
+{
+	margin-left: 0;
+}
+.enlaces-rapidos .gwt-HTML:last-child
+{
+	margin-rght: 0;
 }
 .enlaces-rapidos .gwt-HTML .box-header-enlace
 {
-	background: url("../image/bg_header_enlaces.png");
+	background: #66CDCC;
 	border-bottom: 1px solid #D6D6D6;
 	line-height: 49px;
 	height: 49px;
-	text-align: left;
 	width: 100%;
 }
-.enlaces-rapidos .gwt-HTML .box-header-enlace h3
+.enlaces-rapidos .gwt-HTML .box-header-enlace h4
 {
-	color: #777;
+	color: #FFF;
+	font-size: 1.05em;
 	text-indent: 0.5em;
 }
 .content-enlace
 {
 	border-bottom: 1px dashed #CCC;
-	/*margin: 0.5em 0.5em 0em 0.5em;*/
 	padding: 3%;
-	text-align: left;
 }
-.content-enlace img
+.content-enlace figure > div
 {
-	border: 1px solid #CCC;
-	margin: 0em 0.4em 0.3em 0;
+	background: url("../image/separator_content.png");
+	border: 0.3em solid #FFF;
+	box-shadow: 0 0 1px #CCC;
+	margin-bottom: 0.5em;
+	max-height: 110px;
+	width: 100%;
 }
 .content-enlace figcaption
 {
 	color: #AAA;
 	font-size: 0.96em;
 }
-.box-boton-enlace
-{
-	text-align: right;
-	height: 50px;
-	line-height:50px;
-}
 .box-boton-enlace a
 {
-	background: url("../image/bg_boton.png");
-	border-radius: 15px;
+	background: url("../image/bg_flecha_presente.png");
 	color: #FFF;
+	display: block;
 	font-size: 0.8em;
-	padding: 0.5em 1.2em;
+	padding: 0.5em 0em;
 	margin: 1em;
 }
 .box-boton-enlace a:hover
@@ -343,7 +356,7 @@ nav a#pull
 }
 
 /***********************************************************************************
- ****************** ESTILOS DE LA SECCIÓN ULTIMOS DESAPARECIDOS ********************
+ ***************** ESTILOS DE LA SECCIÓN DE ULTIMOS DESAPARECIDOS ******************
  ***********************************************************************************/
 
 .verDesaparecido
@@ -522,7 +535,7 @@ nav a#pull
 	max-width: 350px;
 	text-align: center;
 }
-.div_sesion div:nth-child(1)
+.div_sesion > div:nth-child(1)
 {
 	background: url("../image/bg_header_enlaces.png");
 	border-bottom: 1px solid #CCC;
@@ -572,7 +585,7 @@ nav a#pull
 	letter-spacing: -2px;
 	color: #CCC;
 }
-.div_sesion .gwt-TextBox
+.div_sesion .gwt-TextBox, .div_sesion .gwt-PasswordTextBox
 {
 	font-size: 0.85em;
 	text-indent: 10px;

@@ -1,10 +1,13 @@
 package com.appspot.sirbuped.client.DTO;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -16,7 +19,8 @@ public class Usuario implements Serializable
 	
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private long key;
+	@Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
+	private String id;
 	
 	@Persistent
 	private String nombres;
@@ -54,10 +58,19 @@ public class Usuario implements Serializable
 	@Persistent
 	private String password;
 	
+	@Persistent
 	private boolean estado;
 	
+	@NotPersistent
+	private String keySesion;
+	
+	@Persistent
+	ArrayList<Desaparecido> desaparecidos = new ArrayList<Desaparecido>();
+	
 	public Usuario()
-	{}
+	{
+		desaparecidos = new ArrayList<Desaparecido>();
+	}
 
 	public Usuario(String nombres, String apellido1, String apellido2, String tipoDocumento, String numeroDocumento, 
 				   Date fechaNacimiento, String email, String telefono1, String telefono2, String telefonoCel, String direccion, 
@@ -76,16 +89,17 @@ public class Usuario implements Serializable
 		this.direccion = direccion;
 		this.password = password;
 		this.estado = false;
+		desaparecidos = new ArrayList<Desaparecido>();
 	}
 	
-	public long getKey() 
+	public String getKey() 
 	{
-		return key;
+		return id;
 	}
 
-	public void setKey(long key) 
+	public void setId(String id) 
 	{
-		this.key = key;
+		this.id = id;
 	}
 	
 	public String getNombres() 
@@ -208,7 +222,7 @@ public class Usuario implements Serializable
 		this.password = password;
 	}
 
-	public boolean isEstado() 
+	public boolean getEstado() 
 	{
 		return estado;
 	}
@@ -217,4 +231,39 @@ public class Usuario implements Serializable
 	{
 		this.estado = estado;
 	}
+	
+	public String getKeySesion() 
+	{
+		return keySesion;
+	}
+
+	public void setKeySesion(String keySesion) 
+	{
+		this.keySesion = keySesion;
+	}
+
+	
+	
+	public ArrayList<Desaparecido> getDesaparecidos() {
+		return desaparecidos;
+	}
+
+	public void setDesaparecidos(ArrayList<Desaparecido> desaparecidos) {
+		this.desaparecidos = desaparecidos;
+	}
+
+	@Override
+	public String toString() {
+		return "Usuario [nombres=" + nombres + ", apellido1=" + apellido1
+				+ ", apellido2=" + apellido2 + ", tipoDocumento="
+				+ tipoDocumento + ", numeroDocumento=" + numeroDocumento
+				+ ", fechaNacimiento=" + fechaNacimiento + ", email=" + email
+				+ ", telefono1=" + telefono1 + ", telefono2=" + telefono2
+				+ ", telefonoCel=" + telefonoCel + ", direccion=" + direccion
+				+ ", password=" + password + ", estado=" + estado
+				+ ", keySesion=" + keySesion + "]";
+	}
+
+	
+	
 }
