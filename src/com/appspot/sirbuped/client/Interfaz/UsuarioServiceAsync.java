@@ -11,5 +11,6 @@ public interface UsuarioServiceAsync
 	public void cerrarSesion(AsyncCallback<Void> async);
 	public void getSesion(String key, AsyncCallback<String> async);
 	public void loginGoogle(String requestUri, AsyncCallback<LoginInfo> async);
-	//public void loginGoogle(String requestUri, AsyncCallback<Void> async);
+	public void getUsuario(AsyncCallback<Usuario> async);
+	public void editarUsuario(Usuario editado, AsyncCallback<Void> async);
 }

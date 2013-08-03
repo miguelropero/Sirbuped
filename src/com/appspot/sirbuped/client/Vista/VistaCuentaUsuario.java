@@ -23,7 +23,7 @@ public class VistaCuentaUsuario extends Composite
 												"</figure>" +
 											"</div>" +
 											"<div class='box-boton-enlace'>" +
-												"<a href='#registrar-desaparecido'>Registrar</a>" +
+												"<a href='#editar-usuario'>Actualizar Datos</a>" +
 											"</div>");
 		
 		HTML enlaceConsultar		= new HTML("<div class='box-header-enlace'>" +

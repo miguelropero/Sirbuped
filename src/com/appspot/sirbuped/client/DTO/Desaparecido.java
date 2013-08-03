@@ -41,7 +41,7 @@ public class Desaparecido implements Serializable
 	private Date fechaNacimiento;
 	
 	@Persistent
-	private byte edad;
+	private int edad;
 	
 	@Persistent
 	private boolean genero;
@@ -184,12 +184,12 @@ public class Desaparecido implements Serializable
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public byte getEdad() 
+	public int getEdad() 
 	{
 		return edad;
 	}
 
-	public void setEdad(byte edad) 
+	public void setEdad(int edad) 
 	{
 		this.edad = edad;
 	}
@@ -283,14 +283,20 @@ public class Desaparecido implements Serializable
 	{
 		this.datoDesaparicion = datoDesaparicion;
 	}
-	
+
 	@Override
-	public String toString()
-	{
-		return (this.nombre1 + " \n " + this.nombre2 + " \n " + this.apellido1 + " \n " + this.apellido2 + " \n " +
-				this.tipoDocumento + " \n " + this.numeroDocumento + " \n " + this.fechaNacimiento + " \n " + this.edad + " \n " +
-				this.genero + " \n " + this.estatura + " \n " + this.peso + " \n " + this.getKeyFoto() + " \n " 
-				+ this.getFechaRegistro() + " \n " + this.getMorfologia() + " \n " + this.getSenalParticular() + " \n " 
-				+ this.getDatoDesaparicion());
+	public String toString() {
+		return "Desaparecido [id=" + id + ", nombre1=" + nombre1 + ", nombre2="
+				+ nombre2 + ", apellido1=" + apellido1 + ", apellido2="
+				+ apellido2 + ", tipoDocumento=" + tipoDocumento
+				+ ", numeroDocumento=" + numeroDocumento + ", fechaNacimiento="
+				+ fechaNacimiento + ", edad=" + edad + ", genero=" + genero
+				+ ", estatura=" + estatura + ", peso=" + peso + ", keyFoto="
+				+ keyFoto + ", fechaRegistro=" + fechaRegistro
+				+ ", morfologia=" + morfologia + ", senalParticular="
+				+ senalParticular + ", datoDesaparicion=" + datoDesaparicion
+				+ "]";
 	}
+	
+	
 }

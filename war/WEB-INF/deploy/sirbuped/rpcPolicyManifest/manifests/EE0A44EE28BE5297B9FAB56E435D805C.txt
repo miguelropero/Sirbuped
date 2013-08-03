@@ -1,0 +1,2 @@
+serviceClass: com.appspot.sirbuped.client.Interfaz.UsuarioService
+path: ECA24C2898043FCE88ED128B392FB7D1.gwt.rpc

@@ -7,7 +7,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface DesaparecidoServiceAsync 
 {
-	void ingresar(Desaparecido desaparecido, AsyncCallback<Void> callback);
-	void consultar(boolean todos, AsyncCallback<ArrayList<Desaparecido>> asyncCallback);
-	void consultar(String documento, AsyncCallback<Desaparecido> callback);
+	void registrar(Desaparecido desaparecido, AsyncCallback<Void> callback);
+	void getDesaparecidos(boolean todos, AsyncCallback<ArrayList<Desaparecido>> asyncCallback);
+	void getDesaparecido(String documento, AsyncCallback<Desaparecido> callback);
+	void consultarDesaparecido(Desaparecido desaparecido, AsyncCallback<ArrayList<Desaparecido>> callback);
 }

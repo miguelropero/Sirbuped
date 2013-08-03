@@ -50,8 +50,6 @@ import com.google.gwt.user.client.ui.Widget;
 public class VistaDesaparecido extends Composite 
 {
 	public ArrayList<String> listaSenales = new ArrayList<String>();
-	public ArrayList<RadioButton> morfologiaRadio = new ArrayList<RadioButton>();
-	public ArrayList<CheckBox> morfologiaCheckBox = new ArrayList<CheckBox>();
 	public Boolean error = false;
 	public FormPanel uploadForm = new FormPanel();
 	Desaparecido desaparecido = null;
@@ -62,8 +60,10 @@ public class VistaDesaparecido extends Composite
 		subContent.setStyleName("desaparecido");
 		subContent.getElement().setId("desaparecido");
 		
+		final ArrayList<RadioButton> morfologiaRadio = new ArrayList<RadioButton>();
+		final ArrayList<CheckBox> morfologiaCheckBox = new ArrayList<CheckBox>();
+		
 		listaSenales.add("Amputaciones");
-		//listaSenales.add("Acn\u00E9");
 		listaSenales.add("Cicatrices");
 		listaSenales.add("Deformidad");
 		listaSenales.add("Discapacidad");
@@ -79,7 +79,7 @@ public class VistaDesaparecido extends Composite
 		listaSenales.add("Otros");
 		
 		final CaptionPanel divPersonales= this.datosPersonales();
-		final HTMLPanel divMorfologia 	= this.datosMorfologicos();
+		final HTMLPanel divMorfologia 	= this.datosMorfologicos(morfologiaRadio, morfologiaCheckBox);
 		final HTMLPanel divSenales		= this.senalesParticulares();
 		final HTMLPanel divPrendas 		= this.prendasDeVestir(); 
 		final HTMLPanel divDesaparicion = this.datosDesaparicion();
@@ -595,10 +595,6 @@ public class VistaDesaparecido extends Composite
 				else 
 					genero = false;
 				
-				/*elemento = DOM.getElementById("grupoSanguineo");
-				esWidget = getWidget(elemento);
-				ListBox gSanguineo = (ListBox) esWidget;*/
-				
 				elemento = DOM.getElementById("estatura");
 				esWidget = getWidget(elemento);
 				TextBox estatura = (TextBox) esWidget;
@@ -617,9 +613,7 @@ public class VistaDesaparecido extends Composite
 				desaparecido.setNumeroDocumento(numeroDocumento.getValue());
 				desaparecido.setFechaNacimiento(fechaNacimiento);
 				desaparecido.setEdad(Byte.parseByte(edad.getValue()));
-				//desaparecido.setDireccion(direccion.getValue());
 				desaparecido.setGenero(genero);
-				//desaparecido.setGrupoSanguineo(gSanguineo.getValue(gSanguineo.getSelectedIndex()));
 				desaparecido.setEstatura(estatura.getValue());
 				desaparecido.setPeso(peso.getValue());
 				
@@ -653,7 +647,6 @@ public class VistaDesaparecido extends Composite
 						}
 					}
 				}
-				
 				
 				/* Para Capturar las Señales Particulares seleccionadas */ 
 				
@@ -732,7 +725,7 @@ public class VistaDesaparecido extends Composite
 						desaparecido.setKeyFoto("/sirbuped/uploadImagen?blob-key=" + event.getResults().trim());
 					
 						DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
-						desaparecidoService.ingresar(desaparecido, new AsyncCallback<Void>() 
+						desaparecidoService.registrar(desaparecido, new AsyncCallback<Void>() 
 						{
 						    public void onSuccess(Void ignore) 
 						    {
@@ -744,8 +737,6 @@ public class VistaDesaparecido extends Composite
 								Window.alert(error.toString());
 							}
 				        });
-						
-						
 					}
 				});
 			}
@@ -905,28 +896,14 @@ public class VistaDesaparecido extends Composite
 		selectGenero.addItem("Masculino");
 		selectGenero.addItem("Femenino");
 		
-		/*selectGsanguineo.addItem("Seleccione...", "No Registra" );
-		selectGsanguineo.addItem("RH O+");
-		selectGsanguineo.addItem("RH O-");
-		selectGsanguineo.addItem("RH A+");
-		selectGsanguineo.addItem("RH A-");
-		selectGsanguineo.addItem("RH B+");
-		selectGsanguineo.addItem("RH B-");
-		selectGsanguineo.addItem("RH AB+");
-		selectGsanguineo.addItem("RH AB-");*/
-		
 		textNombre1.setMaxLength(20);
 		textNombre2.setMaxLength(20);
 		textApellido1.setMaxLength(20);
 		textApellido2.setMaxLength(20);
 		textDocumento.setMaxLength(10);
-		//textDireccion.setMaxLength(50);
 		textEdad.setMaxLength(2);
 		
-		
 		textEdad.getElement().setAttribute("placeHolder", "al momento de la desaparici\u00F3n");
-		dateDia.getElement().setAttribute("placeHolder", "D\u00EDa entre 1 y 31");
-		selectMes.setStyleName("select_mes");
 		
 		divDatosPersonales1.add(lblNombre1);
 		divDatosPersonales1.add(textNombre1);
@@ -952,10 +929,6 @@ public class VistaDesaparecido extends Composite
 		divDatosPersonales2.add(selectAnio);
 		divDatosPersonales2.add(lblEdad);
 		divDatosPersonales2.add(textEdad);
-		//divDatosPersonales2.add(lblDireccion);
-		//divDatosPersonales2.add(textDireccion);
-		//divDatosPersonales2.add(lblGsanguineo);
-		//divDatosPersonales2.add(selectGsanguineo);
 		divDatosPersonales2.add(lblFotografia);
 		divDatosPersonales2.add(fotografia);
 				
@@ -1015,7 +988,7 @@ public class VistaDesaparecido extends Composite
 	}
 	
 	
-	public HTMLPanel datosMorfologicos()
+	public HTMLPanel datosMorfologicos(ArrayList<RadioButton> morfologiaRadio, ArrayList<CheckBox> morfologiaCheckBox)
 	{
 		HTMLPanel subContent = new HTMLPanel("");
 		subContent.setStyleName("morfologia");
@@ -1369,7 +1342,7 @@ public class VistaDesaparecido extends Composite
 						radio.getElement().setAttribute("tipo", cadena.get(i));
 						radio.getElement().setAttribute("caracterictica", caracteristica.get(1));
 						subDiv.add(radio);
-						this.morfologiaRadio.add(radio);
+						morfologiaRadio.add(radio);
 					}
 					else
 					{
@@ -1378,7 +1351,7 @@ public class VistaDesaparecido extends Composite
 						check.getElement().setAttribute("tipo", cadena.get(i));
 						check.getElement().setAttribute("caracterictica", caracteristica.get(1));
 						subDiv.add(check);
-						this.morfologiaCheckBox.add(check);
+						morfologiaCheckBox.add(check);
 					}
 				}
 

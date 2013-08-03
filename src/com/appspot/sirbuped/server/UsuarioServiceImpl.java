@@ -31,7 +31,6 @@ import net.sf.jsr107cache.CacheFactory;
 import net.sf.jsr107cache.CacheManager;
 
 import com.appspot.sirbuped.client.JCrypt;
-import com.appspot.sirbuped.client.Utilidades;
 import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.DTO.LoginInfo;
 import com.appspot.sirbuped.client.DTO.Usuario;
@@ -45,6 +44,8 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 {	
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(Desaparecido.class.getName());
+	
+	
 	
 	public void addUsuario(Usuario nuevo)
 	{    
@@ -76,17 +77,14 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 	        }
 	        catch (AddressException e) 
 	        {
-	        	log.warning("1");
 	            log.warning(e.toString());
 	        }
 	        catch (MessagingException e) 
 	        {
-	        	log.warning("2");
 	        	log.warning(e.toString());
 	        } 
 	        catch (UnsupportedEncodingException e) 
 	        {
-	        	log.warning("3");
 				e.printStackTrace();
 			}
 	    } 
@@ -94,6 +92,46 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 	    {
 	    	pm.close();
 	    }
+	}
+	
+	public void editarUsuario(Usuario editado)
+	{
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+	
+		try
+		{
+			Usuario original  = pm.getObjectById(Usuario.class, editado.getKey());
+			original.setNombres(editado.getNombres());
+			original.setApellidos(editado.getApellidos());
+			original.setTipoDocumento(editado.getTipoDocumento());
+			original.setNumeroDocumento(editado.getNumeroDocumento());
+			original.setFechaNacimiento(editado.getFechaNacimiento());
+			original.setTelefono(editado.getTelefono());
+			original.setTelefonoCel(editado.getTelefonoCel());
+			original.setDireccion(editado.getDireccion());
+			
+			Cache cache;
+			try 
+			{
+				CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
+				cache = cacheFactory.createCache(Collections.emptyMap());
+	            
+				// Put the value into the cache.
+		        cache.put(original.getKey(), original);
+		          
+		        HttpServletRequest request = this.getThreadLocalRequest();
+					
+		        ((HttpServletRequest)request).getSession().setAttribute("usuario", original.getNombres() + " " + original.getApellidos());
+			} 
+			catch (CacheException e) 
+			{
+				log.warning(e.toString());
+			}
+		}
+		finally
+		{
+			pm.close();
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -113,38 +151,35 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 			
 			if(usuarios.size() > 0 && usuarios.get(0).getEstado())
 			{
-				String salto = "";
-				String passwordCrypt = "";
+				
 				Usuario usuarioValido = new Usuario();
 				usuarioValido = pm.detachCopy(usuarios.get(0));
-					salto = usuarioValido.getPassword().substring(0, 2);
-					passwordCrypt = JCrypt.crypt(salto, usuario.getPassword());
 				
-					if(passwordCrypt.equals(usuarioValido.getPassword()))
+				String salto = usuarioValido.getPassword().substring(0, 2);
+				String passwordCrypt = JCrypt.crypt(salto, usuario.getPassword());
+				
+				if(passwordCrypt.equals(usuarioValido.getPassword()))
+				{
+					Cache cache;
+					try 
 					{
-						Cache cache;
-						try 
-						{
-							String key = JCrypt.crypt(new Utilidades().salto(), usuarioValido.getEmail());
-							CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
-							cache = cacheFactory.createCache(Collections.emptyMap());
+						CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
+						cache = cacheFactory.createCache(Collections.emptyMap());
 			            
-				            // Put the value into the cache.
-				            cache.put(key, usuarioValido);
-				            usuarioValido.setKeySesion(key);
-				            
-				            HttpServletRequest request = this.getThreadLocalRequest();
+						// Put the value into the cache.
+				        cache.put(usuarioValido.getKey(), usuarioValido);
+				          
+				        HttpServletRequest request = this.getThreadLocalRequest();
 							
-							((HttpServletRequest)request).getSession().setAttribute("usuario", usuarioValido.getNombres() + " " + usuarioValido.getApellido1());
-							((HttpServletRequest)request).getSession().setAttribute("keySesion", usuarioValido.getKeySesion());
-							((HttpServletRequest)request).getSession().setAttribute("keyUsuario", usuarioValido.getKey());
-						} 
-						catch (CacheException e) 
-						{
-							log.warning(e.toString());
-							return null;
-						}
-						return usuarioValido;
+				        ((HttpServletRequest)request).getSession().setAttribute("usuario", usuarioValido.getNombres() + " " + usuarioValido.getApellidos());
+				        ((HttpServletRequest)request).getSession().setAttribute("keyUsuario", usuarioValido.getKey());
+					} 
+					catch (CacheException e) 
+					{
+						log.warning(e.toString());
+						return null;
+					}
+					return usuarioValido;
 				}
 				else
 				{
@@ -178,10 +213,8 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
             
             HttpServletRequest request = this.getThreadLocalRequest();
     		HttpSession session = request.getSession();
-            
-    		log.warning(session.getAttribute("key") + " " + "atributo key");
     		
-            cache.remove(session.getAttribute("key"));
+            cache.remove(session.getAttribute("keyUsuario"));
             session.invalidate();
         } 
 		catch (CacheException e) 
@@ -192,25 +225,6 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 	
 	public String getSesion(String atributo)
 	{
-		/*Cache cache;
-		Usuario usuario = null;
-		try 
-		{
-			CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
-            cache = cacheFactory.createCache(Collections.emptyMap());
-            
-            // Put the value into the cache.
-            usuario = (Usuario) cache.get(key);
-            usuario.setKeySesion(key);
-        } 
-		catch (CacheException e) 
-		{
-			log.warning("No existe usuario");
-			log.warning(e.toString());
-			usuario = null;
-        }
-		
-		return usuario;*/
 		HttpServletRequest request = this.getThreadLocalRequest();
 		HttpSession session = request.getSession();
 		Object rta = session.getAttribute(atributo);
@@ -223,6 +237,29 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 		{
 			return null;
 		}
+	}
+	
+	public Usuario getUsuario()
+	{
+		Cache cache;
+		Usuario usuario = null;
+		try 
+		{
+			String  key = this.getSesion("keyUsuario");
+			
+			CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
+            cache = cacheFactory.createCache(Collections.emptyMap());
+            
+            usuario = (Usuario) cache.get(key);
+        } 
+		catch (CacheException e) 
+		{
+			log.warning("Usuario no existe usuario");
+			log.warning(e.toString());
+			usuario = null;
+        }
+		
+		return usuario;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -248,11 +285,11 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 		    try 
 			{
 		    	usuarios = (List<Usuario>) query.execute(user.getEmail());
-		    	log.warning(usuarios.toString());
+		    	
 		    	if(usuarios.size() > 0 && usuarios.get(0).getEstado())
 		    	{
 					loginInfo.setEmailAddress(user.getEmail());
-					loginInfo.setNickname(user.getNickname());
+					//loginInfo.setNickname(user.getNickname());
 					loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
 					loginInfo.setRegistrado(true);
 				    	
@@ -260,25 +297,20 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 					usuarioValido = pm.detachCopy(usuarios.get(0));
 					
 					Cache cache;
-				
-					String key = JCrypt.crypt(new Utilidades().salto(), usuarioValido.getEmail());
 					CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
 					cache = cacheFactory.createCache(Collections.emptyMap());
-					
-					usuarioValido.setKeySesion(key);
-					loginInfo.setKeySesion(key);
 				        
 					// Put the value into the cache.
-					cache.put(key, usuarioValido);
+					cache.put(usuarioValido.getKey(), usuarioValido);
 					
 					HttpServletRequest request = this.getThreadLocalRequest();
 					
-					((HttpServletRequest)request).getSession().setAttribute("usuario", usuarioValido.getNombres() + " " + usuarioValido.getApellido1());
-					((HttpServletRequest)request).getSession().setAttribute("keySesion", usuarioValido.getKeySesion());
+					((HttpServletRequest)request).getSession().setAttribute("usuario", usuarioValido.getNombres() + " " + usuarioValido.getApellidos());
 					((HttpServletRequest)request).getSession().setAttribute("keyUsuario", usuarioValido.getKey());
 				}
 		    	else
 		    	{
+		    		loginInfo.setEmailAddress(user.getEmail());
 		    		loginInfo.setRegistrado(false);
 		    		
 		    	}
@@ -330,7 +362,7 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 					"<table style='color: #606060; font-size: 15px'>"+
 						"<tr>"+
 							"<td>"+
-								"<p>Hola "+ usuario.getNombres() + " " + usuario.getApellido1() +", <br /><br />Usted se ha registrado correctamente en Sirbuped. Gracias por formar parte de esta comunidad que brinda una luz de esperanza a todos aquellos que sufren el flagelo de la desaparici\u00F3n de un familiar o ser querido.</p>"+
+								"<p>Hola "+ usuario.getNombres() + " " + usuario.getApellidos() +", <br /><br />Usted se ha registrado correctamente en Sirbuped. Gracias por formar parte de esta comunidad que brinda una luz de esperanza a todos aquellos que sufren el flagelo de la desaparici\u00F3n de un familiar o ser querido.</p>"+
 
 								"<p>Para completar su registro, habilitar su cuenta y hacer uso de los diferentes servicios que ofrece nuestra plataforma debe hacer clic en el siguiente enlace.</p>"+
 							"</td>"+

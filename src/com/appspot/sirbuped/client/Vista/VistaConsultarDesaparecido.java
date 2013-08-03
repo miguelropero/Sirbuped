@@ -2,428 +2,425 @@ package com.appspot.sirbuped.client.Vista;
 
 import java.util.ArrayList;
 
-import com.appspot.sirbuped.client.DTO.DatoDesaparicion;
+import com.appspot.sirbuped.client.Utilidades;
 import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.DTO.Morfologia;
-import com.appspot.sirbuped.client.DTO.SenalParticular;
 import com.appspot.sirbuped.client.Interfaz.DesaparecidoService;
 import com.appspot.sirbuped.client.Interfaz.DesaparecidoServiceAsync;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
 public class VistaConsultarDesaparecido extends Composite 
 {
-	private HTMLPanel content;
-	
 	public VistaConsultarDesaparecido()
 	{
-		this.retornardesaparecido(null, "");
-		initWidget(content);
-	}
-	
-	public VistaConsultarDesaparecido(Desaparecido desaparecido)
-	{
-		this.retornardesaparecido(desaparecido, "");
-		initWidget(content);
-	}
-	public VistaConsultarDesaparecido(String documento)
-	{
-		this.retornardesaparecido(null, documento);
-		initWidget(content);
-	}
-	
-	public HTMLPanel retornardesaparecido(Desaparecido desaparecido, String documento)
-	{	
-		content = new HTMLPanel("");
-		content.setStyleName("verDesaparecido");
+		HTMLPanel subContent = new HTMLPanel("");
+		subContent.setStyleName("desaparecido");
 		
-		final HTMLPanel cargando = new HTMLPanel("");
-		cargando.setStyleName("cargando");
-		RootPanel.get("content").add(cargando);
+		final ArrayList<RadioButton> morfologiaRadio = new ArrayList<RadioButton>();
+		final ArrayList<CheckBox> morfologiaCheckBox = new ArrayList<CheckBox>();
 		
-		if(!documento.isEmpty())
-		{
-			DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
-			desaparecidoService.consultar(documento, new AsyncCallback<Desaparecido>()
-			{
-			    public void onSuccess(Desaparecido desaparecido) 
-			    {
-    				RootPanel.get("verDesaparecido").add(devolverDatosPersonales(desaparecido));
-    				RootPanel.get("verDesaparecido").add(devolverMorfologia(desaparecido));
-    				RootPanel.get("verDesaparecido").add(devolverSenales(desaparecido.getSenalParticular()));
-    				RootPanel.get("verDesaparecido").add(devolverDatoDesaparicion(desaparecido.getDatoDesaparicion()));
-			    	cargando.getElement().setAttribute("style", "display:none");
-			    }
-			    public void onFailure(Throwable error) 
-				{
-					Window.alert(error.toString());
-				}
-	        });
-		}
-		else if(desaparecido == null)
-		{
-			DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
-			desaparecidoService.consultar(true, new AsyncCallback<ArrayList<Desaparecido>>()
-			{
-			    public void onSuccess(ArrayList<Desaparecido> desaparecidos) 
-			    {
-			    	//content.add();
-			    	mostarTodos(desaparecidos);
-			    	cargando.getElement().setAttribute("style", "display:none");
-			    }
-			    public void onFailure(Throwable error) 
-				{
-					Window.alert(error.toString());
-				}
-	        });
-		}
-		else
-		{			
-			content.add(this.devolverDatosPersonales(desaparecido));
-			content.add(this.devolverMorfologia(desaparecido));
-			content.add(this.devolverSenales(desaparecido.getSenalParticular()));
-			content.add(this.devolverDatoDesaparicion(desaparecido.getDatoDesaparicion()));
-			cargando.getElement().setAttribute("style", "display:none");
-		}
-		return content;
-	}
-	
-	@SuppressWarnings("deprecation")
-	public CaptionPanel devolverDatosPersonales(Desaparecido desaparecido)
-	{
-		CaptionPanel fieldsetPersonales = new CaptionPanel("Datos Personales");
+		/* Datos Personales */
 		HTMLPanel divPersonales = new HTMLPanel("");
+		divPersonales.setStyleName("extend-consulta");
+		final Button btnPersonales = new Button("-");
+		Label lblPersonales = new Label("Datos Personales");
+		divPersonales.add(btnPersonales);
+		divPersonales.add(lblPersonales);
 		
-		HTMLPanel divImagen = new HTMLPanel("");
-		divImagen.setStyleName("imagen");
+		final HTMLPanel personales = new HTMLPanel("");
+		personales.add(this.datosPersonales());
+		personales.setVisible(true);
 		
-		Image image = new Image();
-		image.setWidth("210px");
+		/* Morfologia */
 		
-		image.setUrl(desaparecido.getKeyFoto());
+		HTMLPanel divMorfologia = new HTMLPanel("");
+		divMorfologia.setStyleName("extend-consulta");
+		final Button btnMorfologia = new Button("+");
+		Label lblMorfologia = new Label("Datos Morfologicos");
+		divMorfologia.add(btnMorfologia);
+		divMorfologia.add(lblMorfologia);
 		
-    	divImagen.add(image);
-    	
-    	/**/
-		HTMLPanel datos = new HTMLPanel("");
-		datos.setStyleName("datos");
+		final HTMLPanel morfologia = new VistaDesaparecido().datosMorfologicos(morfologiaRadio, morfologiaCheckBox);
+		morfologia.setVisible(false);
 		
-		HTML nombre = new HTML("<h2>" + desaparecido.getNombre1() + " " + desaparecido.getNombre2() + " " + 
-								desaparecido.getApellido1() + " " + desaparecido.getApellido2() + "</h2>");
+		/* Señales Particulares */
+		HTMLPanel divSenales = new HTMLPanel("");
+		divSenales.setStyleName("extend-consulta");
+		final Button btnSenales = new Button("+");
+		Label lblSenales = new Label("Senales Particulares");
+		divSenales.add(btnSenales);
+		divSenales.add(lblSenales);
 		
-		Label sexo = new Label("Sexo:");
-		sexo.addStyleName("negrita");
-		Label valueSexo = null;
+		final HTMLPanel senales = new HTMLPanel("<h1>Senales Particulares</h1>");
+		senales.setVisible(false);
 		
-		if(desaparecido.getGenero())
-			valueSexo = new Label("Masculino");
-		else
-			valueSexo = new Label("Femenino");
+		/* Prendas de vestir */
+		HTMLPanel divPrendas = new HTMLPanel("");
+		divPrendas.setStyleName("extend-consulta");
+		final Button btnPrendas = new Button("+");
+		Label lblPrendas = new Label("Prendas de Vestir");
+		divPrendas.add(btnPrendas);
+		divPrendas.add(lblPrendas);
 		
-		Label lugarNacimiento = new Label("Lugar de Nacimiento:");
-		lugarNacimiento.addStyleName("negrita");
-		Label valueLugar = new Label("Los Patios, Norte de Santander, Colombia");
+		final HTMLPanel prendas = new HTMLPanel("<h1>Senales Particulares</h1>");
+		prendas.addStyleName("animacion");
+		prendas.setVisible(false);
 		
-		Label fechaNacimiento = new Label("Fecha de Nacimiento:");
-		fechaNacimiento.addStyleName("negrita");
-		Label valueFecha = null;
 		
-		String mes = "";
-		
-		switch (desaparecido.getFechaNacimiento().getMonth()) 
+		btnPersonales.addClickHandler(new ClickHandler() 
 		{
-			case(0):
-				mes = "Enero";
-			break;
-			case(1):
-				mes = "Febrero";
-			break;
-			case(2):
-				mes = "Marzo";
-			break;
-			case(3):
-				mes = "Abril";
-			break;
-			case(4):
-				mes = "Mayo";
-			break;
-			case(5):
-				mes = "Junio";
-			break;
-			case(6):
-				mes = "Julio";
-			break;
-			case(7):
-				mes = "Agosto";
-			break;
-			case(8):
-				mes = "Septiembre";
-			break;
-			case(9):
-				mes = "Octubre";
-			break;
-			case(10):
-				mes = "Noviembre";
-			break;
-			case(11):
-				mes = "Diciembre";
-			break;
-			
-			default:
-			break;
-		}
+			public void onClick(ClickEvent event) 
+			{
+				if(personales.isVisible())
+				{
+					btnPersonales.setText("+");
+					personales.setVisible(false);
+				}
+				else
+				{
+					btnPersonales.setText("-");
+					personales.setVisible(true);
+					morfologia.setVisible(false);
+					senales.setVisible(false);
+				}
+			}
+		});
 		
-		if(desaparecido.getFechaNacimiento() != null)
-			valueFecha = new Label(desaparecido.getFechaNacimiento().getDate() + " de " + mes + " de " + (desaparecido.getFechaNacimiento().getYear()+1900));
-		else
-			valueFecha = new Label("No registrada");
+		btnMorfologia.addClickHandler(new ClickHandler() 
+		{
+			public void onClick(ClickEvent event) 
+			{
+				if(morfologia.isVisible())
+				{
+					btnMorfologia.setText("+");
+					morfologia.setVisible(false);
+				}
+				else
+				{
+					btnMorfologia.setText("-");
+					morfologia.setVisible(true);
+					senales.setVisible(false);
+				}
+			}
+		});
 		
-		Label edad = new Label("Edad al momento de la desaparici\u00F3n:");
-		edad.addStyleName("negrita");
-		Label valueEdad = new Label(desaparecido.getEdad() + " A\u0148os");
+		btnSenales.addClickHandler(new ClickHandler() 
+		{
+			public void onClick(ClickEvent event) 
+			{
+				if(senales.isVisible())
+				{
+					btnSenales.setText("+");
+					senales.setVisible(false);
+				}
+				else
+				{
+					btnSenales.setText("-");
+					senales.setVisible(true);
+					morfologia.setVisible(false);
+				}
+			}
+		});
 		
-		Label edadActual = new Label("Edad Actual:");
-		edadActual.addStyleName("negrita");
-		Label valueEdadActual = new Label(desaparecido.getEdad() + " A\u0148os");
+		subContent.add(divPersonales);
+		subContent.add(personales);
+		subContent.add(divMorfologia);
+		subContent.add(morfologia);
+		subContent.add(divSenales);
+		subContent.add(senales);
 		
-		datos.add(nombre);
-		datos.add(sexo);
-		datos.add(valueSexo);
-		datos.add(lugarNacimiento);
-		datos.add(valueLugar);
-		datos.add(fechaNacimiento);
-		datos.add(valueFecha);
-		datos.add(edad);
-		datos.add(valueEdad);
-		datos.add(edadActual);
-		datos.add(valueEdadActual);
+		Button btnConsultar	= new Button("Consultar");
+		subContent.add(btnConsultar);
 		
-		divPersonales.add(divImagen);
-		divPersonales.add(datos);
-		fieldsetPersonales.add(divPersonales);
+		/* Panel de Resultados de busqueda */
+		final HTMLPanel divResultados = new HTMLPanel("");
+		divResultados.setStyleName("verDesaparecido");
+		divResultados.getElement().setId("verDesaparecido");
+		subContent.add(divResultados);
+		
+		btnConsultar.addClickHandler(new ClickHandler() 
+		{
+			public void onClick(ClickEvent event) 
+			{
+				Desaparecido desaparecido = new Desaparecido();
+				
+				if(!morfologiaRadio.isEmpty())
+				{
+					for(int i=0;i<morfologiaRadio.size();i++)
+					{
+						if(morfologiaRadio.get(i).getValue()==true)
+						{
+							Morfologia morfologia = new Morfologia();
+							morfologia.setId(morfologiaRadio.get(i).getElement().getAttribute("identificador"));
+							morfologia.setNombre(morfologiaRadio.get(i).getText());
+							morfologia.setTipo(morfologiaRadio.get(i).getElement().getAttribute("tipo"));
+							morfologia.setCaracteristica(morfologiaRadio.get(i).getElement().getAttribute("caracterictica"));
+							desaparecido.getMorfologia().add(morfologia);
+						}
+					}
+				}
+				
+				if(!morfologiaCheckBox.isEmpty())
+				{
+					for(int i=0;i<morfologiaCheckBox.size();i++)
+					{
+						if(morfologiaCheckBox.get(i).getValue())
+						{
+							Morfologia morfologia = new Morfologia();
+							morfologia.setId(morfologiaCheckBox.get(i).getElement().getAttribute("identificador"));
+							morfologia.setNombre(morfologiaCheckBox.get(i).getText());
+							morfologia.setTipo(morfologiaCheckBox.get(i).getElement().getAttribute("tipo"));
+							morfologia.setCaracteristica(morfologiaCheckBox.get(i).getElement().getAttribute("caracterictica"));
+							desaparecido.getMorfologia().add(morfologia);
+						}
+					}
+				}
+				
+				IsWidget esWidget = null;
+				com.google.gwt.user.client.Element elemento = null;
+				
+				elemento = DOM.getElementById("nombre1");
+				esWidget = getWidget(elemento);
+				TextBox nombre1 = (TextBox) esWidget;
+				
+				elemento = DOM.getElementById("nombre2");
+				esWidget = getWidget(elemento);
+				TextBox nombre2 = (TextBox) esWidget;
+				
+				elemento = DOM.getElementById("apellido1");
+				esWidget = getWidget(elemento);
+				TextBox apellido1 = (TextBox) esWidget;
+				
+				elemento = DOM.getElementById("apellido2");
+				esWidget = getWidget(elemento);
+				TextBox apellido2 = (TextBox) esWidget;
+				
+				elemento = DOM.getElementById("tipoDocumento");
+				esWidget = getWidget(elemento);
+				ListBox tipoDocumento = (ListBox) esWidget;
+				
+				elemento = DOM.getElementById("numeroDocumento");
+				esWidget = getWidget(elemento);
+				TextBox numeroDocumento = (TextBox) esWidget;
+				
+				elemento = DOM.getElementById("edad");
+				esWidget = getWidget(elemento);
+				TextBox edad = (TextBox) esWidget;
+				
+				String tipo = "";
+				if(tipoDocumento.getSelectedIndex() != 0)
+					tipo = tipoDocumento.getItemText(tipoDocumento.getSelectedIndex());
+				
+				desaparecido.setNombre1(nombre1.getValue());
+				desaparecido.setNombre2(nombre2.getValue());
+				desaparecido.setApellido1(apellido1.getValue());
+				desaparecido.setApellido2(apellido2.getValue());
+				desaparecido.setTipoDocumento(tipo);
+				desaparecido.setNumeroDocumento(numeroDocumento.getValue());
+				
+				if(edad.getValue().isEmpty())
+					desaparecido.setEdad((byte)0);
+				else
+					desaparecido.setEdad(Byte.parseByte(edad.getValue()));
+				
+				btnPersonales.setText("+");
+				personales.setVisible(false);
+				btnMorfologia.setText("+");
+				morfologia.setVisible(false);
+				btnSenales.setText("+");
+				senales.setVisible(false);
+				
+				RootPanel.get("verDesaparecido").clear();
+				final HTMLPanel cargando = new HTMLPanel("");
+				cargando.setStyleName("cargando");
+				RootPanel.get("verDesaparecido").add(cargando);
+				
+				DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
+				desaparecidoService.consultarDesaparecido(desaparecido, new AsyncCallback<ArrayList<Desaparecido>>() 
+				{
+				    public void onSuccess(ArrayList<Desaparecido> results) 
+				    {
+				    	
+				    	if(results.size() > 0)
+				    	{
+					    	RootPanel.get("verDesaparecido").add(new VistaVerDesaparecidos().mostarTodos(results));
+					    	cargando.getElement().setAttribute("style", "display:none");
+				    	}
+				    	else
+				    	{
+				    		HTMLPanel sinResultados = new HTMLPanel("<h3>¡Oppps!</h3><br><p>Los sentimos. No se encontraron resultados que coincidan con su busqueda.</p>");
+				    		sinResultados.setStyleName("sinResultados");
+				    		RootPanel.get("verDesaparecido").add(sinResultados);
+				    		cargando.getElement().setAttribute("style", "display:none");
+				    	}
+				    }
+				    public void onFailure(Throwable error) 
+					{
+						Window.alert(error.toString());
+					}
+		        });
+				
+			}
+		});
+		
+		initWidget(subContent);
+	}
+	
+	
+	
+	public CaptionPanel datosPersonales()
+	{		
+		CaptionPanel fieldsetPersonales = new CaptionPanel();
+
+		HTMLPanel divDatosPersonalesG 	= new HTMLPanel(" ");
+		HTMLPanel divDatosPersonales1 	= new HTMLPanel(" ");
+		HTMLPanel divDatosPersonales2 	= new HTMLPanel(" ");
+		
+		Label lblNombre1				= new Label("Primer Nombre: *");
+		Label lblNombre2 				= new Label("Segundo Nombre:");
+		Label lblApellido1 				= new Label("Primer Apellido: *");
+		Label lblApellido2 				= new Label("Segundo Apellido:");
+		Label lblDocumento 				= new Label("Tipo de Documento: *");
+		Label lblNdocumento 			= new Label("N\u00FAmero de Documento: *");
+		Label lblGenero 				= new Label("G\u00E9nero: *");
+		Label lblEdad					= new Label("Edad: *");
+		
+		TextBox textNombre1 			= new TextBox();
+		TextBox textNombre2 			= new TextBox();
+		TextBox textApellido1 			= new TextBox();
+		TextBox textApellido2 			= new TextBox();
+		ListBox selectTipoDocument		= new ListBox();
+		final TextBox textDocumento 	= new TextBox();
+		ListBox selectGenero 			= new ListBox();
+		final TextBox textEdad 			= new TextBox();
+		
+		textNombre1.getElement().setId("nombre1");
+		textNombre2.getElement().setId("nombre2");
+		textApellido1.getElement().setId("apellido1");
+		textApellido2.getElement().setId("apellido2");
+		selectTipoDocument.getElement().setId("tipoDocumento");
+		textDocumento.getElement().setId("numeroDocumento");
+		selectGenero.getElement().setId("genero");
+		textEdad.getElement().setId("edad");
+		
+		selectTipoDocument.addItem("Seleccione...");
+	  	selectTipoDocument.addItem("C\u00E9dula de Ciudadania");
+		selectTipoDocument.addItem("C\u00E9dula Extrangera");
+		selectTipoDocument.addItem("Tarjeta de Identidad");
+		selectTipoDocument.addItem("Pasaporte");
+	    
+	    selectGenero.addItem("Seleccione...");
+		selectGenero.addItem("Masculino");
+		selectGenero.addItem("Femenino");
+		
+		textNombre1.setMaxLength(20);
+		textNombre2.setMaxLength(20);
+		textApellido1.setMaxLength(20);
+		textApellido2.setMaxLength(20);
+		textDocumento.setMaxLength(10);
+		textEdad.setMaxLength(2);
+		textEdad.getElement().setAttribute("placeHolder", "al momento de la desaparici\u00F3n");
+		
+		divDatosPersonales1.add(lblNombre1);
+		divDatosPersonales1.add(textNombre1);
+		divDatosPersonales1.add(lblNombre2);
+		divDatosPersonales1.add(textNombre2);
+		divDatosPersonales1.add(lblApellido1);
+		divDatosPersonales1.add(textApellido1);
+		divDatosPersonales1.add(lblApellido2);
+		divDatosPersonales1.add(textApellido2);
+		divDatosPersonales2.add(lblDocumento);
+		divDatosPersonales2.add(selectTipoDocument);
+		divDatosPersonales2.add(lblNdocumento);
+		divDatosPersonales2.add(textDocumento);
+		divDatosPersonales2.add(lblGenero);
+		divDatosPersonales2.add(selectGenero);
+		divDatosPersonales2.add(lblEdad);
+		divDatosPersonales2.add(textEdad);
+				
+		divDatosPersonalesG.add(divDatosPersonales1);
+		divDatosPersonalesG.add(divDatosPersonales2);
+		divDatosPersonalesG.setStyleName("divPersonales");
+		
+		fieldsetPersonales.add(divDatosPersonalesG);
+		
+		textDocumento.addBlurHandler(new BlurHandler()
+	    {
+	        @Override
+	        public void onBlur(BlurEvent event)
+	        {
+		        try
+		        {
+		        	if(!textDocumento.getValue().isEmpty())
+		        		Integer.parseInt(textDocumento.getValue());
+		        }
+		        catch(NumberFormatException ex)
+		        {
+		        	new Utilidades().ventanaModal("Error", "El valor Ingresado debe ser num\u00E9rico, y corresponde al numero de identidad de la" +
+		        				 " persona desaparecida", "error");
+		        	textDocumento.setText("");
+		        }
+		    }
+		});
+		
+		textEdad.addBlurHandler(new BlurHandler()
+	    {
+	        @Override
+	        public void onBlur(BlurEvent event)
+	        {
+		        try
+		        {
+		        	if(!textEdad.getValue().isEmpty())
+		        		Integer.parseInt(textEdad.getValue());
+		        }
+		        catch(NumberFormatException ex)
+		        {
+		        	new Utilidades().ventanaModal("Error", "El valor Ingresado debe ser num\u00E9rico, comprendido entre los n\u00FAmeros" +
+		        				 " 1 y 99", "error");
+		        	textEdad.setText("");
+		        }
+		    }
+		});
 		
 		return fieldsetPersonales;
 	}
 	
-	public CaptionPanel devolverMorfologia(Desaparecido desaparecido)
+	/* Metodo que permite validar si el Objeto Element que llega como Parametro 
+	 * es un Widget.
+	 */
+	public static IsWidget getWidget(com.google.gwt.user.client.Element element) 
 	{
-		CaptionPanel fieldsetMorfologia = new CaptionPanel("Morfolog\u00EDa");
-		fieldsetMorfologia.setStyleName("senales");
-		
-		HTMLPanel divMorfologia = new HTMLPanel("");
-		ArrayList<Morfologia> listMorfologia = desaparecido.getMorfologia();
-		
-		boolean pesoEstatura = false;
-		
-		ArrayList<String> tipos = new ArrayList<String>();
-		tipos.add("General");
-		tipos.add("Cara");
-		tipos.add("Cabello");
-		tipos.add("Ojos");
-		tipos.add("Barba");
-		tipos.add("Bigote");
-		
-		for(byte i=0; i < tipos.size(); i++)
-		{
-			HTMLPanel panel = new HTMLPanel("<h3>" + tipos.get(i) + "</h3>");
-			int con = 0;
-			
-			if(listMorfologia != null && listMorfologia.size() > 0)
-			{
-				for(byte x=0;x < listMorfologia.size(); x++)
-				{
-					Morfologia otro = listMorfologia.get(x);
-					
-					if(tipos.get(i).equals(otro.getTipo()))
-					{
-						if(tipos.get(i).equals("General") && !pesoEstatura)
-						{
-							if(!desaparecido.getPeso().isEmpty())
-							{
-								HTML etiqueta = new HTML("<span class='vineta'></span><b> Peso: </b><span>" + desaparecido.getPeso() + " Kgs</span>");
-								panel.add(etiqueta);
-							}
-							if(!desaparecido.getEstatura().isEmpty())
-							{
-								HTML etiqueta = new HTML("<span class='vineta'></span><b> Estatura: </b><span>" + desaparecido.getEstatura() + " Cms</span>");
-								panel.add(etiqueta);
-							}
-							
-							pesoEstatura = true;
-						}
-						HTML etiqueta = new HTML("<span class='vineta'></span><b>" + otro.getCaracteristica() + ": </b><span>" + otro.getNombre() + "</span>");
-						panel.add(etiqueta);
-						con++;
-					}
-				}
-				if(con == 0)
-				{
-					Label sinInformacion = new Label("Sin Informaci\u00F3n");
-					panel.add(sinInformacion);
-				}
-				for(byte j=0;j < con; j++)
-				{
-					listMorfologia.remove(0);
-				}
-				con=0;
-			}
-			else
-			{
-				Label sinInformacion = new Label("Sin Informaci\u00F3n");
-				panel.add(sinInformacion);
-			}
-			
-			divMorfologia.add(panel);
-		}
-		
-		fieldsetMorfologia.add(divMorfologia);
-		
-		return fieldsetMorfologia;
-	}
-
-	public CaptionPanel devolverSenales(ArrayList<SenalParticular> listado)
-	{
-		CaptionPanel fieldsetSenales = new CaptionPanel("Se\u0148ales Particulares");
-		HTMLPanel divSenales = new HTMLPanel("");
-		
-		if(listado != null && listado.size() > 0)
-		{
-			/* Encabezado de la Tabla Señales Particulares */
-	        HTMLPanel divEncabezado 				= new HTMLPanel(" ");
-	        divEncabezado.setStyleName("encabezado-senales");
-	        
-	  		Label lblTipo							= new Label("Tipo");
-	  		Label lblUbicacion						= new Label("Ubicacion");
-	  		Label lblCaract							= new Label("Caracteristicas");
-	  		
-	  		divEncabezado.add(lblTipo);
-	  		divEncabezado.add(lblUbicacion);
-	  		divEncabezado.add(lblCaract);
-	  		
-	  		divSenales.add(divEncabezado);
-	  		
-	  		for(byte i = 0; i < listado.size(); i++)
-	  		{
-	  			HTMLPanel divOpcion 				= new HTMLPanel(" ");
-	  		    divOpcion.setStyleName("opcion-senales");
-	  		    
-	  		    SenalParticular nueva = listado.get(i);
-	  		    
-	  	  		Label nombreSenal					= new Label(nueva.getNombre());
-	  	  		Label ubicacion						= new Label(nueva.getUbicacion());
-	  	  		Label caracteristica				= new Label(nueva.getCaracteristica());
-	  	  		
-	  	  		HTMLPanel o1 = new HTMLPanel("");
-	  	  		HTMLPanel o2 = new HTMLPanel("");
-	  	  		HTMLPanel o3 = new HTMLPanel("");
-	  	  		
-	  	  		o1.add(nombreSenal);
-	  	  		o2.add(ubicacion);
-	  	  		o3.add(caracteristica);
-	  	  		
-	  	  		divOpcion.add(o1);
-	  	  		divOpcion.add(o2);
-	  	  		divOpcion.add(o3);
-	  			
-	  	  		divSenales.add(divOpcion);
-	  		}
-		}
-		else
-		{
-			Label sinRegistros = new Label("No tiene informacion registrada");
-			divSenales.add(sinRegistros);
-		}
-
-  		
-  		fieldsetSenales.add(divSenales);
-  		
-  		return fieldsetSenales;
-	}
-	
-	public CaptionPanel devolverDatoDesaparicion(DatoDesaparicion dato)
-	{
-		CaptionPanel fieldsetDesaparicion = new CaptionPanel("Datos de Desaparici\u00F3n");
-		HTMLPanel divDesaparicion = new HTMLPanel("");
-		divDesaparicion.setStyleName("mostrar-desaparicion");
-		
-		Label fechaDesaparicion		= new Label("Fecha de la Desaparicion");
-	  	Label lugarDesaparicion		= new Label("Lugar de la Desaparicion");
-	  	Label inspeccion			= new Label("Inspeccion Donde Radico la Denuncia");
-	  	Label descripcionHecho		= new Label("Descripcion del Hecho");
-	  	
-	  	Label fechaDesaparicionVal	= new Label(dato.getFechaDesaparicion().toString());
-	  	Label lugarDesaparicionVal	= new Label("Los Patios, Norte de Santander");
-	  	Label inspeccionVal			= new Label(dato.getInspeccionPolicia());
-	  	Label descripcionHechoVal	= new Label(dato.getDescripcion());
-		
-	  	fechaDesaparicion.addStyleName("negrita");
-	  	lugarDesaparicion.addStyleName("negrita");
-	  	inspeccion.addStyleName("negrita");
-	  	descripcionHecho.addStyleName("negrita");
-	  	
-	  	divDesaparicion.add(fechaDesaparicion);
-	  	divDesaparicion.add(fechaDesaparicionVal);
-	  	divDesaparicion.add(lugarDesaparicion);
-	  	divDesaparicion.add(lugarDesaparicionVal);
-	  	divDesaparicion.add(inspeccion);
-	  	divDesaparicion.add(inspeccionVal);
-	  	divDesaparicion.add(descripcionHecho);
-	  	divDesaparicion.add(descripcionHechoVal);
-	  	
-	  	fieldsetDesaparicion.add(divDesaparicion);
-	  	
-	  	return fieldsetDesaparicion; 
-	}
-	
-	public void mostarTodos(final ArrayList<Desaparecido> desaparecidos)
-	{		
-		for(byte i=0; i < desaparecidos.size(); i++)
-    	{
-			final Desaparecido desaparecido = desaparecidos.get(i);
-			
-    		HTMLPanel figure = new HTMLPanel("");
-    		HTMLPanel divImagen = new HTMLPanel("");
-    		figure.setStyleName("figure");
-    		
-    		Image image = new Image();
-    		image.setUrl(desaparecidos.get(i).getKeyFoto());
-    		
-    		HTML figcaption = new HTML(desaparecido.getNombre1() + " " + desaparecido.getNombre2() + " " + desaparecido.getApellido1() + " " +
-    							  				 desaparecido.getApellido2());
-    		figcaption.setStyleName("figcaption");
-    		
-    		HTML zonaClick = new HTML();
-    		zonaClick.setStyleName("zonaClick");
-    		
-    		divImagen.add(image);
-    		figure.add(zonaClick);
-    		figure.add(divImagen);
-    		figure.add(figcaption);
-    		content.add(figure);
-    		
-    		zonaClick.addClickHandler(new ClickHandler() 
-    		{
-    			public void onClick(final ClickEvent event) 
-    			{
-    				History.newItem("-" + desaparecido.getNumeroDocumento());
-    				//RootPanel.get("verDesaparecido").add(devolverDatosPersonales(desaparecido));
-    				//RootPanel.get("verDesaparecido").add(devolverMorfologia(desaparecido));
-    				//RootPanel.get("verDesaparecido").add(devolverSenales(desaparecido.getSenalParticular()));
-    				//RootPanel.get("verDesaparecido").add(devolverDatoDesaparicion(desaparecido.getDatoDesaparicion()));
-    			}
-    		});
-    	}
-		//RootPanel.get("content").add(content);
+	    EventListener listener = DOM
+	            .getEventListener((com.google.gwt.user.client.Element) element);
+	    // No listener attached to the element, so no widget exist for this
+	    // element
+	    if (listener == null) {
+	        return null;
+	    }
+	    if (listener instanceof Widget) {
+	        // GWT uses the widget as event listener
+	        return (Widget) listener;
+	    }
+	    return null;
 	}
 }

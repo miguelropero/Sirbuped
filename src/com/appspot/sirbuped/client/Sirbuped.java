@@ -1,11 +1,14 @@
 package com.appspot.sirbuped.client;
 
+import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.DTO.ListaBoletin;
 import com.appspot.sirbuped.client.DTO.LoginInfo;
+import com.appspot.sirbuped.client.DTO.Usuario;
 import com.appspot.sirbuped.client.Interfaz.ListaBoletinService;
 import com.appspot.sirbuped.client.Interfaz.ListaBoletinServiceAsync;
 import com.appspot.sirbuped.client.Interfaz.UsuarioService;
 import com.appspot.sirbuped.client.Interfaz.UsuarioServiceAsync;
+import com.appspot.sirbuped.client.Vista.Error404;
 import com.appspot.sirbuped.client.Vista.Mapa;
 import com.appspot.sirbuped.client.Vista.VistaConsultarDesaparecido;
 import com.appspot.sirbuped.client.Vista.VistaContactenos;
@@ -16,6 +19,7 @@ import com.appspot.sirbuped.client.Vista.VistaIniciarSesion;
 import com.appspot.sirbuped.client.Vista.VistaMapaDesaparecidos;
 import com.appspot.sirbuped.client.Vista.VistaNosotros;
 import com.appspot.sirbuped.client.Vista.VistaUsuario;
+import com.appspot.sirbuped.client.Vista.VistaVerDesaparecidos;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -26,6 +30,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -37,12 +42,14 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 {	
 	
 	private boolean haySesion;
+	private String usuario;
 	
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() 
 	{
+		this.analytics();
 		this.haySesion = false;
 		
 		this.crearFormularioBoletin();
@@ -85,11 +92,13 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	    		if(result != null)
 	    		{
 	    			new Utilidades().crearBotonesDeSesion(true);
+	    			usuario = result;
 	    			haySesion = true;
 	    		}
 	    		else
 	    		{
 	    			new Utilidades().crearBotonesDeSesion(false);
+	    			usuario = "";
 	    			haySesion = false;
 	    		}
 	    		mostrarVista(token);
@@ -105,7 +114,6 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	
 	public void mostrarVista(String token)
 	{
-		//Window.alert("Mi token " + new Utilidades().getSesion("token"));
 		String subToken = String.valueOf(token.charAt(0));
 		RootPanel.get("content").clear();
 		RootPanel.get("content").add(new Utilidades().actualizarEncabezadoContenido(token));
@@ -116,13 +124,18 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 			RootPanel.get("content").add(new VistaHome());
 			this.cargarSlider();
 		}
-		else if(token.equals("consultar"))
+		else if(token.equals("personas-desaparecidas"))
+	    {
+			Desaparecido nulo = null;
+			RootPanel.get("content").add(new VistaVerDesaparecidos(nulo));
+	    }
+		else if(token.equals("consultar-desaparecido"))
 	    {
 			RootPanel.get("content").add(new VistaConsultarDesaparecido());
 	    }
 		else if(token.equals("registrarse"))
 	    {
-			RootPanel.get("content").add(new VistaUsuario());
+			RootPanel.get("content").add(new VistaUsuario(null));
 	    }
 		else if(token.equals("mapa-de-desaparecidos"))
 	    {
@@ -177,12 +190,15 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 			subToken = token.replace("-", "");
 			RootPanel.get("content").add(new Utilidades().actualizarEncabezadoContenido("detalle-de-desaparicion"));
 			RootPanel.get("content").add(new HTMLPanel("<div id='verDesaparecido' class='verDesaparecido'></div>"));
-			RootPanel.get("content").add(new VistaConsultarDesaparecido(subToken));
+			RootPanel.get("content").add(new VistaVerDesaparecidos(subToken));
 	    }
 		else if(token.equals("mi-cuenta"))
 		{
 			if(haySesion)
 			{
+				HTML bienvenida = new HTML("<div><span>Usuario: </span>" + usuario + "</div>");
+				bienvenida.setStyleName("bienvenida");
+				RootPanel.get("content").add(bienvenida);
 				RootPanel.get("content").add(new VistaCuentaUsuario());
 		    }
 		    else
@@ -233,9 +249,41 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 		    	}
 		   });
 		}
+		else if(token.equals("editar-usuario"))
+		{
+			if(haySesion)
+			{
+				final HTMLPanel cargando = new HTMLPanel("");
+				cargando.setStyleName("cargando");
+				RootPanel.get("content").add(cargando);
+				
+				UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
+				
+			    usuarioService.getUsuario(new AsyncCallback<Usuario>() 
+			    {
+			    	@Override
+					public void onSuccess(Usuario usuario) 
+			    	{
+			    		cargando.getElement().setAttribute("style", "display:none");
+			    		RootPanel.get("content").add(new VistaUsuario(usuario));
+					}
+			    	public void onFailure(Throwable error) 
+			    	{
+			    		cargando.getElement().setAttribute("style", "display:none");
+			    		Window.alert("Error, usuario no existe");
+			    	}
+			   });
+			}
+			else
+			{
+				new Utilidades().crearSesion("token", token);
+		    	History.newItem("iniciar-sesion");
+			}
+		}
 		else
 		{
-			Window.alert("La pagina solcitada no se encuentra");
+			RootPanel.get("content").add(new Error404());
+			RootPanel.get("google").getElement().setAttribute("style", "display:block");
 		}
 	}
 	
@@ -271,11 +319,27 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 		});
 	}
 	
-	public native void cargarSlider() /*-{
+	public native void cargarSlider() 
+	/*-{
+		
 		$wnd.$('.bxslider').bxSlider({
 			auto: true,
   			pause: 7000,
   			mode: 'fade'
 		});
+	}-*/;
+
+	public native void analytics() 
+	/*-{
+		
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function()
+  		{
+  			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  		})
+  					
+  		(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', 'UA-42869891-1', 'sirbuped.appspot.com');
+		ga('send', 'pageview');
 	}-*/;
 }

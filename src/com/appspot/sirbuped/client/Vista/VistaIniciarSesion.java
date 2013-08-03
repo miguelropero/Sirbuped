@@ -74,8 +74,6 @@ public class VistaIniciarSesion extends Composite
 		divSesion.add(divError);
 		divSesion.add(divFooter);
 		
-		//divBgSesion.add(divSesion);
-		
 		subContent.add(divSesion);
 		
 		textUsuario.addBlurHandler(new BlurHandler()
@@ -89,7 +87,6 @@ public class VistaIniciarSesion extends Composite
 				}
 			}
 		});
-		
 		
 		btnIniciarGoogle.addClickHandler(new ClickHandler() 
 		{
@@ -105,7 +102,6 @@ public class VistaIniciarSesion extends Composite
 			    	{
 			    		if(loginInfo.isLoggedIn()) 
 			    		{
-			    			//Window.alert("Logueado");
 			    			if(loginInfo.getRegistrado())
 			    			{
 			    				new Utilidades().crearSesion("logout", loginInfo.getLogoutUrl());
@@ -127,7 +123,6 @@ public class VistaIniciarSesion extends Composite
 			    		} 
 			    		else 
 			    		{
-			    			//Window.alert("No Logueado");
 			    			if(token != null)
 			    			{
 			    				new Utilidades().crearSesion("token", token);
@@ -150,6 +145,7 @@ public class VistaIniciarSesion extends Composite
 		
 		class MyHandler implements ClickHandler, KeyUpHandler 
 		{
+
 			public void onClick(ClickEvent event) 
 			{
 				iniciarSesion();
@@ -165,6 +161,7 @@ public class VistaIniciarSesion extends Composite
 			    
 			private void iniciarSesion() 
 			{
+				divError.clear();
 				
 				if(textUsuario.getValue().isEmpty() || textPassword.getValue().isEmpty())
 				{

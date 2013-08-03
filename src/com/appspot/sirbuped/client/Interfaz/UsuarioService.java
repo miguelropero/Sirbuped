@@ -13,5 +13,6 @@ public interface UsuarioService extends RemoteService
 	public void cerrarSesion();
 	public String getSesion(String key);
 	public LoginInfo loginGoogle(String requestUri);
-	//public void loginGoogle(String requestUri);
+	public Usuario getUsuario();
+	public void editarUsuario(Usuario editado);
 }

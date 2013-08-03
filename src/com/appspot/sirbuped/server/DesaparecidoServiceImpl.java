@@ -26,7 +26,7 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 	private static final long serialVersionUID = 1L;	
 	private static final Logger log = Logger.getLogger(Desaparecido.class.getName());
 	
-	public void ingresar(Desaparecido desaparecido)
+	public void registrar(Desaparecido desaparecido)
 	{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		
@@ -39,7 +39,9 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 			
 			Usuario u = pm.getObjectById(Usuario.class, keyUsuario);
 			desaparecido.setFechaRegistro(new Date());
+			
 			u.getDesaparecidos().add(desaparecido);
+			//comentario
 		}
 		finally 
         {
@@ -48,7 +50,7 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public ArrayList<Desaparecido> consultar(boolean todos)
+	public ArrayList<Desaparecido> getDesaparecidos(boolean todos)
 	{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query query = pm.newQuery(Desaparecido.class);
@@ -64,6 +66,9 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 		{
 			malos = (List<Desaparecido>) query.execute();
 			results = new ArrayList<Desaparecido>();
+			
+			log.warning(malos.get(0).getDatoDesaparicion().getDesaparecido().toString());
+			
 			Desaparecido des = new Desaparecido();
 			for(Desaparecido x : malos)
 			{
@@ -109,10 +114,10 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 				results.add(des);
 			}
         }
-		catch(Exception e)
+		/*catch(Exception e)
 		{
 			log.warning(e.toString());
-		}
+		}*/
 		finally 
         {
             pm.close();
@@ -123,7 +128,7 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Desaparecido consultar(String documento)
+	public Desaparecido getDesaparecido(String documento)
 	{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query query = pm.newQuery(Desaparecido.class);
@@ -195,4 +200,161 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
         }
 		return (desaparecidosDetached.get(0));
 	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<Desaparecido> consultarDesaparecido(Desaparecido desaparecido)
+	{
+		
+		ArrayList<Desaparecido> resultFinal = new ArrayList<Desaparecido>();
+		
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		List<Desaparecido> results = null;
+		
+		String operador = "";
+		
+		String nombre1="";
+		if(!desaparecido.getNombre1().isEmpty())
+		{
+			nombre1 = "nombre1 == " + "\'" + desaparecido.getNombre1() + "\' ";
+			operador = "&&";
+		}
+		
+		String nombre2 = "";
+		if(!desaparecido.getNombre2().isEmpty())
+		{
+			nombre2 = operador + " nombre2 == " + "\'" + desaparecido.getNombre2() + "\' ";
+			operador = "&&";
+		}
+		
+		String apellido1 = "";	
+		if(!desaparecido.getApellido1().isEmpty())
+		{
+			apellido1 = operador + " apellido1 == " + "\'" + desaparecido.getApellido1() + "\' ";
+			operador = "&&";
+		}
+			
+		String apellido2 = "";	
+		if(!desaparecido.getApellido2().isEmpty())
+		{
+			apellido2 = operador + " apellido2 == " + "\'" + desaparecido.getApellido2() + "\' ";
+			operador = "&&";
+		}
+		
+		String tipoDocumento = "";	
+		if(!desaparecido.getTipoDocumento().isEmpty())
+		{
+			tipoDocumento = operador + " tipoDocumento == " + "\'" + desaparecido.getTipoDocumento() + "\' ";
+			operador = "&&";
+		}
+		
+		String numeroDocumento = "";
+		if(!desaparecido.getNumeroDocumento().isEmpty())
+		{
+			numeroDocumento = operador + " numeroDocumento == " + "\'" + desaparecido.getNumeroDocumento() + "\'";
+			operador = "&&";
+		}
+		
+		/*String genero = "";
+		if(desaparecido.getGenero() != null)
+			genero = "genero =" + desaparecido.getGenero();*/
+		
+		String edad = "";
+		if(desaparecido.getEdad() != 0)
+			edad = operador + " edad == " + desaparecido.getEdad();
+		
+		Query query = pm.newQuery(Desaparecido.class, nombre1 + nombre2 + apellido1 + apellido2 + tipoDocumento + numeroDocumento + edad);
+		
+		log.warning(query.toString());
+		
+		try
+		{
+			results = (List<Desaparecido>) query.execute();
+			
+			List<Desaparecido> filterMorfologia = new ArrayList<Desaparecido>();
+			
+			if(desaparecido.getMorfologia().size() > 0)
+			{
+				for(Desaparecido filter: results)
+				{
+					byte indicador = 0;
+					for(byte i = 0; i < desaparecido.getMorfologia().size(); i++)
+					{
+						for(byte j = 0; j < filter.getMorfologia().size(); j++)
+						{
+							if(desaparecido.getMorfologia().get(i).getId().equals(filter.getMorfologia().get(j).getId()))
+							{
+								indicador++;
+								break;
+							}
+						}
+					}
+					if(indicador > 0)
+					{
+						filterMorfologia.add(filter);
+					}
+				}
+			}
+			else
+			{
+				filterMorfologia = results;
+			}
+			
+			List<Desaparecido> filterSenales = new ArrayList<Desaparecido>();
+			
+			if(desaparecido.getSenalParticular().size() > 0)
+			{
+				for(Desaparecido filter: filterMorfologia)
+				{
+					byte indicador = 0;
+					for(byte i = 0; i < desaparecido.getSenalParticular().size(); i++)
+					{
+						for(byte j = 0; j < filter.getSenalParticular().size(); j++)
+						{
+							if(desaparecido.getSenalParticular().get(i).getNombre().equals(filter.getSenalParticular().get(j).getNombre()))
+							{
+								indicador++;
+								break;
+							}
+						}
+					}
+					if(indicador > 0)
+					{
+						filterSenales.add(filter);
+					}
+				}
+			}
+			else
+			{
+				filterSenales = filterMorfologia;
+			}
+			
+			//resultFinal = (ArrayList<Desaparecido>) filterSenales;
+			
+			Desaparecido serializado;
+			for(Desaparecido x : filterSenales)
+			{
+				serializado = (pm.detachCopy(x));
+				serializado.setMorfologia(null);
+				serializado.setSenalParticular(null);
+				serializado.setDatoDesaparicion(null);
+				
+				resultFinal.add(serializado);
+			}
+			
+			log.warning(desaparecido.toString());
+			log.warning(results.toString());
+			log.warning(filterMorfologia.toString());
+			log.warning(filterSenales.toString());
+			log.warning(resultFinal.toString());
+			
+		}
+		finally
+		{
+			pm.close();
+			query.closeAll();
+		}
+		
+		return resultFinal;
+	}
+	
 }

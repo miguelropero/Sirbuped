@@ -21,7 +21,7 @@ public class VistaHome extends Composite
 	HTMLPanel subContent 			= new HTMLPanel("");
 	HTMLPanel banner 				= new HTMLPanel("");
 	HTMLPanel enlaces 				= new HTMLPanel("");
-	HTMLPanel ultimasDesapariciones = new HTMLPanel("<div class='separator' id='home' >" + "<div class='ver_todos'><a href='#consultar'>Ver todas</a></div>" + "</div><h2>\u00DAltimas Desapariciones</h2>");	
+	HTMLPanel ultimasDesapariciones = new HTMLPanel("<div class='separator' id='home' >" + "<div class='ver_todos'><a href='#personas-desaparecidas'>Ver todas</a></div>" + "</div><h2>\u00DAltimas Desapariciones</h2>");	
 	HTMLPanel deInteres				= new HTMLPanel("");
 	
 	public VistaHome()
@@ -149,7 +149,7 @@ public class VistaHome extends Composite
 		ultimasDesapariciones.add(cargando);
     	
 		DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
-		desaparecidoService.consultar(false, new AsyncCallback<ArrayList<Desaparecido>>()
+		desaparecidoService.getDesaparecidos(false, new AsyncCallback<ArrayList<Desaparecido>>()
 		{
 		    public void onSuccess(ArrayList<Desaparecido> desaparecidos) 
 		    {
@@ -186,7 +186,6 @@ public class VistaHome extends Composite
 			    			{
 			    				subContent.getElement().setAttribute("style", "display:none");
 								History.newItem("-" + desaparecido.getNumeroDocumento());
-								//RootPanel.get("content").add(new VistaConsultarDesaparecido(desaparecido));
 			    			}
 			    		});
 			    	}

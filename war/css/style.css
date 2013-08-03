@@ -30,10 +30,13 @@ a
 {
 	transition-property: all;
     transition-duration: 0.3s;
-    transition-timing-function: linear;
+    transition-timing-function: ease;
     transition-delay: 0.2s;    
 }
-
+#google
+{
+	display: none;	
+}
 /************************************************************************************
  ************************ ESTILOS PARA EL HEADER PRINCIPAL **************************
  ************************************************************************************/
@@ -228,10 +231,8 @@ nav a#pull
  
 .banner
 {
-	width: 100%;
-	/*text-align: center;
-	display: block;*/
 	position: relative;
+	width: 100%;
 }
 .banner:after
 { 
@@ -252,7 +253,7 @@ nav a#pull
 {
 	background: #FFF;
 	height: auto;
-	margin: 2em auto;
+	margin: 3em auto;
 	max-width: 984px;
 	padding: 0 1em;
 	text-align: center;
@@ -261,10 +262,10 @@ nav a#pull
 {
 	border: 1px solid #D1D1D1;
 	display: inline-block;
-	margin: 1em 1%;
+	margin: 0em 1%;
 	text-align: center;
 	vertical-align: top;
-	width: 23.2%;
+	width: 23.3%;
 }
 .enlaces-rapidos .gwt-HTML:first-child
 {
@@ -272,7 +273,7 @@ nav a#pull
 }
 .enlaces-rapidos .gwt-HTML:last-child
 {
-	margin-rght: 0;
+	margin-right: 0;
 }
 .enlaces-rapidos .gwt-HTML .box-header-enlace
 {
@@ -319,6 +320,30 @@ nav a#pull
 .box-boton-enlace a:hover
 {
 	background: url("../image/bg_menu.png");
+}
+
+/* Para mi cuenta */
+.bienvenida
+{
+	margin: 1.5em auto -2em auto;
+	max-width: 984px;
+	padding: 0 1em;
+}
+.bienvenida > div
+{
+	background: url("../image/bg_header_enlaces.png");
+	border: 1px solid #DDD;
+	color: #555555;
+	font-size: 0.8em;
+	padding: 0.5em;
+	text-align: left;
+	width: 100%;
+}
+.bienvenida > div span
+{
+	color: #606060;
+	font-size: 1.2em !important;
+	margin-right: 0.5em;
 }
 
 /***********************************************************************************
@@ -439,7 +464,8 @@ nav a#pull
 .sugerencias .gwt-HTML
 {
 	background: #F5F4F0 url("../image/bg_sugerencias.png") repeat-x;
-	border: 1px solid #e9e4de;
+	border: 1px solid #D8D3CD;
+	box-shadow: 0 0 2px #DDD;
 	display: inline-block;
 	margin: 2em 1%;
 	padding: 0 0 1em 0;
@@ -493,7 +519,6 @@ nav a#pull
 }
 .box_titulo
 {
-	line-height: 85px;
 	margin: 0 auto;
 	max-width: 984px;
 	padding: 0 1em;
@@ -502,6 +527,7 @@ nav a#pull
 {
 	color: #FFF;
 	font-size: 1.9em;
+	padding: 1em 0;
 }
 .box_titulo h2:first-letter
 {
@@ -898,7 +924,6 @@ input[type="file"]
  																
 footer
 {
-	/*background: #bdb0a8 url("../image/separator_content.png") repeat-x top;*/
 	background: #E9E4DE;
 	border-top: 1px solid #D8D3CC;
 }
@@ -966,27 +991,27 @@ footer .boxFooter .social a
 }
 footer div .social > div > div:nth-child(1) a
 {
-	background: url("../image/social/facebook.png") no-repeat center center;
+	background: url("../image/social/facebook.png") no-repeat top center;
 }
 footer div .social > div > div:nth-child(1) a:hover
 {
-	background: url("../image/social/facebook2.png") no-repeat center center;
+	background: url("../image/social/facebook.png") no-repeat bottom center;
 }
 footer div .social > div > div:nth-child(2) a
 {
-	background: url("../image/social/youtube.png") no-repeat center center;
+	background: url("../image/social/youtube.png") no-repeat top center;
 }
 footer div .social > div > div:nth-child(2) a:hover
 {
-	background: url("../image/social/youtube2.png") no-repeat center center;
+	background: url("../image/social/youtube.png") no-repeat bottom center;
 }
 footer div .social > div > div:nth-child(3) a
 {
-	background: url("../image/social/twitter.png") no-repeat center center;
+	background: url("../image/social/twitter.png") no-repeat top center;
 }
 footer div .social > div > div:nth-child(3) a:hover
 {
-	background: url("../image/social/twitter2.png") no-repeat center center;
+	background: url("../image/social/twitter.png") no-repeat bottom center;
 }
 footer div article input
 {
@@ -1197,7 +1222,7 @@ footer nav li:last-child a
  ******************** ESTILOS PARA LA PAGINA DE DESAPARECIDOS *********************
  **********************************************************************************/
  
-.desaparecido > div:first-child
+.desaparecido .encabezado
 {
  	background: url("../image/bg_div_flechas.png") repeat-x;
  	border: 1px solid #CCC;
@@ -1537,6 +1562,7 @@ footer nav li:last-child a
   
 .desaparicion .gwt-TextBox, .desaparicion select 
 {
+	display: block;
  	width: 43.5%;
 }
 .desaparicion .gwt-RichTextArea
@@ -1774,6 +1800,27 @@ footer nav li:last-child a
 	margin-left: 3%;
 	width: 65%;
 }
+
+
+/************************************************************************************
+ ********************** ESTILOS DE CONSULTAS DE DESAPARECIDOS ***********************
+ ************************************************************************************/
+ 
+ .extend-consulta
+ {
+ 	background: #F5F5F5 url("../image/bg_header_enlaces.png");
+	border: 1px solid #CCC;
+	margin-bottom: 1em;
+	padding: 0.5em 1em;
+ }
+ .extend-consulta .gwt-Label
+ {
+ 	display: inline-block;
+ }
+
+
+
+
 
 
 

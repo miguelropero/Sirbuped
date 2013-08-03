@@ -7,7 +7,6 @@ import java.util.Date;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -26,10 +25,7 @@ public class Usuario implements Serializable
 	private String nombres;
 	
 	@Persistent
-	private String apellido1;
-	
-	@Persistent
-	private String apellido2;
+	private String apellidos;
 	
 	@Persistent
 	private String tipoDocumento;
@@ -44,10 +40,7 @@ public class Usuario implements Serializable
 	private String email;
 	
 	@Persistent
-	private String telefono1;
-	
-	@Persistent
-	private String telefono2;
+	private String telefono;
 	
 	@Persistent
 	private String telefonoCel;
@@ -61,9 +54,6 @@ public class Usuario implements Serializable
 	@Persistent
 	private boolean estado;
 	
-	@NotPersistent
-	private String keySesion;
-	
 	@Persistent
 	ArrayList<Desaparecido> desaparecidos = new ArrayList<Desaparecido>();
 	
@@ -72,19 +62,16 @@ public class Usuario implements Serializable
 		desaparecidos = new ArrayList<Desaparecido>();
 	}
 
-	public Usuario(String nombres, String apellido1, String apellido2, String tipoDocumento, String numeroDocumento, 
-				   Date fechaNacimiento, String email, String telefono1, String telefono2, String telefonoCel, String direccion, 
-				   String password) 
+	public Usuario(String nombres, String apellidos, String tipoDocumento, String numeroDocumento, Date fechaNacimiento, 
+				   String email, String telefono, String telefonoCel, String direccion, String password) 
 	{
 		this.nombres = nombres;
-		this.apellido1 = apellido1;
-		this.apellido2 = apellido2;
+		this.apellidos = apellidos;
 		this.tipoDocumento = tipoDocumento;
 		this.numeroDocumento = numeroDocumento;
 		this.fechaNacimiento = fechaNacimiento;
 		this.email = email;
-		this.telefono1 = telefono1;
-		this.telefono2 = telefono2;
+		this.telefono = telefono;
 		this.telefonoCel = telefonoCel;
 		this.direccion = direccion;
 		this.password = password;
@@ -112,24 +99,14 @@ public class Usuario implements Serializable
 		this.nombres = nombres;
 	}
 
-	public String getApellido1() 
+	public String getApellidos() 
 	{
-		return apellido1;
+		return apellidos;
 	}
 
-	public void setApellido1(String apellido1) 
+	public void setApellidos(String apellidos) 
 	{
-		this.apellido1 = apellido1;
-	}
-
-	public String getApellido2() 
-	{
-		return apellido2;
-	}
-
-	public void setApellido2(String apellido2) 
-	{
-		this.apellido2 = apellido2;
+		this.apellidos = apellidos;
 	}
 
 	public String getTipoDocumento() 
@@ -172,24 +149,14 @@ public class Usuario implements Serializable
 		this.email = email;
 	}
 
-	public String getTelefono1() 
+	public String getTelefono() 
 	{
-		return telefono1;
+		return telefono;
 	}
 
-	public void setTelefono1(String telefono1) 
+	public void setTelefono(String telefono) 
 	{
-		this.telefono1 = telefono1;
-	}
-
-	public String getTelefono2() 
-	{
-		return telefono2;
-	}
-
-	public void setTelefono2(String telefono2) 
-	{
-		this.telefono2 = telefono2;
+		this.telefono = telefono;
 	}
 
 	public String getTelefonoCel() 
@@ -232,36 +199,25 @@ public class Usuario implements Serializable
 		this.estado = estado;
 	}
 	
-	public String getKeySesion() 
+	public ArrayList<Desaparecido> getDesaparecidos() 
 	{
-		return keySesion;
-	}
-
-	public void setKeySesion(String keySesion) 
-	{
-		this.keySesion = keySesion;
-	}
-
-	
-	
-	public ArrayList<Desaparecido> getDesaparecidos() {
 		return desaparecidos;
 	}
 
-	public void setDesaparecidos(ArrayList<Desaparecido> desaparecidos) {
+	public void setDesaparecidos(ArrayList<Desaparecido> desaparecidos) 
+	{
 		this.desaparecidos = desaparecidos;
 	}
 
 	@Override
 	public String toString() {
-		return "Usuario [nombres=" + nombres + ", apellido1=" + apellido1
-				+ ", apellido2=" + apellido2 + ", tipoDocumento="
-				+ tipoDocumento + ", numeroDocumento=" + numeroDocumento
-				+ ", fechaNacimiento=" + fechaNacimiento + ", email=" + email
-				+ ", telefono1=" + telefono1 + ", telefono2=" + telefono2
-				+ ", telefonoCel=" + telefonoCel + ", direccion=" + direccion
-				+ ", password=" + password + ", estado=" + estado
-				+ ", keySesion=" + keySesion + "]";
+		return "Usuario [id=" + id + ", nombres=" + nombres + ", apellidos="
+				+ apellidos + ", tipoDocumento=" + tipoDocumento
+				+ ", numeroDocumento=" + numeroDocumento + ", fechaNacimiento="
+				+ fechaNacimiento + ", email=" + email + ", telefono="
+				+ telefono + ", telefonoCel=" + telefonoCel + ", direccion="
+				+ direccion + ", password=" + password + ", estado=" + estado
+				+ ", desaparecidos=" + desaparecidos + "]";
 	}
 
 	
