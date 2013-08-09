@@ -23,6 +23,12 @@ public class DatoDesaparicion implements Serializable
 	private Date fechaDesaparicion;
 	
 	@Persistent
+	private String keyCiudadDesaparicion;
+	
+	@Persistent
+	private Ciudad ciudadDesaparicion;
+	
+	@Persistent
 	private String corregimiento;
 	
 	@Persistent
@@ -44,6 +50,16 @@ public class DatoDesaparicion implements Serializable
 		this.inspeccionPolicia = inspeccionPolicia;
 		this.descripcion = descripcion;
 	}
+	
+	public String getId() 
+	{
+		return id;
+	}
+
+	public void setId(String id) 
+	{
+		this.id = id;
+	}
 
 	public Date getFechaDesaparicion() 
 	{
@@ -53,6 +69,26 @@ public class DatoDesaparicion implements Serializable
 	public void setFechaDesaparicion(Date fechaDesaparicion) 
 	{
 		this.fechaDesaparicion = fechaDesaparicion;
+	}
+
+	public String getKeyCiudadDesaparicion() 
+	{
+		return keyCiudadDesaparicion;
+	}
+
+	public void setKeyCiudadDesaparicion(String keyCiudadDesaparicion) 
+	{
+		this.keyCiudadDesaparicion = keyCiudadDesaparicion;
+	}
+
+	public Ciudad getCiudadDesaparicion() 
+	{
+		return ciudadDesaparicion;
+	}
+
+	public void setCiudadDesaparicion(Ciudad ciudadDesaparicion) 
+	{
+		this.ciudadDesaparicion = ciudadDesaparicion;
 	}
 
 	public String getCorregimiento() 

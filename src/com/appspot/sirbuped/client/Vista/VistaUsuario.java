@@ -14,7 +14,6 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
@@ -126,12 +125,43 @@ public class VistaUsuario extends Composite
 			selectCiudad.addItem("Ciudad...");
 		final TextBox textDireccion		= new TextBox();
 		
-		selectCiudad.addChangeHandler(new ChangeHandler()
+		
+		/* Cargando los datos a los select de Pais, dpto y ciudad */
+		new Utilidades().getPaises(selectPais);
+		
+		selectPais.addChangeHandler(new ChangeHandler()
 		{
-			  public void onChange(ChangeEvent event)
-			  {
-				  Window.alert("Something got selected " + selectCiudad.getSelectedIndex());
-			  }
+			public void onChange(ChangeEvent event)
+			{
+				if(selectPais.getSelectedIndex() > 0)
+				{
+					String pais = selectPais.getValue(selectPais.getSelectedIndex());
+					new Utilidades().getDepartamentos(pais, selectDepartamento);
+				}
+				else
+				{
+					selectDepartamento.clear();
+					selectDepartamento.addItem("Departamento...");
+				}
+			}
+		});
+		
+		selectDepartamento.addChangeHandler(new ChangeHandler()
+		{
+			public void onChange(ChangeEvent event)
+			{
+				if(selectDepartamento.getSelectedIndex() > 0)
+				{
+					String pais = selectPais.getValue(selectPais.getSelectedIndex());
+					String departamento = selectDepartamento.getValue(selectDepartamento.getSelectedIndex());
+					new Utilidades().getCiudades(pais, departamento, selectCiudad);
+				}
+				else
+				{
+					selectCiudad.clear();
+					selectCiudad.addItem("Ciudad...");
+				}
+			}
 		});
 		
 		divContacto.add(lblEmail);
@@ -486,7 +516,7 @@ public class VistaUsuario extends Composite
 							return;
 						}
 						
-						/* Encrptando la clave del usuario */
+						/* Encriptando la clave del usuario */
 						
 						String password = JCrypt.crypt(new Utilidades().salto(), textPassword1.getValue());
 						
@@ -499,9 +529,12 @@ public class VistaUsuario extends Composite
 						 * Realización asincrona para guardar los datos
 						 */
 						
-						UsuarioServiceAsync usuario = GWT.create(UsuarioService.class);
-						Usuario nuevo = new Usuario(textNombres.getText(), textApellidos.getText(), selectTipoDoc.getValue(selectTipoDoc.getSelectedIndex()), textDocumento.getText(), fechaNacimiento, textEmail.getText(), textTelefono.getText(), textCelular.getText(), textDireccion.getText(), password);
-						usuario.addUsuario(nuevo, new AsyncCallback<Void>() 
+						UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
+						Usuario usuario = new Usuario(textNombres.getText(), textApellidos.getText(), selectTipoDoc.getValue(selectTipoDoc.getSelectedIndex()), textDocumento.getText(), fechaNacimiento, textEmail.getText(), textTelefono.getText(), textCelular.getText(), textDireccion.getText(), password);
+						
+						usuario.setKeyCiudadResidencia(selectCiudad.getElement().getAttribute("key"));
+						
+						usuarioService.addUsuario(usuario, new AsyncCallback<Void>() 
 						{
 						      public void onSuccess(Void ignore) 
 						      {
@@ -512,6 +545,7 @@ public class VistaUsuario extends Composite
 						      public void onFailure(Throwable error) 
 						      {
 						    	  new Utilidades().ventanaModal("Error", error.toString(), "error");
+						    	  cargando.getElement().setAttribute("style", "display:none");
 						    	  subContent.setVisible(true);
 						      }
 						});

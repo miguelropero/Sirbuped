@@ -1,11 +1,9 @@
 package com.appspot.sirbuped.server;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.appspot.sirbuped.client.Interfaz.UploadImage;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
@@ -19,6 +17,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class UploadImageImpl extends RemoteServiceServlet implements UploadImage
 {
 	private static final long serialVersionUID = 1L;
+	//private static final Logger log = Logger.getLogger(Desaparecido.class.getName());
 	
 	BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 	//Generate a Blobstore Upload URL from the GAE BlobstoreService
@@ -40,14 +39,42 @@ public class UploadImageImpl extends RemoteServiceServlet implements UploadImage
 		ImagesService imagesService = ImagesServiceFactory.getImagesService();
 
 		Image oldImage = ImagesServiceFactory.makeImageFromBlob(blobKey);
-		Transform resize = ImagesServiceFactory.makeResize(200, 300);
-
+		Transform resize = ImagesServiceFactory.makeResize(500, 198);
+		
 		Image newImage = imagesService.applyTransform(resize, oldImage);
+		
+		float porcentajeX = 0F;
+		float porcentajeY = 0F;
+		
+		float dimension = 0F;
+		float diferencia = 0F;
+		
+		if(newImage.getWidth() > 150)
+		{
+			dimension = newImage.getWidth();
+			diferencia = dimension - 150;
+			porcentajeX = (diferencia/dimension)/2;
+		}
+		else
+		{
+			Transform resize3 = ImagesServiceFactory.makeResize(150, 500);
+			newImage = imagesService.applyTransform(resize3, oldImage);
+			
+			dimension = newImage.getHeight();
+			diferencia = dimension - 198;
+			
+			if(diferencia > 0)
+				porcentajeY = diferencia/dimension;
+		}
+		
+		Transform resize2 = ImagesServiceFactory.makeCrop(porcentajeX, 0, (1 - porcentajeX), (1 - porcentajeY));
+		
+		Image newImage2 = imagesService.applyTransform(resize2, newImage);
 		
 		//byte [] newImagenData = newImage.getImageData();
         //blobstoreService.serve(blobKey, resp);
-		resp.setContentType(newImage.getFormat().toString());
-        resp.getOutputStream().write(newImage.getImageData());
+		resp.setContentType(newImage2.getFormat().toString());
+        resp.getOutputStream().write(newImage2.getImageData());
 		//resp.getWriter().println(newImage);
 	}
 }

@@ -1,6 +1,13 @@
 package com.appspot.sirbuped.client;
 
+import java.util.ArrayList;
+
+import com.appspot.sirbuped.client.DTO.Ciudad;
+import com.appspot.sirbuped.client.DTO.Departamento;
+import com.appspot.sirbuped.client.DTO.Pais;
 import com.appspot.sirbuped.client.DTO.Usuario;
+import com.appspot.sirbuped.client.Interfaz.LugarService;
+import com.appspot.sirbuped.client.Interfaz.LugarServiceAsync;
 import com.appspot.sirbuped.client.Interfaz.UsuarioService;
 import com.appspot.sirbuped.client.Interfaz.UsuarioServiceAsync;
 import com.google.gwt.core.client.GWT;
@@ -245,4 +252,70 @@ public class Utilidades
 	/*-{
 		sessionStorage.setItem(key, value);
 	}-*/;
+	
+	
+	/* Generar Select de los Paises */
+	public void getPaises(final ListBox selectPaises)
+	{
+		LugarServiceAsync lugarService = GWT.create(LugarService.class);
+		lugarService.getPaises(new AsyncCallback<ArrayList<Pais>>() 
+		{
+			@Override
+			public void onSuccess(ArrayList<Pais> paises) 
+			{
+				for(Pais pais : paises)
+					selectPaises.addItem(pais.getNombre());
+			}
+			public void onFailure(Throwable error) 
+			{
+				Window.alert(error.toString());
+			}
+        });
+	}
+	
+	/* Generar Select de los Departamentos */
+	public void getDepartamentos(String pais, final ListBox selectDepartamentos)
+	{
+		LugarServiceAsync lugarService = GWT.create(LugarService.class);
+		lugarService.getDepartamentos(pais, new AsyncCallback<ArrayList<Departamento>>() 
+		{
+			@Override
+			public void onSuccess(ArrayList<Departamento> departamentos) 
+			{
+				selectDepartamentos.clear();
+				selectDepartamentos.addItem("Departamento...");
+				for(Departamento departamento : departamentos)
+					selectDepartamentos.addItem(departamento.getNombre());
+			}
+			public void onFailure(Throwable error) 
+			{
+				Window.alert(error.toString());
+			}
+        });
+	}
+	
+	/* Generar Select de las Ciudadades */
+	public void getCiudades(String pais, String departamento, final ListBox selectCiudades)
+	{
+		LugarServiceAsync lugarService = GWT.create(LugarService.class);
+		lugarService.getCiudades(pais, departamento, new AsyncCallback<ArrayList<Ciudad>>() 
+		{
+			@Override
+			public void onSuccess(ArrayList<Ciudad> ciudades) 
+			{
+				selectCiudades.clear();
+				selectCiudades.addItem("Ciudad...");
+				for(Ciudad ciudad : ciudades)
+				{
+					//selectCiudades.getElement().setAttribute("key", ciudad.getId());
+					selectCiudades.addItem(ciudad.getNombre(), ciudad.getId());
+					//selectCiudades.addItem(ciudad.getNombre());
+				}
+			}
+			public void onFailure(Throwable error) 
+			{
+				Window.alert(error.toString());
+			}
+        });
+	}
 }

@@ -8,7 +8,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface DesaparecidoServiceAsync 
 {
 	void registrar(Desaparecido desaparecido, AsyncCallback<Void> callback);
-	void getDesaparecidos(boolean todos, AsyncCallback<ArrayList<Desaparecido>> asyncCallback);
+	void getDesaparecidos(byte cantidad, AsyncCallback<ArrayList<Desaparecido>> asyncCallback);
 	void getDesaparecido(String documento, AsyncCallback<Desaparecido> callback);
 	void consultarDesaparecido(Desaparecido desaparecido, AsyncCallback<ArrayList<Desaparecido>> callback);
+	void mapaDesaparecidos(AsyncCallback<ArrayList<String>> callback);
+	void getDesaparecidosDpto(String departamento, AsyncCallback<ArrayList<Desaparecido>> asyncCallback);
 }

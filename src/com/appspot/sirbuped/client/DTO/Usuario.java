@@ -7,6 +7,7 @@ import java.util.Date;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -55,6 +56,12 @@ public class Usuario implements Serializable
 	private boolean estado;
 	
 	@Persistent
+	private String keyCiudadResidencia;
+	
+	@NotPersistent
+	private Ciudad ciudadResidencia;
+	
+	@Persistent
 	ArrayList<Desaparecido> desaparecidos = new ArrayList<Desaparecido>();
 	
 	public Usuario()
@@ -79,7 +86,7 @@ public class Usuario implements Serializable
 		desaparecidos = new ArrayList<Desaparecido>();
 	}
 	
-	public String getKey() 
+	public String getId() 
 	{
 		return id;
 	}
@@ -199,6 +206,26 @@ public class Usuario implements Serializable
 		this.estado = estado;
 	}
 	
+	public String getKeyCiudadResidencia() 
+	{
+		return keyCiudadResidencia;
+	}
+
+	public void setKeyCiudadResidencia(String keyCiudadResidencia) 
+	{
+		this.keyCiudadResidencia = keyCiudadResidencia;
+	}
+
+	public Ciudad getCiudadResidencia() 
+	{
+		return ciudadResidencia;
+	}
+
+	public void setCiudadResidencia(Ciudad ciudadResidencia) 
+	{
+		this.ciudadResidencia = ciudadResidencia;
+	}
+
 	public ArrayList<Desaparecido> getDesaparecidos() 
 	{
 		return desaparecidos;

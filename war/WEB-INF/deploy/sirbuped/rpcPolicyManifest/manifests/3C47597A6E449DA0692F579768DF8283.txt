@@ -1,0 +1,2 @@
+serviceClass: com.appspot.sirbuped.client.Interfaz.LugarService
+path: A260EBBD24F9AD930029E6210DAF051C.gwt.rpc

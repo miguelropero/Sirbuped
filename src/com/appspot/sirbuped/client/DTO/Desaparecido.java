@@ -3,8 +3,10 @@ package com.appspot.sirbuped.client.DTO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -56,6 +58,12 @@ public class Desaparecido implements Serializable
 	private String keyFoto;
 	
 	@Persistent
+	private String keyCiudadNacimiento;
+	
+	@NotPersistent
+	private Ciudad ciudadNacimiento;
+	
+	@Persistent
 	private Date fechaRegistro;
 	
 	@Persistent
@@ -75,12 +83,11 @@ public class Desaparecido implements Serializable
 		
 	}
 	
-	public Desaparecido(String id, String nombre1, String nombre2, String apellido1, String apellido2, String tipoDocumento,
+	public Desaparecido(String nombre1, String nombre2, String apellido1, String apellido2, String tipoDocumento,
 						String numeroDocumento, Date fechaNacimiento, byte edad, boolean genero, String estatura, String peso, 
 						String keyFoto, Date fechaRegistro, ArrayList<Morfologia> morfologia, ArrayList<SenalParticular> senalParticular,
 						DatoDesaparicion datoDesaparicion) 
 	{
-		this.id = id;
 		this.nombre1 = nombre1;
 		this.nombre2 = nombre2;
 		this.apellido1 = apellido1;
@@ -237,6 +244,26 @@ public class Desaparecido implements Serializable
 	public Date getFechaRegistro() 
 	{
 		return fechaRegistro;
+	}
+	
+	public String getKeyCiudadNacimiento() 
+	{
+		return keyCiudadNacimiento;
+	}
+
+	public void setKeyCiudadNacimiento(String keyCiudadNacimiento) 
+	{
+		this.keyCiudadNacimiento = keyCiudadNacimiento;
+	}
+
+	public Ciudad getCiudadNacimiento() 
+	{
+		return ciudadNacimiento;
+	}
+
+	public void setCiudadNacimiento(Ciudad ciudadNacimiento) 
+	{
+		this.ciudadNacimiento = ciudadNacimiento;
 	}
 
 	public void setFechaRegistro(Date fechaRegistro) 

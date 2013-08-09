@@ -1,6 +1,7 @@
 package com.appspot.sirbuped.client.Vista;
 
 import java.util.ArrayList;
+
 import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
@@ -10,7 +11,9 @@ import com.google.gwt.maps.client.event.MarkerClickHandler;
 import com.google.gwt.maps.client.geocode.Geocoder;
 import com.google.gwt.maps.client.geocode.LatLngCallback;
 import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.maps.client.overlay.Icon;
 import com.google.gwt.maps.client.overlay.Marker;
+import com.google.gwt.maps.client.overlay.MarkerOptions;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -87,7 +90,10 @@ public class Mapa extends Composite
 	    			{
 			    		public void onSuccess(LatLng point)
 			    		{
-			    			final Marker marker=new Marker(point);
+			    			 Icon icon = Icon.newInstance("http://google-maps-icons.googlecode.com/files/blueX.png");
+			    			 MarkerOptions ops = MarkerOptions.newInstance(icon);
+			    			
+			    			final Marker marker=new Marker(point, ops);
 			    			map.addOverlay(marker);
 			    			
 			    			marker.addMarkerClickHandler(new MarkerClickHandler()

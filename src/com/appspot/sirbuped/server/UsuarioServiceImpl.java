@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
-
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.mail.Message;
@@ -24,12 +23,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import net.sf.jsr107cache.Cache;
 import net.sf.jsr107cache.CacheException;
 import net.sf.jsr107cache.CacheFactory;
 import net.sf.jsr107cache.CacheManager;
-
 import com.appspot.sirbuped.client.JCrypt;
 import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.DTO.LoginInfo;
@@ -100,7 +97,7 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 	
 		try
 		{
-			Usuario original  = pm.getObjectById(Usuario.class, editado.getKey());
+			Usuario original  = pm.getObjectById(Usuario.class, editado.getId());
 			original.setNombres(editado.getNombres());
 			original.setApellidos(editado.getApellidos());
 			original.setTipoDocumento(editado.getTipoDocumento());
@@ -117,7 +114,7 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 				cache = cacheFactory.createCache(Collections.emptyMap());
 	            
 				// Put the value into the cache.
-		        cache.put(original.getKey(), original);
+		        cache.put(original.getId(), original);
 		          
 		        HttpServletRequest request = this.getThreadLocalRequest();
 					
@@ -167,12 +164,12 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 						cache = cacheFactory.createCache(Collections.emptyMap());
 			            
 						// Put the value into the cache.
-				        cache.put(usuarioValido.getKey(), usuarioValido);
+				        cache.put(usuarioValido.getId(), usuarioValido);
 				          
 				        HttpServletRequest request = this.getThreadLocalRequest();
 							
 				        ((HttpServletRequest)request).getSession().setAttribute("usuario", usuarioValido.getNombres() + " " + usuarioValido.getApellidos());
-				        ((HttpServletRequest)request).getSession().setAttribute("keyUsuario", usuarioValido.getKey());
+				        ((HttpServletRequest)request).getSession().setAttribute("keyUsuario", usuarioValido.getId());
 					} 
 					catch (CacheException e) 
 					{
@@ -277,8 +274,6 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 		query.setFilter("email == mail");
 	    query.declareParameters("String mail");
 	    
-	    
-	    
 	    if (user != null)
 	    {
 	    	loginInfo.setLoggedIn(true);
@@ -301,12 +296,12 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 					cache = cacheFactory.createCache(Collections.emptyMap());
 				        
 					// Put the value into the cache.
-					cache.put(usuarioValido.getKey(), usuarioValido);
+					cache.put(usuarioValido.getId(), usuarioValido);
 					
 					HttpServletRequest request = this.getThreadLocalRequest();
 					
 					((HttpServletRequest)request).getSession().setAttribute("usuario", usuarioValido.getNombres() + " " + usuarioValido.getApellidos());
-					((HttpServletRequest)request).getSession().setAttribute("keyUsuario", usuarioValido.getKey());
+					((HttpServletRequest)request).getSession().setAttribute("keyUsuario", usuarioValido.getId());
 				}
 		    	else
 		    	{
@@ -370,7 +365,7 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 						"<tr>"+
 							"<td style='text-align: center; padding: 35px 0; padding-top:15px'>"+
 								"<br />"+
-								"<a href='http://sirbuped.appspot.com/activar-cuenta?key="+usuario.getKey()+"' style='color: #FFF; padding: 10px 20px; background: #00bebc; border-radius: 3px; text-decoration: none'>Activar cuenta</a>"+
+								"<a href='http://sirbuped.appspot.com/activar-cuenta?key="+usuario.getId()+"' style='color: #FFF; padding: 10px 20px; background: #00bebc; border-radius: 3px; text-decoration: none'>Activar cuenta</a>"+
 								"<br />"+
 							"</td>"+
 						"</tr>"+

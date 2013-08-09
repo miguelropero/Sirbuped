@@ -1,7 +1,6 @@
 package com.appspot.sirbuped.client.Vista;
 
 import java.util.ArrayList;
-
 import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.Interfaz.DesaparecidoService;
 import com.appspot.sirbuped.client.Interfaz.DesaparecidoServiceAsync;
@@ -9,7 +8,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
@@ -70,7 +68,7 @@ public class VistaHome extends Composite
 												"</figure>" +
 											"</div>" +
 											"<div class='box-boton-enlace'>" +
-												"<a href='#consultar'>Consultar</a>" +
+												"<a href='#personas-desaparecidas'>Consultar</a>" +
 											"</div>");
 		
 		HTML enlaceColaborar		= new HTML("<div class='box-header-enlace'>" +
@@ -135,7 +133,7 @@ public class VistaHome extends Composite
 		HTML contactenos 			= new HTML("<a href='#contactenos'>" +
 													"<h3>Cont\u00E1ctenos</h3>" +
 													"<p>" +
-														"Si tiene alguna comentario, pregunta o sugerencia acerca de nuestros servicios, no dude en ponerse " + 
+														"Tiene un comentario, pregunta o sugerencia acerca de nuestros servicios, no dude en ponerse " + 
 														"en contacto con nosotros. <span>Enviar mensaje.</span>" +
 													"</p>" +
 												"</a>");
@@ -148,8 +146,24 @@ public class VistaHome extends Composite
 		cargando.setStyleName("cargando");
 		ultimasDesapariciones.add(cargando);
     	
+		/*ArrayList<String> im = new ArrayList<String>();
+		im.add("../image/fotos/1.png");
+		im.add("../image/fotos/2.png");
+		im.add("../image/fotos/3.png");
+		im.add("../image/fotos/4.png");
+		im.add("../image/fotos/5.png");
+		im.add("../image/fotos/1.png");
+		
+		ArrayList<String> nom = new ArrayList<String>();
+		nom.add("Felipe Antonio Alarcon Bustamante");
+		nom.add("Ximena Andrea Ulloa Peña");
+		nom.add("Cristian Adolfo Briceño Echavarria");
+		nom.add("Carlos Rene Angarita Sanguino");
+		nom.add("Moises Abraham Guinel Collante");
+		nom.add("Moises Abraham Guinel Collante");*/
+		
 		DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
-		desaparecidoService.getDesaparecidos(false, new AsyncCallback<ArrayList<Desaparecido>>()
+		desaparecidoService.getDesaparecidos((byte)6, new AsyncCallback<ArrayList<Desaparecido>>()
 		{
 		    public void onSuccess(ArrayList<Desaparecido> desaparecidos) 
 		    {
@@ -164,10 +178,13 @@ public class VistaHome extends Composite
 			    		figure.setStyleName("figure");
 			    		
 			    		Image image = new Image();
-			    		image.setUrl(desaparecidos.get(i).getKeyFoto()); 
+			    		image.setUrl(desaparecido.getKeyFoto());
+			    		//image.setUrl(im.get(i));
 			    		
-			    		HTML figcaption = new HTML(desaparecidos.get(i).getNombre1() + " " +desaparecidos.get(i).getNombre2() + " " + 
-			    								   desaparecidos.get(i).getApellido1() + " " + desaparecidos.get(i).getApellido2());
+			    		HTML figcaption = new HTML(desaparecido.getNombre1() + " " +desaparecido.getNombre2() + " " + 
+			    								   desaparecido.getApellido1() + " " + desaparecido.getApellido2());
+			    		
+			    		//HTML figcaption = new HTML(nom.get(i));
 			    		
 			    		figcaption.setStyleName("figcaption");
 			    		
@@ -194,7 +211,10 @@ public class VistaHome extends Composite
 		    }
 		    public void onFailure(Throwable error) 
 			{
-				Window.alert(error.toString());
+		    	cargando.getElement().setAttribute("style", "display:none");
+		    	HTMLPanel sinResultados = new HTMLPanel("<h3>\u00A1Oppps!</h3><br><p>Lo sentimos. No se encontraron resultados que coincidan con su busqueda.</p>");
+	    		sinResultados.setStyleName("sinResultados");
+		    	ultimasDesapariciones.add(sinResultados);
 			}
         });
 		

@@ -6,6 +6,8 @@ import com.appspot.sirbuped.client.DTO.LoginInfo;
 import com.appspot.sirbuped.client.DTO.Usuario;
 import com.appspot.sirbuped.client.Interfaz.ListaBoletinService;
 import com.appspot.sirbuped.client.Interfaz.ListaBoletinServiceAsync;
+import com.appspot.sirbuped.client.Interfaz.LugarService;
+import com.appspot.sirbuped.client.Interfaz.LugarServiceAsync;
 import com.appspot.sirbuped.client.Interfaz.UsuarioService;
 import com.appspot.sirbuped.client.Interfaz.UsuarioServiceAsync;
 import com.appspot.sirbuped.client.Vista.Error404;
@@ -67,6 +69,8 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	    {
 	    	validarSesion(History.getToken());
 	    }
+	    
+	    
 	}
 	
 	/**
@@ -291,11 +295,15 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	{
 		final TextBox textEmail 	= new TextBox();
 		final Button btnRegistrar 	= new Button("<label>Registrar</label><label>Ok</label>");
+		final Button btnLugar 	= new Button("Generar");
+		final Button btnDelete 	= new Button("Eliminar");
 		
 		textEmail.getElement().setAttribute("placeHolder", "suemail@proveedor.com");
 		
 		RootPanel.get("suscribirse").add(textEmail);
 		RootPanel.get("suscribirse").add(btnRegistrar);
+		RootPanel.get("suscribirse").add(btnLugar);
+		RootPanel.get("suscribirse").add(btnDelete);
 		
 		btnRegistrar.addClickHandler(new ClickHandler() 
 		{
@@ -313,6 +321,43 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 				     public void onSuccess(Void ignore) 
 				     {
 				    	 Window.alert("Su Email se ha registrado correctamente en nuestro Boletin"); 
+					 }
+				});
+			}
+		});
+		
+		btnLugar.addClickHandler(new ClickHandler() 
+		{
+			public void onClick(ClickEvent event) 
+			{
+				LugarServiceAsync listaBoletin = GWT.create(LugarService.class);
+				listaBoletin.generarLugar(new AsyncCallback<Void>() 
+				{
+				     public void onFailure(Throwable error) 
+				     {
+				    	Window.alert(error.toString()); 
+				     }
+				     public void onSuccess(Void ignore) 
+				     {
+				    	 Window.alert("Correcto"); 
+					 }
+				});
+			}
+		});
+		btnDelete.addClickHandler(new ClickHandler() 
+		{
+			public void onClick(ClickEvent event) 
+			{
+				LugarServiceAsync listaBoletin = GWT.create(LugarService.class);
+				listaBoletin.deleteCiudad(new AsyncCallback<Void>() 
+				{
+				     public void onFailure(Throwable error) 
+				     {
+				    	Window.alert(error.toString()); 
+				     }
+				     public void onSuccess(Void ignore) 
+				     {
+				    	 Window.alert("Correcto"); 
 					 }
 				});
 			}

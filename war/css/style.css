@@ -265,7 +265,7 @@ nav a#pull
 	margin: 0em 1%;
 	text-align: center;
 	vertical-align: top;
-	width: 23.3%;
+	width: 23.5%;
 }
 .enlaces-rapidos .gwt-HTML:first-child
 {
@@ -407,7 +407,15 @@ nav a#pull
 	position: relative;
 	text-align: center;
 	vertical-align: top;
-	width: 17.8%;
+	width: 15%;
+}
+.verDesaparecido .figure:nth-child(4)
+{
+	margin-left: 0;
+}
+.verDesaparecido .figure:last-child
+{
+	margin-right: 0;
 }
 .verDesaparecido .figure:hover
 {
@@ -416,8 +424,7 @@ nav a#pull
 }
 .verDesaparecido .figure > div:nth-child(2)
 {
-	height: 200px;
-	margin-bottom: 3px;
+	margin-bottom: -1px;
 	overflow: hidden;
 	width: 100%;
 }
@@ -430,7 +437,8 @@ nav a#pull
 .verDesaparecido .figure .figcaption
 {
 	background: #00bebc;
-	height: 50px;
+	font-size: 0.9em;
+	height: 40px;
 	padding: 0.3em 0;
 	width: 100%;
 }
@@ -470,11 +478,15 @@ nav a#pull
 	margin: 2em 1%;
 	padding: 0 0 1em 0;
 	vertical-align: top;
-	width: 22.85%;
+	width: 23.5%;
 }
 .sugerencias .gwt-HTML:last-child 
 {
 	margin-right: 0 !important;
+}
+.sugerencias .gwt-HTML:nth-child(3) 
+{
+	margin-left: 0 !important;
 }
 .sugerencias .gwt-HTML a:hover p 
 {
@@ -1179,10 +1191,6 @@ footer nav li:last-child a
 {
 	width: 43.5%;
 }
-.fieldset_personales .select_anio
-{
-	
-}
 .fieldset_opciones span:nth-child(2)
 {
 	display: initial;
@@ -1342,7 +1350,7 @@ footer nav li:last-child a
  	display: inline-block;
  	margin: 0 auto;
  	vertical-align: top;
- 	width: 46%;
+ 	width: 47%;
 }
  .desaparecido .divPersonales > div:first-child
 {
@@ -1360,7 +1368,7 @@ footer nav li:last-child a
 	right: -7%;
 	top: 0%;
 }
-.desaparecido .divPersonales > div:last-child
+.desaparecido .divPersonales > div:nth-child(2)
 {
  	margin-left: 3%;
 }
@@ -1372,7 +1380,10 @@ footer nav li:last-child a
 {
  	margin-right: 0;
 }
- 
+.divPersonales select
+{
+	margin-bottom: 1.25em;
+}
 /*****************************************************************
  *********** ESTILOS DE LA MORFOLOGÍA DEL DESAPARECIDO ***********
  *****************************************************************/
@@ -1713,7 +1724,6 @@ footer nav li:last-child a
 .div-mapa
 {
 	border: 1px solid #CCC;
-	height: 500px;
 	margin: 2em auto;
 	max-width: 952px;
 	padding: 1em;
@@ -1728,7 +1738,7 @@ footer nav li:last-child a
 {
 	border: 1px solid #CCC;
 	height: 100%;
-	width: 32%;
+	width: 33%;
 }
 .info-mapa .titulo
 {
@@ -1761,46 +1771,41 @@ footer nav li:last-child a
 .info-mapa > div > div
 {
 	height: 100%;
-	width: 25%;
+	width: 20%;
 }
 .info-mapa div > div:nth-child(2), .info-mapa > div:nth-child(2)
 {
 	color: #777;
 	font-size: 0.9em;
-	width: 75%;
+	width: 80%;
 }
 .info-mapa > div:nth-child(2) 
 {
 	padding: 1em;
 	width: 100%;	
 }
-.info-mapa > div:nth-child(3) div:nth-child(1) 
+.info-mapa > div:nth-child(3) div:nth-child(1), .info-mapa > div:nth-child(4) div:nth-child(1),
+.info-mapa > div:nth-child(5) div:nth-child(1), .info-mapa > div:nth-child(6) div:nth-child(1)
 {
-	background: url("http://google-maps-icons.googlecode.com/files/redblank.png") no-repeat center;	
-}
-.info-mapa > div:nth-child(4) div:nth-child(1) 
-{
-	background: url("../image/info_maps_3.png") no-repeat center;	
-}
-.info-mapa > div:nth-child(5) div:nth-child(1) 
-{
-	background: url("http://google-maps-icons.googlecode.com/files/red10.png") no-repeat center;		
-}
-.info-mapa > div:nth-child(6) div:nth-child(1) 
-{
-	/*background: url("../image/info_maps_3.png") no-repeat center;*/
-	background: url("http://google-maps-icons.googlecode.com/files/blueX.png") no-repeat center;
+	background: url("../image/paso_presente.png") no-repeat 08px center;
 }
 
 .mapa-desaparecidos
 {
 	border: 5px solid #FFF;
 	box-shadow: 0 0 2px #AAA;
-	height: 100%;
-	margin-left: 3%;
+	height: 466px;
+	margin-left: 2%;
 	width: 65%;
 }
-
+.div-mapa .gwt-Button
+{
+	bottom: 4em;
+	border: 1px solid #b5b5b5;
+	position: absolute;	
+	padding: 0.5em 5em;
+	right: 2em;
+}
 
 /************************************************************************************
  ********************** ESTILOS DE CONSULTAS DE DESAPARECIDOS ***********************
@@ -1815,9 +1820,18 @@ footer nav li:last-child a
  }
  .extend-consulta .gwt-Label
  {
+ 	color: #404040;
  	display: inline-block;
  }
-
+ .buscarSenales .gwt-CheckBox
+ {
+ 	display: inline-block;
+ 	width: 20%;
+ }
+ .gwt-Button span:last-child
+ {
+ 	display: none;
+ }
 
 
 
@@ -1829,9 +1843,14 @@ footer nav li:last-child a
 
 @media screen and (max-width: 900px)
  {
- .desaparecido .encabezado div:last-child
+ 	.desaparecido .encabezado div:last-child
 	{
 		display: none;
+	}
+	.div-mapa
+	{
+		border: none;
+		margin: 1em auto;
 	}
 }
  @media screen and (max-width: 880px)
@@ -1839,6 +1858,15 @@ footer nav li:last-child a
 	.desaparecido .encabezado
 	{
 		display: none;
+	}
+	
+	/************************************************************************************
+ 	****************************** DESAPARECIDOS DEL HOME *******************************
+ 	************************************************************************************/
+	.verDesaparecido .figure .figcaption
+	{
+		font-size: 0.85em;
+		height: 40px;
 	}
 	
 }
@@ -1856,22 +1884,36 @@ footer nav li:last-child a
 	{
 		display: none;
 	}
+	
 	/* ENLACES DEL HOME */
 	.enlaces-rapidos .gwt-HTML
 	{
-		margin: 0.5em auto;
-		width: 90%;
+		width: 49%;
+	}
+	.enlaces-rapidos .gwt-HTML:nth-child(1), .enlaces-rapidos .gwt-HTML:nth-child(2)
+	{
+		margin-bottom: 1em;
+	}
+	.enlaces-rapidos .gwt-HTML:nth-child(2)
+	{
+		margin-right: 0;
+	}
+	.enlaces-rapidos .gwt-HTML:nth-child(3)
+	{
+		margin-left: 0;
 	}
 	.enlaces-rapidos .gwt-HTML .content-enlace
 	{
-		border: none;
 		padding: 1.5%;
 	}
 	.enlaces-rapidos .gwt-HTML .content-enlace img
 	{
 		width: 100px;
 	}
-	/* SUGERENCIAS DEL HOME */
+	
+	/************************************************************************************
+ 	******************************* SUGERENCIAS DEL HOME ********************************
+ 	************************************************************************************/
 	.sugerencias h2
 	{
 		margin: 0.5em 0 1em 0;
@@ -1879,8 +1921,39 @@ footer nav li:last-child a
 	.sugerencias .gwt-HTML
 	{
 		margin: 0.5em 1%;		
-		width: 47%;
+		width: 48%;
 	}
+	.sugerencias .gwt-HTML:nth-child(5) 
+	{
+		margin-left: 0 !important;
+	}
+	
+	/************************************************************************************
+	 ********************** ESTILOS DE CONSULTAS DE DESAPARECIDOS ***********************
+	 ************************************************************************************/
+
+	 .buscarSenales .gwt-CheckBox
+	 {
+	 	width: 33%;
+	 }
+	 
+	 /************************************************************************************
+	 ******************************* MAPA DE DESAPARECIDOS *******************************
+	 ************************************************************************************/
+	 .info-mapa
+	 {
+	 	width: 40%;
+	 }
+	 .mapa-desaparecidos
+	 {
+	 	margin-left: 0;
+	 	width: 60%;
+	 }
+	 .div-mapa .gwt-Button
+	 {
+	 	bottom: 2.8em;
+	 	right: 1em;
+	 }
 }
 
 
@@ -1923,6 +1996,22 @@ footer nav li:last-child a
 	  	text-indent: 7px;
   	}
   	
+  	/************************************************************************************
+	 ****************************** DESAPARECIDOS DEL HOME ******************************
+	 ************************************************************************************/ 
+	.verDesaparecido .figure
+	{
+		width: 32%;
+	}
+	.verDesaparecido .figure:nth-child(4), .verDesaparecido .figure:nth-child(7)
+	{
+		margin-left: 0;
+	}
+	.verDesaparecido .figure:nth-child(6), .verDesaparecido .figure:nth-child(9)
+	{
+		margin-right: 0;
+	}
+  	
   	/***********************************************************************
  	*************************** ESTILOS DEL FOOTER *************************
  	************************************************************************/	
@@ -1948,6 +2037,7 @@ footer nav li:last-child a
  	{
  		width: 98%;
  	}
+ 	
  	/***********************************************************************
  	************ ESTILOS PARA LA PAGINA DE REGISTRAR USUARIOS **************
  	************************************************************************/
@@ -1964,6 +2054,7 @@ footer nav li:last-child a
 	{
 		width: 98%;
 	}
+	
  	/***********************************************************************
   	********** ESTILOS PARA LOS DATOS PERSONALES DE DESAPARECIDOS **********
   	************************************************************************/
@@ -1980,7 +2071,7 @@ footer nav li:last-child a
  	{
  		display: none;
  	}
- 	.desaparecido .divPersonales > div:last-child
+ 	.desaparecido .divPersonales > div:nth-child(2)
  	{
  		margin-left: 0;
  	} 	
@@ -1988,6 +2079,7 @@ footer nav li:last-child a
  	/***********************************************************************
   	************** ESTILOS DE LA MORFOLOGÍA DEL DESAPARECIDO ***************
   	************************************************************************/
+  	
 	.morfologia fieldset fieldset 
 	{
 		min-height: auto !important;
@@ -2001,6 +2093,7 @@ footer nav li:last-child a
 	{
 		width: 100%;
 	}
+	
 	/*****************************************************************
  	************ ESTILOS DE LOS DATOS DE DESAPARICIÓN ***************
  	*****************************************************************/
@@ -2017,6 +2110,33 @@ footer nav li:last-child a
 	 	width: 32%;
 	}
 	
+	/************************************************************************************
+	 ******************************* MAPA DE DESAPARECIDOS *******************************
+	 ************************************************************************************/
+	 .info-mapa .titulo
+	 {
+	 	height: 70px;
+	 	line-height: 70px;
+	 }
+	 .info-mapa, .mapa-desaparecidos
+	 {
+	 	display: block;
+	 	margin: 0 0 1em 0;
+	 	width: 100%;
+	 }
+	 .info-mapa > div:nth-child(2), .info-mapa > div:nth-child(3), .info-mapa > div:nth-child(4), 
+	 .info-mapa > div:nth-child(5), .info-mapa > div:nth-child(6)
+	 {
+	 	height: 50px;
+	 }
+	 .info-mapa > div > div 
+	 {
+		width: 10%;
+	 }
+	 .div-mapa .gwt-Button
+	 {
+	 	bottom: 3em;
+	 }
 }
 
 
@@ -2031,49 +2151,13 @@ footer nav li:last-child a
 		width: 97%;
 	}
 	
-	/***********************************************************************
- 	********************* ESTILOS DEL FOOTER PRINCIPAL *********************
- 	************************************************************************/
- 	footer .boxFooter 
- 	{
- 		padding: 2em 1em 1em 1em;
- 	}
- 	footer .boxFooter article
- 	{
- 		margin: 0.5em 0;
- 		width: 100%;
- 	}
- 	footer .boxFooter article h4
- 	{
- 		border-bottom: 1px solid #BBB;
- 	}
- 	footer .boxFooter article ul li
- 	{
- 		display: inline-block;
- 		vertical-align: top;
- 		width: 48%;
- 	}
- 	footer .boxFooter article:nth-child(2), footer .boxFooter article:nth-child(4) 
- 	{
- 		text-align: left;
- 	}
-	footer .boxFooter article:nth-child(3), footer .boxFooter article:nth-child(4)
-	{
-		margin-bottom: 0.5em;
-		width: 100%;
-	}
-	footer .boxFooter .social > div > div 
- 	{
-		margin-right: 1em;
- 	}
-	
- 	/***********************************************************************
- 	********************* ESTILOS DEL HEADER PRINCIPAL *********************
- 	************************************************************************/
+ 	/************************************************************************************
+ 	************************** ESTILOS DEL HEADER PRINCIPAL *****************************
+ 	************************************************************************************/
+ 	
  	header .boxHeader
  	{
  		height: 60px;
- 		padding: 0;
  	}
  	.boxHeader figure img
  	{
@@ -2086,23 +2170,21 @@ footer nav li:last-child a
  	}
  	#botonesAcceso
  	{
- 		height: 60px;
+ 		height: 100%;
  		margin: 0;
- 		width: 45%;
+ 		overflow: hidden;
+ 		width: 46%;
+ 	}
+ 	#botonesAcceso .gwt-Hyperlink
+ 	{
+ 		margin-left: 0.5em;
+ 		padding: 0.5em 0;
  	}
  	#botonesAcceso a
  	{
- 		border: 1px solid #E5E5E5;
+ 		border-radius: 0.3em;
 		margin: 0;
-		padding: 1.8em 1.5em;
-		line-height: 4.6em;
-		border-bottom: none;
-		border-top: none;
- 	}
- 	#botonesAcceso a:first-child
- 	{
- 		margin-right: -2px;
- 		border-right: none;
+		padding: 0.5em 1.2em;
  	}
  	#botonesAcceso .gwt-Hyperlink span
  	{
@@ -2113,18 +2195,22 @@ footer nav li:last-child a
  		display: inline;
  		margin: 0;
  	}
- 	/***********************************************************************
- 	*********************** ESTILOS DEL MENU PRINCIPAL *********************
- 	************************************************************************/
+ 	
+ 	/************************************************************************************
+ 	****************************** ESTILOS DEL MENU PRINCIPAL ***************************
+ 	************************************************************************************/
+ 	
 	.boxNavegacion .menu > li a 
 	{
 		font-size: 0.8em;
 	}
-	nav ul {
+	nav ul 
+	{
 		display: none;
 		height: auto;
 	}
-	nav a#pull {
+	nav a#pull 
+	{
 		background: #aca097;
 		border-top: 1px solid #aca097;
 		color: #FFF;
@@ -2133,7 +2219,8 @@ footer nav li:last-child a
 		position: relative;
 		width: 100%;
 	}
-	nav a#pull:after {
+	nav a#pull:after 
+	{
 		content:"";
 		background: url("../image/nav-icon.png") no-repeat;
 		width: 30px;
@@ -2144,9 +2231,26 @@ footer nav li:last-child a
 		top: 10px;
 	}
 	
- 	/***********************************************************************
-  	*************** ESTILOS DELA PÁGINA DE INICIO DE SESIÓN ****************
-  	************************************************************************/
+	/************************************************************************************
+ 	********************************* ENLACES DEL HOME **********************************
+ 	************************************************************************************/
+ 	
+	.enlaces-rapidos .gwt-HTML
+	{
+		width: 100%;
+	}
+	.enlaces-rapidos .gwt-HTML
+	{
+		margin: 0 0 1em 0;
+	}
+	.enlaces-rapidos .gwt-HTML:last-child
+	{
+		margin: 0;
+	}
+
+ 	/************************************************************************************
+  	********************* ESTILOS DELA PÁGINA DE INICIO DE SESIÓN ***********************
+  	************************************************************************************/
   	
 	.div_sesion .div_boton button
 	{
@@ -2159,9 +2263,9 @@ footer nav li:last-child a
 		text-align: left;
 	}
 	
-	/***********************************************************************
-  	****************** ESTILOS GENERALES DEL DESAPARECIDO ******************
-  	************************************************************************/
+	/************************************************************************************
+  	************************** ESTILOS GENERALES DEL DESAPARECIDO ***********************
+  	************************************************************************************/
   	
 	.desaparecido .navegacion h2 
 	{
@@ -2215,7 +2319,7 @@ footer nav li:last-child a
  	{
  		border-bottom: 2px solid #D1D1D1 !important;
  	}
- 	.senales .opcion-senales div:nth-child(1),
+ 	.senales .opcion-senales div:nth-child(1), 
  	.senales .opcion-senales div:nth-child(3),
  	.senales .opcion-senales div:nth-child(4),
  	.prendas .opcion-prendas div:nth-child(1),
@@ -2238,19 +2342,111 @@ footer nav li:last-child a
  		margin: 0.3em 0 1em 0; 
  	}
  	
+ 	/***********************************************************************
+ 	********************* ESTILOS DEL FOOTER PRINCIPAL *********************
+ 	************************************************************************/
+ 	
+ 	footer .boxFooter 
+ 	{
+ 		padding: 2em 1em 1em 1em;
+ 	}
+ 	footer .boxFooter article
+ 	{
+ 		margin: 0.5em 0;
+ 		width: 100%;
+ 	}
+ 	footer .boxFooter article h4
+ 	{
+ 		border-bottom: 1px solid #BBB;
+ 	}
+ 	footer .boxFooter article ul li
+ 	{
+ 		display: inline-block;
+ 		vertical-align: top;
+ 		width: 48%;
+ 	}
+ 	footer .boxFooter article:nth-child(2), footer .boxFooter article:nth-child(4) 
+ 	{
+ 		text-align: left;
+ 	}
+	footer .boxFooter article:nth-child(3), footer .boxFooter article:nth-child(4)
+	{
+		margin-bottom: 0.5em;
+		width: 100%;
+	}
+	footer .boxFooter .social > div > div 
+ 	{
+		margin-right: 1em;
+ 	}
+ 	
+ 	/************************************************************************************
+	 ********************** ESTILOS DE CONSULTAS DE DESAPARECIDOS ***********************
+	 ************************************************************************************/
+	 
+	 .extend-consulta .gwt-Label
+	 {
+	 	display: none;
+	 }
+	 .buscarSenales .gwt-CheckBox
+	 {
+	 	width: 50%;
+	 }
+	 .gwt-Button span:first-child
+	 {
+	 	display: none;
+	 }
+	 .gwt-Button span:last-child
+	 {
+	 	display: block;
+	 }
+	 
+	 /************************************************************************************
+	 ******************************* MAPA DE DESAPARECIDOS *******************************
+	 ************************************************************************************/
+	 .info-mapa, .mapa-desaparecidos
+	 {
+	 	display: block;
+	 	margin: 0 0 1em 0;
+	 	width: 100%;
+	 }
+	 .info-mapa > div > div 
+	 {
+		display: none;
+	 }
+	 .info-mapa div > div:nth-child(2), .info-mapa > div:nth-child(2) 
+	 {
+		width: 100%;
+	 }
+	 .info-mapa > div > div:nth-child(1), .info-mapa > div > div:nth-child(2)
+	 {
+	 	display: block;
+	 }
+	 .info-mapa > div:nth-child(2), .info-mapa > div:nth-child(3), .info-mapa > div:nth-child(4), 
+	 .info-mapa > div:nth-child(5), .info-mapa > div:nth-child(6) 
+	 {
+		height: auto;
+	 }
+	 .div-mapa .gwt-Button 
+	 {
+		bottom: -1em;
+		right: -0.5em;
+		width: 95%;
+	 }
 }
-@media only screen and (max-width : 320px)
+@media screen and (max-width : 320px)
 {
-	nav li{
+	nav li
+	{
 		display: block;
 		float: none;
 		width: 100%;
 	}
-	.boxHeader
+	header .boxHeader
 	{
-		height: 88px !important;
+		height: 90px !important;
+		padding: 0;
 	}
-	.boxHeader figure, #botonesAcceso
+	header .boxHeader figure, #botonesAcceso
 	{
 		text-align: center;
 		width: 100%;
@@ -2260,7 +2456,9 @@ footer nav li:last-child a
 		border: 1px solid #DDD;
 		border-bottom: none;
 		display: inline-block;
-		width: 49.5%;
+		margin-left: 0;
+		padding: 0;
+		width: 50%;
 	}
 	#botonesAcceso .gwt-Hyperlink:last-child
 	{
@@ -2282,5 +2480,85 @@ footer nav li:last-child a
 		display: none;
 	}
 	
-	footer articule
+	/************************************************************************************
+	 ********************** ESTILOS DE CONSULTAS DE DESAPARECIDOS ***********************
+	 ************************************************************************************/
+	 
+	 .buscarSenales .gwt-CheckBox
+	 {
+	 	width: 100%;
+	 }
+}
+
+.utimosDesaparecidosMapa
+{
+	border: 1px solid #CCC;
+	border-radius: 0.2em;
+}
+.utimosDesaparecidosMapa h4
+{
+	background: url("../image/bg_header_enlaces.png");
+	border-bottom: 1px solid #CCC;
+	color: #00BEBC;
+	display: block;
+	padding: 1em 0;
+	text-align: center;
+}
+.utimosDesaparecidosMapa .gwt-Hyperlink
+{
+	background: url("../image/bg_header_enlaces.png");
+	border-top: 1px solid #CCC;
+	display: block;
+	padding: 0.5em 0;
+	text-align: center;
+}
+.utimosDesaparecidosMapa .gwt-Hyperlink a
+{
+	color: #606060;
+	font-size: 0.9em;
+	display: block;
+}
+.utimosDesaparecidosMapa .gwt-Hyperlink a:hover
+{
+	text-decoration: underline;
+}
+.enMapa
+{
+	margin: 0;
+}
+.enMapa .figure
+{
+	height: 119px;
+	width: 32%;
+}
+.enMapa .figure:first-child
+{
+	margin-left: 0;
+}
+.enMapa .figure .figcaption
+{
+	overflow: hidden;
+}
+
+.mapa-desaparecidos .sinResultados
+{
+	border: 1px solid #CCC;
+	height: 120px;
+	margin-bottom: 0.5em;
+}
+.mapa-desaparecidos .sinResultados h3
+{
+	background: url("../image/bg_header_enlaces.png");
+	border-bottom: 1px solid #CCC;
+	color: #00BEBC;
+	padding: 0.5em;
+}
+.mapa-desaparecidos .sinResultados br
+{
+	display: none;
+}
+.mapa-desaparecidos .sinResultados p
+{
+	padding: 0.5em;
+	color: #606060;
 }

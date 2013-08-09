@@ -1,7 +1,6 @@
 package com.appspot.sirbuped.client.Vista;
 
 import java.util.ArrayList;
-
 import com.appspot.sirbuped.client.DTO.DatoDesaparicion;
 import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.DTO.Morfologia;
@@ -12,7 +11,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.Composite;
@@ -25,12 +23,6 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class VistaVerDesaparecidos extends Composite 
 {
 	private HTMLPanel content;
-	
-	/*public VistaVerDesaparecidos()
-	{
-		this.retornardesaparecido(null, "");
-		initWidget(content);
-	}*/
 	
 	public VistaVerDesaparecidos()
 	{
@@ -71,14 +63,17 @@ public class VistaVerDesaparecidos extends Composite
 			    }
 			    public void onFailure(Throwable error) 
 				{
-					Window.alert(error.toString());
+			    	cargando.getElement().setAttribute("style", "display:none");
+			    	HTMLPanel sinResultados = new HTMLPanel("<h3>\u00A1Oppps!</h3><br><p>Lo sentimos. No se encontraron resultados que coincidan con su busqueda.</p>");
+		    		sinResultados.setStyleName("sinResultados");
+			    	RootPanel.get("verDesaparecido").add(sinResultados);
 				}
 	        });
 		}
 		else if(desaparecido == null)
 		{
 			DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
-			desaparecidoService.getDesaparecidos(true, new AsyncCallback<ArrayList<Desaparecido>>()
+			desaparecidoService.getDesaparecidos((byte)0, new AsyncCallback<ArrayList<Desaparecido>>()
 			{
 			    public void onSuccess(ArrayList<Desaparecido> desaparecidos) 
 			    {
@@ -87,7 +82,10 @@ public class VistaVerDesaparecidos extends Composite
 			    }
 			    public void onFailure(Throwable error) 
 				{
-					Window.alert(error.toString());
+			    	cargando.getElement().setAttribute("style", "display:none");
+			    	HTMLPanel sinResultados = new HTMLPanel("<h3>\u00A1Oppps!</h3><br><p>Lo sentimos. No se encontraron resultados que coincidan con su busqueda.</p>");
+		    		sinResultados.setStyleName("sinResultados");
+		    		content.add(sinResultados);
 				}
 	        });
 		}
@@ -135,7 +133,7 @@ public class VistaVerDesaparecidos extends Composite
 		
 		Label lugarNacimiento = new Label("Lugar de Nacimiento:");
 		lugarNacimiento.addStyleName("negrita");
-		Label valueLugar = new Label("Los Patios, Norte de Santander, Colombia");
+		Label valueLugar = new Label(desaparecido.getCiudadNacimiento().getNombre() + ",  \u0020" + desaparecido.getCiudadNacimiento().getDepartamento().getNombre() + ", \u0020" + desaparecido.getCiudadNacimiento().getDepartamento().getPais().getNombre());
 		
 		Label fechaNacimiento = new Label("Fecha de Nacimiento:");
 		fechaNacimiento.addStyleName("negrita");
@@ -146,44 +144,69 @@ public class VistaVerDesaparecidos extends Composite
 		switch (desaparecido.getFechaNacimiento().getMonth()) 
 		{
 			case(0):
+			{
 				mes = "Enero";
-			break;
+				break;
+			}
 			case(1):
+			{
 				mes = "Febrero";
-			break;
+				break;
+			}
 			case(2):
+			{
 				mes = "Marzo";
-			break;
+				break;
+			}
 			case(3):
+			{
 				mes = "Abril";
-			break;
+				break;
+			}
 			case(4):
+			{
 				mes = "Mayo";
-			break;
+				break;
+			}
 			case(5):
+			{
 				mes = "Junio";
-			break;
+				break;
+			}
 			case(6):
+			{
 				mes = "Julio";
-			break;
+				break;
+			}
 			case(7):
+			{
 				mes = "Agosto";
-			break;
+				break;
+			}
 			case(8):
+			{
 				mes = "Septiembre";
-			break;
+				break;
+			}
 			case(9):
+			{
 				mes = "Octubre";
-			break;
+				break;
+			}
 			case(10):
+			{
 				mes = "Noviembre";
-			break;
+				break;
+			}
 			case(11):
+			{
 				mes = "Diciembre";
-			break;
-			
+				break;
+			}
 			default:
-			break;
+			{
+				break;
+			}
 		}
 		
 		if(desaparecido.getFechaNacimiento() != null)
@@ -306,8 +329,8 @@ public class VistaVerDesaparecidos extends Composite
 	        divEncabezado.setStyleName("encabezado-senales");
 	        
 	  		Label lblTipo							= new Label("Tipo");
-	  		Label lblUbicacion						= new Label("Ubicacion");
-	  		Label lblCaract							= new Label("Caracteristicas");
+	  		Label lblUbicacion						= new Label("Ubicaci\u00F3n");
+	  		Label lblCaract							= new Label("Caracter\u00EDsticas");
 	  		
 	  		divEncabezado.add(lblTipo);
 	  		divEncabezado.add(lblUbicacion);
@@ -343,7 +366,7 @@ public class VistaVerDesaparecidos extends Composite
 		}
 		else
 		{
-			Label sinRegistros = new Label("No tiene informacion registrada");
+			Label sinRegistros = new Label("No tiene informaci\u00F3n registrada");
 			divSenales.add(sinRegistros);
 		}
 
@@ -360,12 +383,12 @@ public class VistaVerDesaparecidos extends Composite
 		divDesaparicion.setStyleName("mostrar-desaparicion");
 		
 		Label fechaDesaparicion		= new Label("Fecha de la Desaparicion");
-	  	Label lugarDesaparicion		= new Label("Lugar de la Desaparicion");
-	  	Label inspeccion			= new Label("Inspeccion Donde Radico la Denuncia");
-	  	Label descripcionHecho		= new Label("Descripcion del Hecho");
+	  	Label lugarDesaparicion		= new Label("Lugar de la Desaparici\u00F3n");
+	  	Label inspeccion			= new Label("Inspecci\u00F3n Donde Radic\u00F3 la Denuncia");
+	  	Label descripcionHecho		= new Label("Descripci\u00F3n del Hecho");
 	  	
 	  	Label fechaDesaparicionVal	= new Label(dato.getFechaDesaparicion().toString());
-	  	Label lugarDesaparicionVal	= new Label("Los Patios, Norte de Santander");
+	  	Label lugarDesaparicionVal	= new Label(dato.getCiudadDesaparicion().getNombre() + ", \u0020" + dato.getCiudadDesaparicion().getDepartamento().getNombre() + ", \u0020" + dato.getCiudadDesaparicion().getDepartamento().getPais().getNombre());
 	  	Label inspeccionVal			= new Label(dato.getInspeccionPolicia());
 	  	Label descripcionHechoVal	= new Label(dato.getDescripcion());
 		

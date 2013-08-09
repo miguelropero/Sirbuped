@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.appspot.sirbuped.client.Utilidades;
 import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.DTO.Morfologia;
+import com.appspot.sirbuped.client.DTO.SenalParticular;
 import com.appspot.sirbuped.client.Interfaz.DesaparecidoService;
 import com.appspot.sirbuped.client.Interfaz.DesaparecidoServiceAsync;
 import com.google.gwt.core.client.GWT;
@@ -38,11 +39,12 @@ public class VistaConsultarDesaparecido extends Composite
 		
 		final ArrayList<RadioButton> morfologiaRadio = new ArrayList<RadioButton>();
 		final ArrayList<CheckBox> morfologiaCheckBox = new ArrayList<CheckBox>();
+		final ArrayList<CheckBox> senalesCheckBox = new ArrayList<CheckBox>();
 		
 		/* Datos Personales */
 		HTMLPanel divPersonales = new HTMLPanel("");
 		divPersonales.setStyleName("extend-consulta");
-		final Button btnPersonales = new Button("-");
+		final Button btnPersonales = new Button("<span>-</span><span>Datos Personales</span>");
 		Label lblPersonales = new Label("Datos Personales");
 		divPersonales.add(btnPersonales);
 		divPersonales.add(lblPersonales);
@@ -55,8 +57,8 @@ public class VistaConsultarDesaparecido extends Composite
 		
 		HTMLPanel divMorfologia = new HTMLPanel("");
 		divMorfologia.setStyleName("extend-consulta");
-		final Button btnMorfologia = new Button("+");
-		Label lblMorfologia = new Label("Datos Morfologicos");
+		final Button btnMorfologia = new Button("<span>+</span><span>Datos Morfol\u00F3gicos</span>");
+		Label lblMorfologia = new Label("Datos Morfol\u00F3gicos");
 		divMorfologia.add(btnMorfologia);
 		divMorfologia.add(lblMorfologia);
 		
@@ -66,12 +68,13 @@ public class VistaConsultarDesaparecido extends Composite
 		/* Señales Particulares */
 		HTMLPanel divSenales = new HTMLPanel("");
 		divSenales.setStyleName("extend-consulta");
-		final Button btnSenales = new Button("+");
-		Label lblSenales = new Label("Senales Particulares");
+		final Button btnSenales = new Button("<span>+</span><span>Se\u0148ales Particulares</span>");
+		Label lblSenales = new Label("Se\u0148ales Particulares");
 		divSenales.add(btnSenales);
 		divSenales.add(lblSenales);
 		
-		final HTMLPanel senales = new HTMLPanel("<h1>Senales Particulares</h1>");
+		final HTMLPanel senales = new HTMLPanel("");
+		senales.add(this.senalesParticulares(senalesCheckBox));
 		senales.setVisible(false);
 		
 		/* Prendas de vestir */
@@ -93,12 +96,12 @@ public class VistaConsultarDesaparecido extends Composite
 			{
 				if(personales.isVisible())
 				{
-					btnPersonales.setText("+");
+					btnPersonales.setHTML("<span>+</span><span>Datos Personales</span>");
 					personales.setVisible(false);
 				}
 				else
 				{
-					btnPersonales.setText("-");
+					btnPersonales.setHTML("<span>-</span><span>Datos Personales</span>");
 					personales.setVisible(true);
 					morfologia.setVisible(false);
 					senales.setVisible(false);
@@ -112,12 +115,12 @@ public class VistaConsultarDesaparecido extends Composite
 			{
 				if(morfologia.isVisible())
 				{
-					btnMorfologia.setText("+");
+					btnMorfologia.setHTML("<span>+</span><span>Datos Morfol\u00F3gicos</span>");
 					morfologia.setVisible(false);
 				}
 				else
 				{
-					btnMorfologia.setText("-");
+					btnMorfologia.setHTML("<span>-</span><span>Datos Morfol\u00F3gicos</span>");
 					morfologia.setVisible(true);
 					senales.setVisible(false);
 				}
@@ -130,12 +133,12 @@ public class VistaConsultarDesaparecido extends Composite
 			{
 				if(senales.isVisible())
 				{
-					btnSenales.setText("+");
+					btnSenales.setHTML("<span>+</span><span>Se\u0148ales Particulares</span>");
 					senales.setVisible(false);
 				}
 				else
 				{
-					btnSenales.setText("-");
+					btnSenales.setHTML("<span>-</span><span>Se\u0148ales Particulares</span>");
 					senales.setVisible(true);
 					morfologia.setVisible(false);
 				}
@@ -196,6 +199,20 @@ public class VistaConsultarDesaparecido extends Composite
 					}
 				}
 				
+				if(!senalesCheckBox.isEmpty())
+				{
+					for(int i=0;i<senalesCheckBox.size();i++)
+					{
+						if(senalesCheckBox.get(i).getValue())
+						{
+							SenalParticular senal = new SenalParticular();
+							senal.setNombre(senalesCheckBox.get(i).getText());
+							desaparecido.getSenalParticular().add(senal);
+						}
+					}
+				}
+				
+				
 				IsWidget esWidget = null;
 				com.google.gwt.user.client.Element elemento = null;
 				
@@ -243,11 +260,11 @@ public class VistaConsultarDesaparecido extends Composite
 				else
 					desaparecido.setEdad(Byte.parseByte(edad.getValue()));
 				
-				btnPersonales.setText("+");
+				btnPersonales.setHTML("<span>+</span><span>Datos Personales</span>");
 				personales.setVisible(false);
-				btnMorfologia.setText("+");
+				btnMorfologia.setHTML("<span>+</span><span>Datos Morfol\u00F3gicos</span>");
 				morfologia.setVisible(false);
-				btnSenales.setText("+");
+				btnSenales.setHTML("<span>+</span><span>Se\u0148ales Particulares</span>");
 				senales.setVisible(false);
 				
 				RootPanel.get("verDesaparecido").clear();
@@ -268,7 +285,7 @@ public class VistaConsultarDesaparecido extends Composite
 				    	}
 				    	else
 				    	{
-				    		HTMLPanel sinResultados = new HTMLPanel("<h3>¡Oppps!</h3><br><p>Los sentimos. No se encontraron resultados que coincidan con su busqueda.</p>");
+				    		HTMLPanel sinResultados = new HTMLPanel("<h3>\u00A1Oppps!</h3><br><p>Lo sentimos. No se encontraron resultados que coincidan con su b\u00FAsqueda.</p>");
 				    		sinResultados.setStyleName("sinResultados");
 				    		RootPanel.get("verDesaparecido").add(sinResultados);
 				    		cargando.getElement().setAttribute("style", "display:none");
@@ -403,6 +420,45 @@ public class VistaConsultarDesaparecido extends Composite
 		});
 		
 		return fieldsetPersonales;
+	}
+	
+	public CaptionPanel senalesParticulares(ArrayList<CheckBox> senalesCheckBox)
+	{
+		ArrayList<String> listaSenales = new ArrayList<String>();
+		
+		listaSenales.add("Amputaciones");
+		listaSenales.add("Cicatrices");
+		listaSenales.add("Deformidad");
+		listaSenales.add("Discapacidad");
+		listaSenales.add("Fracturas");
+		listaSenales.add("Lunares");
+		listaSenales.add("Manchas");
+		listaSenales.add("Pecas");
+		listaSenales.add("Piercing");
+		listaSenales.add("Tatuajes");
+		listaSenales.add("Berrugas");
+		listaSenales.add("Embarazo");
+		listaSenales.add("Enfermedad F\u00EDsica");
+		listaSenales.add("Enfermedad Mental");
+		listaSenales.add("Otros");
+		
+		CaptionPanel fieldsetSenales = new CaptionPanel();
+		fieldsetSenales.setStyleName("buscarSenales");
+		HTMLPanel divFielset = new HTMLPanel("");
+		
+		for(int i=0; i<listaSenales.size(); i++)
+  		{
+  	        /* Creando los Componentes */
+  	        CheckBox check = new CheckBox(listaSenales.get(i));
+  	        
+  	        /* Asignando id a los componenetes */
+  	        check.getElement().setId("checkBox" + listaSenales.get(i));
+  	        divFielset.add(check);
+  	        senalesCheckBox.add(check);
+  		}
+		
+		fieldsetSenales.add(divFielset);
+		return fieldsetSenales;
 	}
 	
 	/* Metodo que permite validar si el Objeto Element que llega como Parametro 
