@@ -5,7 +5,8 @@
 	outline:0;
 	-webkit-box-sizing:border-box;
 	-moz-box-sizing:border-box;
-	box-sizing:border-box}
+	box-sizing:border-box;
+}
 html
 {
 	overflow-y: scroll;
@@ -143,11 +144,6 @@ header nav
 	color: #888;
 	cursor: pointer;
 }
-/* Sub-menu */ 
-.menu li:hover ul 
-{ 
-	/*display: block;*/
-} 
 #submenu
 {  
 	background: #E9E4DE;
@@ -409,10 +405,6 @@ nav a#pull
 	vertical-align: top;
 	width: 15%;
 }
-.verDesaparecido .figure:nth-child(4)
-{
-	margin-left: 0;
-}
 .verDesaparecido .figure:last-child
 {
 	margin-right: 0;
@@ -507,6 +499,58 @@ nav a#pull
 .sugerencias .gwt-HTML p span
 {
 	font-weight: bold;
+}
+
+/************************************************************************************
+****************************** COMO ACTUAR DEL HOME *********************************
+************************************************************************************/
+
+.comoActuar .bienvenida
+{
+	padding: 1em 0;
+	margin : 1em 0;
+}
+.comoActuar .bienvenida div
+{
+	font-size: 1.1em;
+	padding: 1em 0;
+	text-indent: 0.5em;
+}
+.comoActuar .pasos
+{
+	border: 1px solid #DDD;
+	display: inline-block;
+	margin-bottom: 1.5em;
+	width: 100%;
+	width: 49%;
+	vertical-align: top;
+	margin: 1%;
+}
+.comoActuar .pasos:nth-child(2n+1)
+{
+	margin-right: 0;
+}
+.comoActuar .pasos:nth-child(2n)
+{
+	margin-left: 0;
+}
+.comoActuar .pasos h3
+{
+	background: url("../image/bg_header_enlaces.png");
+	border-bottom: 1px solid #DDD;
+	color: #505050;
+	font-size: 1.1em;
+	margin-bottom: 0.5em;
+	padding: 0.4em 0;
+	text-indent: 0.5em;
+	width: 100%;
+}
+.comoActuar .pasos p
+{
+	color: #656565;
+	font-size: 0.9em;
+	margin-bottom: 0.5em;
+	padding: 0.5em;
 }
 
 /************************************************************************************
@@ -671,7 +715,7 @@ nav a#pull
 ************************************************************************************/
 
 /*********** Estilos de los contenedores ************/
-.content_content, .usario_personales, .contacto, .desaparecido, .verDesaparecido
+.content_content, .subContent, .usario_personales, .contacto, .desaparecido, .verDesaparecido
 {
 	height: auto;
 	margin: 2em auto;
@@ -1995,6 +2039,14 @@ footer nav li:last-child a
 	  	width: 100%;
 	  	text-indent: 7px;
   	}
+  	
+  	/* COMO ACTUAR */
+  	.comoActuar .pasos
+	 {
+		display: block;	
+		margin: 0.7em 0;
+		width: 100%;
+	 }
   	
   	/************************************************************************************
 	 ****************************** DESAPARECIDOS DEL HOME ******************************

@@ -8,8 +8,8 @@ public class VistaNosotros extends Composite
 	
 	public VistaNosotros()
 	{
-		HTMLPanel subContent = new HTMLPanel("<br><br><h1>Esta es la seccion de Nosotros</h1>");
-		subContent.setStyleName("verDesaparecido");
+		HTMLPanel subContent = new HTMLPanel("Esta es la seccion de Nosotros");
+		subContent.setStyleName("subContent");
 		
 		initWidget(subContent);
 	}

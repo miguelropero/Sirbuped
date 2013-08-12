@@ -3,7 +3,7 @@
   <cron>
     <url>/sirbuped/boletin</url>
     <description>Envio de emails  de Ultimos desaparecidos</description>
-    <schedule>every tuesday 17:00</schedule>
+    <schedule>every friday 17:30</schedule>
     <timezone>America/Bogota</timezone>
   </cron>
 </cronentries>

@@ -28,6 +28,7 @@ import net.sf.jsr107cache.CacheException;
 import net.sf.jsr107cache.CacheFactory;
 import net.sf.jsr107cache.CacheManager;
 import com.appspot.sirbuped.client.JCrypt;
+import com.appspot.sirbuped.client.DTO.Ciudad;
 import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.DTO.LoginInfo;
 import com.appspot.sirbuped.client.DTO.Usuario;
@@ -41,8 +42,6 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 {	
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(Desaparecido.class.getName());
-	
-	
 	
 	public void addUsuario(Usuario nuevo)
 	{    
@@ -66,7 +65,7 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 		        mp.addBodyPart(htmlPart);
 	        	
 	        	Message msg = new MimeMessage(session);
-	            msg.setFrom(new InternetAddress("migueleduardo23@gmail.com", "Sirbuped"));
+	            msg.setFrom(new InternetAddress("sirbuped.ufps@gmail.com", "Sirbuped"));
 	            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(nuevo.getEmail(), ""));
 	            msg.setSubject("Avtivar cuenta de usuario");
 	            msg.setContent(mp);
@@ -105,6 +104,7 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 			original.setFechaNacimiento(editado.getFechaNacimiento());
 			original.setTelefono(editado.getTelefono());
 			original.setTelefonoCel(editado.getTelefonoCel());
+			original.setKeyCiudadResidencia(editado.getKeyCiudadResidencia());
 			original.setDireccion(editado.getDireccion());
 			
 			Cache cache;
@@ -165,7 +165,7 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 			            
 						// Put the value into the cache.
 				        cache.put(usuarioValido.getId(), usuarioValido);
-				          
+				        log.warning(usuarioValido.toString());
 				        HttpServletRequest request = this.getThreadLocalRequest();
 							
 				        ((HttpServletRequest)request).getSession().setAttribute("usuario", usuarioValido.getNombres() + " " + usuarioValido.getApellidos());
@@ -236,18 +236,39 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 		}
 	}
 	
+	/** Metodo que permite obtener el usuario almacenado en Cache 
+	 * 
+	 **/
 	public Usuario getUsuario()
 	{
+		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Cache cache;
-		Usuario usuario = null;
+		Usuario usuario = new Usuario();
+		Ciudad ciudad = new Ciudad();
+		
 		try 
 		{
+			
 			String  key = this.getSesion("keyUsuario");
 			
 			CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
             cache = cacheFactory.createCache(Collections.emptyMap());
-            
+            log.warning(ciudad.toString());
             usuario = (Usuario) cache.get(key);
+            
+            //en caso de que la cache falle
+            if(usuario == null)
+            {
+            	Usuario user = pm.getObjectById(Usuario.class, key); 
+            	usuario = pm.detachCopy(user);
+            	log.warning("2" + usuario.toString());
+            }
+            
+            if(!usuario.getKeyCiudadResidencia().isEmpty())
+            {
+            	ciudad = pm.getObjectById(Ciudad.class, usuario.getKeyCiudadResidencia());
+            	log.warning(ciudad.toString());
+            }
         } 
 		catch (CacheException e) 
 		{
@@ -255,7 +276,7 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 			log.warning(e.toString());
 			usuario = null;
         }
-		
+		usuario.setCiudadResidencia(ciudad);
 		return usuario;
 	}
 	
@@ -345,7 +366,7 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 					"<table style='width:100%;margin: 0 auto'>"+
 						"<tr>"+
 							"<td>"+
-								"<p style='padding: 15px 0;'>"+
+								"<p>"+
 									"<img width='100%' src='http://sirbuped.appspot.com/image/banner/banner-mensaje.jpg' />"+
 								"</p>"+
 							"</td>"+
@@ -357,7 +378,7 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 					"<table style='color: #606060; font-size: 15px'>"+
 						"<tr>"+
 							"<td>"+
-								"<p>Hola "+ usuario.getNombres() + " " + usuario.getApellidos() +", <br /><br />Usted se ha registrado correctamente en Sirbuped. Gracias por formar parte de esta comunidad que brinda una luz de esperanza a todos aquellos que sufren el flagelo de la desaparici\u00F3n de un familiar o ser querido.</p>"+
+								"<p style='margin: 0'>Hola "+ usuario.getNombres() + " " + usuario.getApellidos() +", <br /><br />Usted se ha registrado correctamente en Sirbuped. Gracias por formar parte de esta comunidad que brinda una luz de esperanza a todos aquellos que sufren el flagelo de la desaparici\u00F3n de un familiar o ser querido.</p>"+
 
 								"<p>Para completar su registro, habilitar su cuenta y hacer uso de los diferentes servicios que ofrece nuestra plataforma debe hacer clic en el siguiente enlace.</p>"+
 							"</td>"+
@@ -420,6 +441,7 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 			"</tr>"+
 		"</table>"+
 		"</body>";
+		
 		return body;
 	}
 	
@@ -455,5 +477,42 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
         {
             pm.close();
         }
+	}
+	
+	public ArrayList<Desaparecido> getDesaparecidosUsuario()
+	{
+		Usuario usuario = this.getUsuario();
+		
+		log.warning(usuario.toString());
+		
+		ArrayList<Desaparecido> desaparecidosDetached = usuario.getDesaparecidos();
+		
+		if(desaparecidosDetached.isEmpty())
+		{
+			PersistenceManager pm = PMF.get().getPersistenceManager();
+			
+			try
+			{
+				usuario = pm.getObjectById(Usuario.class, usuario.getId());			
+				
+				ArrayList<Desaparecido> desaparecidos = usuario.getDesaparecidos();
+				for(Desaparecido desaparecido : desaparecidos)
+				{
+					Desaparecido DesaparecidoDetached = pm.detachCopy(desaparecido);
+					DesaparecidoDetached.setCiudadNacimiento(null);
+					DesaparecidoDetached.setMorfologia(null);
+					DesaparecidoDetached.setSenalParticular(null);
+					DesaparecidoDetached.setDatoDesaparicion(null);
+					
+					desaparecidosDetached.add(DesaparecidoDetached);
+				}
+			}
+			finally
+			{
+				pm.close();
+			}
+		}
+		
+		return desaparecidosDetached;
 	}
 }

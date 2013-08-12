@@ -29,6 +29,7 @@ import com.google.gwt.user.client.ui.TextBox;
 
 public class VistaUsuario extends Composite 
 {
+	
 	@SuppressWarnings("deprecation")
 	public VistaUsuario(final Usuario usuario)
 	{
@@ -125,9 +126,12 @@ public class VistaUsuario extends Composite
 			selectCiudad.addItem("Ciudad...");
 		final TextBox textDireccion		= new TextBox();
 		
-		
 		/* Cargando los datos a los select de Pais, dpto y ciudad */
-		new Utilidades().getPaises(selectPais);
+		
+		if(usuario != null && (!usuario.getKeyCiudadResidencia().isEmpty()))
+			new Utilidades().selectedIndex(selectPais, selectDepartamento, selectCiudad, usuario.getCiudadResidencia().getDepartamento().getPais().getNombre(), usuario.getCiudadResidencia().getDepartamento().getNombre(), usuario.getCiudadResidencia().getNombre());
+		else
+			new Utilidades().getPaises(selectPais);
 		
 		selectPais.addChangeHandler(new ChangeHandler()
 		{
@@ -141,7 +145,9 @@ public class VistaUsuario extends Composite
 				else
 				{
 					selectDepartamento.clear();
+					selectCiudad.clear();
 					selectDepartamento.addItem("Departamento...");
+					selectCiudad.addItem("Ciudad...");
 				}
 			}
 		});
@@ -154,6 +160,7 @@ public class VistaUsuario extends Composite
 				{
 					String pais = selectPais.getValue(selectPais.getSelectedIndex());
 					String departamento = selectDepartamento.getValue(selectDepartamento.getSelectedIndex());
+					
 					new Utilidades().getCiudades(pais, departamento, selectCiudad);
 				}
 				else
@@ -224,11 +231,6 @@ public class VistaUsuario extends Composite
 		divOpciones.add(checkBoxBoletin);
 		divOpciones.add(checkBoxCondiciones);
 		divOpciones.add(btnVerCondiciones);
-		
-		if(checkBoxCondiciones.getValue())
-		{
-			
-		}
 		
 		fieldsetOpciones.add(divOpciones);
 		
@@ -323,6 +325,7 @@ public class VistaUsuario extends Composite
 				 */
 				divError.clear();
 				boolean hayErrores=false;
+				
 				if(textNombres.getValue().isEmpty())
 				{
 					textNombres.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
@@ -383,13 +386,13 @@ public class VistaUsuario extends Composite
 					    }
 					});
 				}
-					
+				
 				if(hayErrores)
 				{
 					Label lblError = new Label("El formulario contiene campos vacios que son obligatorios");
 					divError.add(lblError);
 				}
-					
+				
 				if((selectDia.getSelectedIndex() == 0) || (selectMes.getSelectedIndex() == 0) || (selectAnio.getSelectedIndex() == 0))
 				{
 					Label lblError = new Label("La fecha de nacimiento no es valida");
@@ -413,252 +416,232 @@ public class VistaUsuario extends Composite
 					}
 					
 					if(selectMes.getSelectedIndex() == 0)
-						{
-							selectMes.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
-							selectMes.addBlurHandler(new BlurHandler()
-							{
-								@Override
-								public void onBlur(BlurEvent event)
-								{
-									if(selectMes.getSelectedIndex() > 0)
-									{
-										selectMes.getElement().setAttribute("style", "");
-										divError.setVisible(false);
-									}
-								}
-							});
-						}
-						
-						if(selectAnio.getSelectedIndex() == 0)
-						{
-							selectAnio.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
-							selectAnio.addBlurHandler(new BlurHandler()
-							{
-								@Override
-								public void onBlur(BlurEvent event)
-								{
-									if(selectAnio.getSelectedIndex() > 0)
-									{
-										selectAnio.getElement().setAttribute("style", "");
-										divError.setVisible(false);
-									}
-								}
-							});
-						}
-					}
-					
-					if(!textEmail.getValue().matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"))
 					{
-						textEmail.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
-						Label lblError = new Label("El correo electr\u00F3nico no tiene una sintaxis valida");
-						divError.add(lblError);
-						hayErrores=true;
-						textEmail.addBlurHandler(new BlurHandler()
+						selectMes.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
+						selectMes.addBlurHandler(new BlurHandler()
 						{
 							@Override
 							public void onBlur(BlurEvent event)
-						    {
-								textEmail.getElement().setAttribute("style", "");
-						        divError.setVisible(false);
-						    }
+							{
+								if(selectMes.getSelectedIndex() > 0)
+								{
+									selectMes.getElement().setAttribute("style", "");
+									divError.setVisible(false);
+								}
+							}
 						});
 					}
-					
-					Date fechaNacimiento = new Date();
-					fechaNacimiento.setYear(Integer.parseInt(selectAnio.getValue(selectAnio.getSelectedIndex()))-1900); 
-					fechaNacimiento.setMonth((selectMes.getSelectedIndex()-1));
-					fechaNacimiento.setDate(selectDia.getSelectedIndex());
-					
-					if(usuario == null)
+						
+					if(selectAnio.getSelectedIndex() == 0)
 					{
-						if((!textPassword1.getValue().equals(textPassword2.getValue())) || (textPassword1.getValue().isEmpty()))
+						selectAnio.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
+						selectAnio.addBlurHandler(new BlurHandler()
 						{
-							textPassword1.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
-							textPassword2.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
-							Label lblError = new Label("Las contrase\u00F1as no coinciden");
-							divError.add(lblError);
-							hayErrores=true;
-							textPassword1.addBlurHandler(new BlurHandler()
+							@Override
+							public void onBlur(BlurEvent event)
 							{
-								@Override
-								public void onBlur(BlurEvent event)
-							    {
-									textPassword1.getElement().setAttribute("style", "");
-									textPassword2.getElement().setAttribute("style", "");
-							        divError.setVisible(false);
-							    }
-							});
-						}
-						
-						if(!checkBoxCondiciones.getValue())
-						{
-							checkBoxCondiciones.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
-							Label lblError = new Label("Debe aceptar los Terminos y Condiciones para hacer uso del servicio");
-							divError.add(lblError);
-							hayErrores=true;
-							checkBoxCondiciones.addClickHandler(new ClickHandler()
-							{
-								@Override
-								public void onClick(ClickEvent event)
-							    {
-									if(checkBoxCondiciones.getValue())
-									{
-										checkBoxCondiciones.getElement().setAttribute("style", "");
-										divError.setVisible(false);
-									}
-							    }
-							});
-						}
-						
-						if(hayErrores)
-						{
-							divError.setVisible(true);
-							return;
-						}
-						
-						/* Encriptando la clave del usuario */
-						
-						String password = JCrypt.crypt(new Utilidades().salto(), textPassword1.getValue());
-						
-						subContent.setVisible(false);
-						final HTMLPanel cargando = new HTMLPanel("");
-						cargando.setStyleName("cargando");
-						RootPanel.get("content").add(cargando);
-						
-						/*
-						 * Realización asincrona para guardar los datos
-						 */
-						
-						UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
-						Usuario usuario = new Usuario(textNombres.getText(), textApellidos.getText(), selectTipoDoc.getValue(selectTipoDoc.getSelectedIndex()), textDocumento.getText(), fechaNacimiento, textEmail.getText(), textTelefono.getText(), textCelular.getText(), textDireccion.getText(), password);
-						
-						usuario.setKeyCiudadResidencia(selectCiudad.getElement().getAttribute("key"));
-						
-						usuarioService.addUsuario(usuario, new AsyncCallback<Void>() 
-						{
-						      public void onSuccess(Void ignore) 
-						      {
-						    	  cargando.getElement().setAttribute("style", "display:none");
-						    	  new Utilidades().ventanaModal("Registro Exitoso", "El usuario se ha registrado correctamente. Verfique su correo electronico para activar su cuenta", "Exito");
-						    	  History.newItem("iniciar-sesion");
-						      }
-						      public void onFailure(Throwable error) 
-						      {
-						    	  new Utilidades().ventanaModal("Error", error.toString(), "error");
-						    	  cargando.getElement().setAttribute("style", "display:none");
-						    	  subContent.setVisible(true);
-						      }
-						});
-					}
-					
-					else
-					{
-						
-						if(hayErrores)
-						{
-							divError.setVisible(true);
-							return;
-						}
-						
-						subContent.setVisible(false);
-						final HTMLPanel cargando = new HTMLPanel("");
-						cargando.setStyleName("cargando");
-						RootPanel.get("content").add(cargando);
-						
-						UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
-						
-						usuario.setNombres(textNombres.getValue());
-						usuario.setApellidos(textApellidos.getValue());
-						usuario.setTipoDocumento(selectTipoDoc.getValue(selectTipoDoc.getSelectedIndex()));
-						usuario.setNumeroDocumento(textDocumento.getValue());
-						usuario.setFechaNacimiento(fechaNacimiento);
-						usuario.setEmail(textEmail.getValue());
-						usuario.setTelefono(textTelefono.getValue());
-						usuario.setTelefonoCel(textCelular.getValue());
-						usuario.setDireccion(textDireccion.getValue());
-						
-						usuarioService.editarUsuario(usuario, new AsyncCallback<Void>() 
-						{
-						      public void onSuccess(Void ignore) 
-						      {
-						    	  cargando.getElement().setAttribute("style", "display:none");
-						    	  new Utilidades().ventanaModal("Actualizaci\u00F3n exitosa", "Sus datos se han actualizado correctamente", "Exito");
-						    	  History.newItem("mi-cuenta");
-						      }
-						      public void onFailure(Throwable error) 
-						      {
-						    	  subContent.setVisible(true);
-						    	  new Utilidades().ventanaModal("Error", error.toString(), "error");
-						      }
+								if(selectAnio.getSelectedIndex() > 0)
+								{
+									selectAnio.getElement().setAttribute("style", "");
+									divError.setVisible(false);
+								}
+							}
 						});
 					}
 				}
-			});
-			
-			btnVerCondiciones.addClickHandler(new ClickHandler() 
-			{
-				public void onClick(ClickEvent event) 
+					
+				if(!textEmail.getValue().matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"))
 				{
-					final DialogBox dialogBox = new DialogBox();
-					
-					dialogBox.setAnimationEnabled(true);
-					final Button closeButton = new Button("Cerrar");
-					closeButton.getElement().setId("closeButton");
-					
-					final HTMLPanel divDialogbox = new HTMLPanel("");
-					final HTMLPanel fade = new HTMLPanel("");
-					final HTMLPanel overlay = new HTMLPanel("");
-					fade.setStyleName("fade");
-					overlay.setStyleName("divModal");
-					
-					final HTMLPanel titulo = new HTMLPanel("<h1>Terminos y Condiciones del Servicio</h1>");
-					titulo.setStyleName("titulo");
-					
-					final HTMLPanel parrafo1 = new HTMLPanel("Normally, both your asses would be dead as fucking fried chicken, but you happen to pull this " +
-							"shit while I'm in a transitional period so I don't wanna kill you, I wanna help you. But I can't give you " +
-							"this case, it don't belong to me. Besides, I've already been through too much shit this morning over this " +
-							"case to hand it over to your dumb ass. ");
-					parrafo1.setStyleName("parrafo");
-					
-					final HTMLPanel parrafo2 = new HTMLPanel("Normally, both your asses would be dead as fucking fried chicken, but you happen to pull this " +
-							"shit while I'm in a transitional period so I don't wanna kill you, I wanna help you. But I can't give you " +
-							"this case, it don't belong to me. Besides, I've already been through too much shit this morning over this " +
-							"case to hand it over to your dumb ass. ");
-					parrafo2.setStyleName("parrafo");
-					
-					final HTMLPanel parrafo3 = new HTMLPanel("Normally, both your asses would be dead as fucking fried chicken, but you happen to pull this " +
-							"shit while I'm in a transitional period so I don't wanna kill you, I wanna help you. But I can't give you " +
-							"this case, it don't belong to me. Besides, I've already been through too much shit this morning over this " +
-							"case to hand it over to your dumb ass. ");
-					parrafo3.setStyleName("parrafo");
-					
-					final HTMLPanel parrafo4 = new HTMLPanel("Normally, both your asses would be dead as fucking fried chicken, but you happen to pull this " +
-							"shit while I'm in a transitional period so I don't wanna kill you, I wanna help you. But I can't give you " +
-							"this case, it don't belong to me. Besides, I've already been through too much shit this morning over this " +
-							"case to hand it over to your dumb ass. ");
-					parrafo4.setStyleName("parrafo");
-					
-					overlay.add(titulo);
-					overlay.add(parrafo1);
-					overlay.add(parrafo2);
-					overlay.add(parrafo3);
-					overlay.add(parrafo4);
-					overlay.add(closeButton);
-					divDialogbox.add(fade);
-					divDialogbox.add(overlay);
-					
-					dialogBox.setWidget(divDialogbox);
-					dialogBox.center();
-	
-					closeButton.addClickHandler(new ClickHandler() 
+					textEmail.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
+					Label lblError = new Label("El correo electr\u00F3nico no tiene una sintaxis valida");
+					divError.add(lblError);
+					hayErrores=true;
+					textEmail.addBlurHandler(new BlurHandler()
 					{
-						public void onClick(ClickEvent event) 
+						@Override
+						public void onBlur(BlurEvent event)
 						{
-							dialogBox.hide();
+							textEmail.getElement().setAttribute("style", "");
+							divError.setVisible(false);
 						}
 					});
 				}
-			});
+					
+				if(hayErrores)
+				{
+					divError.setVisible(true);
+					return;
+				}
+					
+				Date fechaNacimiento = new Date();
+				fechaNacimiento.setYear(Integer.parseInt(selectAnio.getValue(selectAnio.getSelectedIndex()))-1900); 
+				fechaNacimiento.setMonth((selectMes.getSelectedIndex()-1));
+				fechaNacimiento.setDate(selectDia.getSelectedIndex());
+					
+				if(usuario == null)
+				{
+					if((!textPassword1.getValue().equals(textPassword2.getValue())) || (textPassword1.getValue().isEmpty()))
+					{
+						textPassword1.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
+						textPassword2.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
+						Label lblError = new Label("Las contrase\u00F1as no coinciden");
+						divError.add(lblError);
+						hayErrores=true;
+						textPassword1.addBlurHandler(new BlurHandler()
+						{
+							@Override
+							public void onBlur(BlurEvent event)
+							{
+								textPassword1.getElement().setAttribute("style", "");
+								textPassword2.getElement().setAttribute("style", "");
+								divError.setVisible(false);
+							}
+						});
+					}
+						
+					if(!checkBoxCondiciones.getValue())
+					{
+						checkBoxCondiciones.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
+						Label lblError = new Label("Debe aceptar los Terminos y Condiciones para hacer uso del servicio");
+						divError.add(lblError);
+						hayErrores=true;
+						checkBoxCondiciones.addClickHandler(new ClickHandler()
+						{
+							@Override
+							public void onClick(ClickEvent event)
+							{
+								if(checkBoxCondiciones.getValue())
+								{
+									checkBoxCondiciones.getElement().setAttribute("style", "");
+									divError.setVisible(false);
+								}
+							}
+						});
+					}
+					
+					if(hayErrores)
+					{
+						divError.setVisible(true);
+						return;
+					}
+					
+					/* Encriptando la clave del usuario */
+						
+					String password = JCrypt.crypt(new Utilidades().salto(), textPassword1.getValue());
+					
+					subContent.setVisible(false);
+					final HTMLPanel cargando = new HTMLPanel("");
+					cargando.setStyleName("cargando");
+					RootPanel.get("content").add(cargando);
+					
+					/*
+					 * Realización asincrona para guardar los datos
+					 */
+					
+					UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
+					Usuario usuario = new Usuario(textNombres.getText(), textApellidos.getText(), selectTipoDoc.getValue(selectTipoDoc.getSelectedIndex()), textDocumento.getText(), fechaNacimiento, textEmail.getText(), textTelefono.getText(), textCelular.getText(), textDireccion.getText(), password);
+					
+					// Si seleccionó una ciudada, agreguela al desaparecido 
+					if(selectCiudad.getSelectedIndex() > 0)
+						usuario.setKeyCiudadResidencia(selectCiudad.getValue(selectCiudad.getSelectedIndex()));
+					
+					usuarioService.addUsuario(usuario, new AsyncCallback<Void>() 
+					{
+						public void onSuccess(Void ignore) 
+						{
+							cargando.getElement().setAttribute("style", "display:none");
+							new Utilidades().ventanaModal("Registro Exitoso", "El usuario se ha registrado correctamente. Verfique su correo electronico para activar su cuenta", "Exito");
+							History.newItem("iniciar-sesion");
+						}
+						public void onFailure(Throwable error) 
+						{
+							new Utilidades().ventanaModal("Error", error.toString(), "error");
+							cargando.getElement().setAttribute("style", "display:none");
+							subContent.setVisible(true);
+						}
+					});
+				}
+				
+				else
+				{
+					subContent.setVisible(false);
+					final HTMLPanel cargando = new HTMLPanel("");
+					cargando.setStyleName("cargando");
+					RootPanel.get("content").add(cargando);
+						
+					UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
+						
+					usuario.setNombres(textNombres.getValue());
+					usuario.setApellidos(textApellidos.getValue());
+					usuario.setTipoDocumento(selectTipoDoc.getValue(selectTipoDoc.getSelectedIndex()));
+					usuario.setNumeroDocumento(textDocumento.getValue());
+					usuario.setFechaNacimiento(fechaNacimiento);
+					usuario.setEmail(textEmail.getValue());
+					usuario.setTelefono(textTelefono.getValue());
+					usuario.setTelefonoCel(textCelular.getValue());
+					usuario.setDireccion(textDireccion.getValue());
+					
+					//Si seleccionó una ciudada, agreguela al desaparecido
+					if(selectCiudad.getSelectedIndex() > 0)
+						usuario.setKeyCiudadResidencia(selectCiudad.getValue(selectCiudad.getSelectedIndex()));
+					else
+						usuario.setKeyCiudadResidencia("");
+						
+					usuarioService.editarUsuario(usuario, new AsyncCallback<Void>() 
+					{
+						public void onSuccess(Void ignore) 
+						{
+							cargando.getElement().setAttribute("style", "display:none");
+							new Utilidades().ventanaModal("Actualizaci\u00F3n exitosa", "Sus datos se han actualizado correctamente", "Exito");
+							History.newItem("mi-cuenta");
+						}
+						public void onFailure(Throwable error) 
+						{
+							subContent.setVisible(true);
+							new Utilidades().ventanaModal("Error", error.toString(), "error");
+						}
+					});
+				}
+			}
+		});
+			
+		btnVerCondiciones.addClickHandler(new ClickHandler() 
+		{
+			public void onClick(ClickEvent event) 
+			{
+				final DialogBox dialogBox = new DialogBox();
+				
+				dialogBox.setAnimationEnabled(true);
+				final Button closeButton = new Button("Cerrar");
+				closeButton.getElement().setId("closeButton");
+				
+				final HTMLPanel divDialogbox = new HTMLPanel("");
+				final HTMLPanel fade = new HTMLPanel("");
+				final HTMLPanel overlay = new HTMLPanel("");
+				fade.setStyleName("fade");
+				overlay.setStyleName("divModal");
+				
+				final HTMLPanel titulo = new HTMLPanel("<h1>Terminos y Condiciones del Servicio</h1>");
+				titulo.setStyleName("titulo");
+				
+				overlay.add(titulo);
+				overlay.add(new VistaTerminosCondiciones());
+				overlay.add(closeButton);
+				divDialogbox.add(fade);
+				divDialogbox.add(overlay);
+				
+				dialogBox.setWidget(divDialogbox);
+				dialogBox.center();
+				
+				closeButton.addClickHandler(new ClickHandler() 
+				{
+					public void onClick(ClickEvent event) 
+					{
+						dialogBox.hide();
+					}
+				});	
+			}	
+		});	
 		
 		/*
 		 * Agregando el evento clic al boton limpiar
@@ -713,5 +696,5 @@ public class VistaUsuario extends Composite
 		});
 		
 		initWidget(subContent);
-	}
+	}	 
 }

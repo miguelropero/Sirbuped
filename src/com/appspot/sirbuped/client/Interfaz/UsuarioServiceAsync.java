@@ -1,5 +1,8 @@
 package com.appspot.sirbuped.client.Interfaz;
 
+import java.util.ArrayList;
+
+import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.DTO.LoginInfo;
 import com.appspot.sirbuped.client.DTO.Usuario;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -13,4 +16,5 @@ public interface UsuarioServiceAsync
 	public void loginGoogle(String requestUri, AsyncCallback<LoginInfo> async);
 	public void getUsuario(AsyncCallback<Usuario> async);
 	public void editarUsuario(Usuario editado, AsyncCallback<Void> async);
+	public void getDesaparecidosUsuario(AsyncCallback<ArrayList<Desaparecido>> async);
 }

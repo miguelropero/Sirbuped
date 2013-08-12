@@ -68,7 +68,7 @@ public class VistaHome extends Composite
 												"</figure>" +
 											"</div>" +
 											"<div class='box-boton-enlace'>" +
-												"<a href='#personas-desaparecidas'>Consultar</a>" +
+												"<a href='#consultar-desaparecido'>Consultar</a>" +
 											"</div>");
 		
 		HTML enlaceColaborar		= new HTML("<div class='box-header-enlace'>" +
@@ -106,7 +106,7 @@ public class VistaHome extends Composite
 		HTMLPanel contentDeInteres	= new HTMLPanel("<div class='separator'></div>" +
 				   					   				"<h2>Informaci\u00F3n de Inter\u00E9s</h2>");
 		
-		HTML comoActuar 			= new HTML("<a href='#'>" +
+		HTML comoActuar 			= new HTML("<a href='#como-actuar'>" +
 													"<h3>\u00BFC\u00F3mo Actuar?</h3>" +
 													"<p>" +
 														"Si usted se encuentra ante un caso de desaparici\u00F3n, debe tener en cuenta ciertos pasos que " +
@@ -114,7 +114,7 @@ public class VistaHome extends Composite
 													"</p>" +
 												"</a>");
 		
-		HTML requisitos 			= new HTML("<a href='#'>" +
+		HTML requisitos 			= new HTML("<a href='#requisitos'>" +
 													"<h3>Requisitos</h3>" +
 													"<p>" +
 														"Para realizar el registro de una persona desaparecida en el sistema, Sirbuped establece una serie de " + 
@@ -122,7 +122,7 @@ public class VistaHome extends Composite
 													"</p>" +
 												"</a>");
 		
-		HTML avisoLegal 			= new HTML("<a href='#'>" +
+		HTML avisoLegal 			= new HTML("<a href='#terminos-y-condiciones'>" +
 													"<h3>Aviso Legal</h3>" +
 													"<p>" +
 														"Importante gu\u00EDa que le indica como actuar en caso de desaparici\u00F3n de un familiar o ser quierido. " + 

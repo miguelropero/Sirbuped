@@ -1,5 +1,7 @@
 package com.appspot.sirbuped.client;
 
+import java.util.ArrayList;
+
 import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.DTO.ListaBoletin;
 import com.appspot.sirbuped.client.DTO.LoginInfo;
@@ -12,6 +14,7 @@ import com.appspot.sirbuped.client.Interfaz.UsuarioService;
 import com.appspot.sirbuped.client.Interfaz.UsuarioServiceAsync;
 import com.appspot.sirbuped.client.Vista.Error404;
 import com.appspot.sirbuped.client.Vista.Mapa;
+import com.appspot.sirbuped.client.Vista.VistaComoActuar;
 import com.appspot.sirbuped.client.Vista.VistaConsultarDesaparecido;
 import com.appspot.sirbuped.client.Vista.VistaContactenos;
 import com.appspot.sirbuped.client.Vista.VistaCuentaUsuario;
@@ -19,7 +22,10 @@ import com.appspot.sirbuped.client.Vista.VistaDesaparecido;
 import com.appspot.sirbuped.client.Vista.VistaHome;
 import com.appspot.sirbuped.client.Vista.VistaIniciarSesion;
 import com.appspot.sirbuped.client.Vista.VistaMapaDesaparecidos;
+import com.appspot.sirbuped.client.Vista.VistaMisDesaparecidos;
 import com.appspot.sirbuped.client.Vista.VistaNosotros;
+import com.appspot.sirbuped.client.Vista.VistaRequisitos;
+import com.appspot.sirbuped.client.Vista.VistaTerminosCondiciones;
 import com.appspot.sirbuped.client.Vista.VistaUsuario;
 import com.appspot.sirbuped.client.Vista.VistaVerDesaparecidos;
 import com.google.gwt.core.client.EntryPoint;
@@ -153,6 +159,18 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	    {
 			RootPanel.get("content").add(new VistaNosotros());
 	    }
+		else if(token.equals("como-actuar"))
+		{
+			RootPanel.get("content").add(new VistaComoActuar());
+		}
+		else if(token.equals("requisitos"))
+		{
+			RootPanel.get("content").add(new VistaRequisitos());
+		}
+		else if(token.equals("terminos-y-condiciones"))
+		{
+			RootPanel.get("content").add(new VistaTerminosCondiciones());
+		}
 		else if(token.equals("iniciar-sesion"))
 	    {
 			if(haySesion)
@@ -284,6 +302,51 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 		    	History.newItem("iniciar-sesion");
 			}
 		}
+		else if(token.equals("personas-registradas"))
+		{
+			if(haySesion)
+			{
+				final HTMLPanel cargando = new HTMLPanel("");
+				cargando.setStyleName("cargando");
+				RootPanel.get("content").add(cargando);
+				
+				UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
+				
+			    usuarioService.getDesaparecidosUsuario(new AsyncCallback<ArrayList<Desaparecido>>() 
+			    {
+			    	@Override
+					public void onSuccess(ArrayList<Desaparecido> desaparecidos) 
+			    	{
+			    		if(desaparecidos.size() > 0)
+			    		{
+			    			RootPanel.get("content").add(new VistaMisDesaparecidos(desaparecidos));
+			    		}
+			    		else
+			    		{
+			    			HTMLPanel sinResultados = new HTMLPanel("<br><h3>\u00A1Oppps!</h3><br><p>Lo sentimos. No se encontraron registros asociados a su cuenta.</p><br><br><br><br><br>");
+				    		sinResultados.setStyleName("sinResultados");
+				    		
+				    		HTMLPanel subContent = new HTMLPanel("");
+				    		subContent.setStyleName("verDesaparecido");				    		
+				    		subContent.add(sinResultados);
+				    		
+				    		RootPanel.get("content").add(subContent);
+			    		}
+			    		cargando.getElement().setAttribute("style", "display:none");
+					}
+			    	public void onFailure(Throwable error) 
+			    	{
+			    		cargando.getElement().setAttribute("style", "display:none");
+			    		new Utilidades().ventanaModal("Error", "En esto moneto no podemos consultar sus registros. Por favor intente nuevamente.", "error");
+			    	}
+			   });
+			}
+			else
+			{
+				new Utilidades().crearSesion("token", token);
+		    	History.newItem("iniciar-sesion");
+			}
+		}
 		else
 		{
 			RootPanel.get("content").add(new Error404());
@@ -302,8 +365,8 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 		
 		RootPanel.get("suscribirse").add(textEmail);
 		RootPanel.get("suscribirse").add(btnRegistrar);
-		RootPanel.get("suscribirse").add(btnLugar);
-		RootPanel.get("suscribirse").add(btnDelete);
+		//RootPanel.get("suscribirse").add(btnLugar);
+		//RootPanel.get("suscribirse").add(btnDelete);
 		
 		btnRegistrar.addClickHandler(new ClickHandler() 
 		{

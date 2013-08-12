@@ -16,6 +16,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -24,8 +26,10 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class Utilidades 
 {
@@ -264,7 +268,7 @@ public class Utilidades
 			public void onSuccess(ArrayList<Pais> paises) 
 			{
 				for(Pais pais : paises)
-					selectPaises.addItem(pais.getNombre());
+					selectPaises.addItem(pais.getNombre());				
 			}
 			public void onFailure(Throwable error) 
 			{
@@ -284,6 +288,7 @@ public class Utilidades
 			{
 				selectDepartamentos.clear();
 				selectDepartamentos.addItem("Departamento...");
+				
 				for(Departamento departamento : departamentos)
 					selectDepartamentos.addItem(departamento.getNombre());
 			}
@@ -305,12 +310,9 @@ public class Utilidades
 			{
 				selectCiudades.clear();
 				selectCiudades.addItem("Ciudad...");
+				
 				for(Ciudad ciudad : ciudades)
-				{
-					//selectCiudades.getElement().setAttribute("key", ciudad.getId());
 					selectCiudades.addItem(ciudad.getNombre(), ciudad.getId());
-					//selectCiudades.addItem(ciudad.getNombre());
-				}
 			}
 			public void onFailure(Throwable error) 
 			{
@@ -318,4 +320,115 @@ public class Utilidades
 			}
         });
 	}
+	
+	public void selectedIndex(final ListBox selectPaises, final ListBox selectDepartamentos, final ListBox selectCiudades, final String pais, final String departamento, final String ciudad )
+	{
+		
+		LugarServiceAsync lugarService = GWT.create(LugarService.class);
+		lugarService.getPaises(new AsyncCallback<ArrayList<Pais>>() 
+		{
+			@Override
+			public void onSuccess(ArrayList<Pais> paises) 
+			{
+				for(Pais pais : paises)
+					selectPaises.addItem(pais.getNombre());	
+				
+				if(!pais.isEmpty())
+				{
+					for(int i = 0; i < selectPaises.getItemCount(); i++)
+					{
+						if(selectPaises.getValue(i).equals(pais))
+						{
+							selectPaises.setSelectedIndex(i);
+							break;
+						}	
+					}
+				}
+				
+				LugarServiceAsync lugarService = GWT.create(LugarService.class);
+				lugarService.getDepartamentos(pais, new AsyncCallback<ArrayList<Departamento>>() 
+				{
+					@Override
+					public void onSuccess(ArrayList<Departamento> departamentos) 
+					{
+						selectDepartamentos.clear();
+						selectDepartamentos.addItem("Departamento...");
+						
+						for(Departamento departamento : departamentos)
+							selectDepartamentos.addItem(departamento.getNombre());
+						
+						if(!departamento.isEmpty())
+						{
+							for(int i = 0; i < selectDepartamentos.getItemCount(); i++)
+							{
+								if(selectDepartamentos.getValue(i).equals(departamento))
+								{
+									selectDepartamentos.setSelectedIndex(i);
+									break;
+								}	
+							}
+						}
+						
+						LugarServiceAsync lugarService = GWT.create(LugarService.class);
+						lugarService.getCiudades(pais, departamento, new AsyncCallback<ArrayList<Ciudad>>() 
+						{
+							@Override
+							public void onSuccess(ArrayList<Ciudad> ciudades) 
+							{
+								selectCiudades.clear();
+								selectCiudades.addItem("Ciudad...");
+								
+								for(Ciudad ciudad : ciudades)
+									selectCiudades.addItem(ciudad.getNombre(), ciudad.getId());
+								
+								if(!ciudad.isEmpty())
+								{
+									for(int i = 0; i < selectCiudades.getItemCount(); i++)
+									{
+										if(selectCiudades.getItemText(i).equals(ciudad))
+										{
+											selectCiudades.setSelectedIndex(i);
+											break;
+										}	
+									}
+								}
+							}
+							public void onFailure(Throwable error) 
+							{
+								Window.alert(error.toString());
+							}
+				        });
+					}
+					public void onFailure(Throwable error) 
+					{
+						Window.alert(error.toString());
+					}
+		        });
+			}
+			public void onFailure(Throwable error) 
+			{
+				Window.alert(error.toString());
+			}
+        });
+	}
+	
+	/* Metodo que permite validar si el Objeto Element que llega como Parametro 
+	 * es un Widget.
+	 */
+	public IsWidget getWidget(com.google.gwt.user.client.Element element) 
+	{
+	    EventListener listener = DOM
+	            .getEventListener((com.google.gwt.user.client.Element) element);
+	    // No listener attached to the element, so no widget exist for this
+	    // element
+	    if (listener == null) {
+	        return null;
+	    }
+	    if (listener instanceof Widget) {
+	        // GWT uses the widget as event listener
+	        return (Widget) listener;
+	    }
+	    return null;
+	}
+	
 }

@@ -27,18 +27,18 @@ public class VistaCuentaUsuario extends Composite
 											"</div>");
 		
 		HTML enlaceConsultar		= new HTML("<div class='box-header-enlace'>" +
-						"<h4>Realice una B\u00FAsqueda</h4>" +
+						"<h4>Personas Registradas</h4>" +
 					"</div>" +
 					"<div class='content-enlace'>" +
 						"<figure>" +
 							"<div><img alt='Buscar una Persona Desaparecida' src='image/buscar_desaparecido.png' ></div>" +
 							"<figcaption>" +
-								"Realice la busqueda de una persona desaparecida, no pierda la esperanza de encontrarla." +
+								"Consulte y actualice las personas que tiene registradas como desaparecidas en Sirbuped." +
 							"</figcaption>" +
 						"</figure>" +
 					"</div>" +
 					"<div class='box-boton-enlace'>" +
-						"<a href='#consultar'>Consultar</a>" +
+						"<a href='#personas-registradas'>Ver registros</a>" +
 					"</div>");
 		
 		HTML enlaceColaborar	= new HTML("<div class='box-header-enlace'>" +

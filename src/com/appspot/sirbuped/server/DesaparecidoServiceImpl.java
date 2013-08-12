@@ -279,6 +279,8 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 			edad = operador + " edad == " + desaparecido.getEdad();
 		
 		Query query = pm.newQuery(Desaparecido.class, nombre1 + nombre2 + apellido1 + apellido2 + tipoDocumento + numeroDocumento + edad);
+		//query.setOrdering("fechaRegistro desc");
+		log.warning(query.toString());
 		
 		try
 		{

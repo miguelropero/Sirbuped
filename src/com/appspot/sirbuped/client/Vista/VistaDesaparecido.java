@@ -22,7 +22,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -42,7 +41,6 @@ import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 
 public class VistaDesaparecido extends Composite 
 {
@@ -50,6 +48,8 @@ public class VistaDesaparecido extends Composite
 	public Boolean error = false;
 	public FormPanel uploadForm = new FormPanel();
 	Desaparecido desaparecido = null;
+	
+	private Utilidades utilidades = new Utilidades();
 	
 	public VistaDesaparecido()
 	{
@@ -192,7 +192,7 @@ public class VistaDesaparecido extends Composite
 				for(byte i=0; i < personales.size(); i++)
 				{
 					elemento = DOM.getElementById(personales.get(i));
-					esWidget = getWidget(elemento);
+					esWidget = utilidades.getWidget(elemento);
 					
 					if(i < 3)
 					{
@@ -340,7 +340,7 @@ public class VistaDesaparecido extends Composite
 				for(byte i=0; i<listaSenales.size(); i++)
 				{
 					elemento = DOM.getElementById("checkBox"+listaSenales.get(i));
-					esWidget = getWidget(elemento);
+					esWidget = utilidades.getWidget(elemento);
 					
 					if(esWidget != null)
 					{
@@ -348,11 +348,11 @@ public class VistaDesaparecido extends Composite
 						if(seleccionado.getValue())
 						{
 							elemento = DOM.getElementById("textAreaUbicacion"+listaSenales.get(i));
-							esWidget = getWidget(elemento);
+							esWidget = utilidades.getWidget(elemento);
 							final TextArea ubicacion = (TextArea) esWidget;
 							
 							elemento = DOM.getElementById("textAreaCaracteristica"+listaSenales.get(i));
-							esWidget = getWidget(elemento);
+							esWidget = utilidades.getWidget(elemento);
 							final TextArea caracteristica = (TextArea) esWidget;
 							
 							if(caracteristica.getValue().isEmpty() || ubicacion.getValue().isEmpty())
@@ -498,7 +498,7 @@ public class VistaDesaparecido extends Composite
 				for(byte i=0; i < dato.size(); i++)
 				{
 					elemento = DOM.getElementById(dato.get(i));
-					esWidget = getWidget(elemento);
+					esWidget = utilidades.getWidget(elemento);
 					final ListBox select = (ListBox) esWidget;
 						
 					if(select.getSelectedIndex() == 0)
@@ -520,7 +520,7 @@ public class VistaDesaparecido extends Composite
 				
 				
 				elemento = DOM.getElementById("descripcionHecho");
-				esWidget = getWidget(elemento);
+				esWidget = utilidades.getWidget(elemento);
 				RichTextArea descripcionHecho = (RichTextArea) esWidget;
 				
 				if(descripcionHecho.getText().length() > 500)
@@ -540,43 +540,43 @@ public class VistaDesaparecido extends Composite
 				
 				// CAPTURANDO LOS DATOS PERSONALES
 				elemento = DOM.getElementById("nombre1");
-				esWidget = getWidget(elemento);
+				esWidget = utilidades.getWidget(elemento);
 				TextBox nombre1 = (TextBox) esWidget;
 				
 				elemento = DOM.getElementById("nombre2");
-				esWidget = getWidget(elemento);
+				esWidget = utilidades.getWidget(elemento);
 				TextBox nombre2 = (TextBox) esWidget;
 				
 				elemento = DOM.getElementById("apellido1");
-				esWidget = getWidget(elemento);
+				esWidget = utilidades.getWidget(elemento);
 				TextBox apellido1 = (TextBox) esWidget;
 				
 				elemento = DOM.getElementById("apellido2");
-				esWidget = getWidget(elemento);
+				esWidget = utilidades.getWidget(elemento);
 				TextBox apellido2 = (TextBox) esWidget;
 				
 				elemento = DOM.getElementById("tipoDocumento");
-				esWidget = getWidget(elemento);
+				esWidget = utilidades.getWidget(elemento);
 				ListBox tipoDocumento = (ListBox) esWidget;
 				
 				elemento = DOM.getElementById("numeroDocumento");
-				esWidget = getWidget(elemento);
+				esWidget = utilidades.getWidget(elemento);
 				TextBox numeroDocumento = (TextBox) esWidget;
 				
 				elemento = DOM.getElementById("ciudadNacimiento");
-				esWidget = getWidget(elemento);
+				esWidget = utilidades.getWidget(elemento);
 				ListBox ciudadNacimiento = (ListBox) esWidget;
 				
 				elemento = DOM.getElementById("diaNacimiento");
-				esWidget = getWidget(elemento);
+				esWidget = utilidades.getWidget(elemento);
 				ListBox diaNacimiento = (ListBox) esWidget;
 				
 				elemento = DOM.getElementById("mesNacimiento");
-				esWidget = getWidget(elemento);
+				esWidget = utilidades.getWidget(elemento);
 				ListBox mesNacimiento = (ListBox) esWidget;
 				
 				elemento = DOM.getElementById("anioNacimiento");
-				esWidget = getWidget(elemento);
+				esWidget = utilidades.getWidget(elemento);
 				ListBox anioNacimiento = (ListBox) esWidget;
 				
 				Date fechaNacimiento = null;
@@ -593,7 +593,7 @@ public class VistaDesaparecido extends Composite
 				TextBox edad = (TextBox) esWidget;*/
 				
 				elemento = DOM.getElementById("genero");
-				esWidget = getWidget(elemento);
+				esWidget = utilidades.getWidget(elemento);
 				ListBox listGenero = (ListBox) esWidget;
 				Boolean genero;
 				
@@ -603,11 +603,11 @@ public class VistaDesaparecido extends Composite
 					genero = false;
 				
 				elemento = DOM.getElementById("estatura");
-				esWidget = getWidget(elemento);
+				esWidget = utilidades.getWidget(elemento);
 				TextBox estatura = (TextBox) esWidget;
 				
 				elemento = DOM.getElementById("peso");
-				esWidget = getWidget(elemento);
+				esWidget = utilidades.getWidget(elemento);
 				TextBox peso = (TextBox) esWidget;
 				
 				desaparecido = new Desaparecido();
@@ -661,7 +661,7 @@ public class VistaDesaparecido extends Composite
 				for(byte i=0; i<listaSenales.size(); i++)
 				{
 					elemento = DOM.getElementById("checkBox"+listaSenales.get(i));
-					esWidget = getWidget(elemento);
+					esWidget = utilidades.getWidget(elemento);
 					
 					if(esWidget != null)
 					{
@@ -669,11 +669,11 @@ public class VistaDesaparecido extends Composite
 						if(seleccionado.getValue())
 						{
 							elemento = DOM.getElementById("textAreaUbicacion"+listaSenales.get(i));
-							esWidget = getWidget(elemento);
+							esWidget = utilidades.getWidget(elemento);
 							TextArea ubicacion = (TextArea) esWidget;
 							
 							elemento = DOM.getElementById("textAreaCaracteristica"+listaSenales.get(i));
-							esWidget = getWidget(elemento);
+							esWidget = utilidades.getWidget(elemento);
 							TextArea caracteristica = (TextArea) esWidget;
 							
 							SenalParticular senal = new SenalParticular(listaSenales.get(i).toString(), ubicacion.getValue(), caracteristica.getValue());
@@ -684,23 +684,23 @@ public class VistaDesaparecido extends Composite
 				
 				// CAPTURANDO LOS DATOS RELATIVOS A LA DESAPARICION 
 				elemento = DOM.getElementById("corregimiento");
-				esWidget = getWidget(elemento);
+				esWidget = utilidades.getWidget(elemento);
 				TextBox corregimiento = (TextBox) esWidget;
 				
 				elemento = DOM.getElementById("inspeccion");
-				esWidget = getWidget(elemento);
+				esWidget = utilidades.getWidget(elemento);
 				TextBox inspeccion = (TextBox) esWidget;
 				
 				elemento 	= DOM.getElementById("diaDesaparicion");
-				esWidget 	= getWidget(elemento);
+				esWidget 	= utilidades.getWidget(elemento);
 				ListBox diaDesaparicion = (ListBox) esWidget;
 				
 				elemento 	= DOM.getElementById("mesDesaparicion");
-				esWidget 	= getWidget(elemento);
+				esWidget 	= utilidades.getWidget(elemento);
 				ListBox mesDesaparicion = (ListBox) esWidget;
 				
 				elemento 	= DOM.getElementById("anioDesaparicion");
-				esWidget 	= getWidget(elemento);
+				esWidget 	= utilidades.getWidget(elemento);
 				ListBox anioDesaparicion = (ListBox) esWidget;
 				
 				/* Generando la fecha de desaparicion */
@@ -712,7 +712,7 @@ public class VistaDesaparecido extends Composite
 				
 				/* Generando el Lugar de Desaparicion */
 				elemento 	= DOM.getElementById("ciudadDesaparicion");
-				esWidget 	= getWidget(elemento);
+				esWidget 	= utilidades.getWidget(elemento);
 				ListBox ciudadDesaparicion = (ListBox) esWidget;
 				
 				DatoDesaparicion datoDesaparicion = new DatoDesaparicion(fechaDesaparicion, corregimiento.getValue(), inspeccion.getValue(), descripcionHecho.getText());
@@ -1714,24 +1714,5 @@ public class VistaDesaparecido extends Composite
  		divEncabezado.add(lblObservaciones);
  		
  		return divEncabezado;
-	}
-	
-	/* Metodo que permite validar si el Objeto Element que llega como Parametro 
-	 * es un Widget.
-	 */
-	public static IsWidget getWidget(com.google.gwt.user.client.Element element) 
-	{
-	    EventListener listener = DOM
-	            .getEventListener((com.google.gwt.user.client.Element) element);
-	    // No listener attached to the element, so no widget exist for this
-	    // element
-	    if (listener == null) {
-	        return null;
-	    }
-	    if (listener instanceof Widget) {
-	        // GWT uses the widget as event listener
-	        return (Widget) listener;
-	    }
-	    return null;
 	}
 }
