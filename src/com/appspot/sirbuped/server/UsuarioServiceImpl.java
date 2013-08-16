@@ -347,6 +347,26 @@ public class UsuarioServiceImpl extends RemoteServiceServlet implements UsuarioS
 	    return loginInfo;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public boolean validarEmail(String email)
+	{
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Query query = pm.newQuery(Usuario.class, "email == \'" + email + "\'");
+		try
+		{
+			List<Usuario> usuarios = (List<Usuario>) query.execute();
+			
+			if(usuarios.size() > 0)
+				return false;
+		}
+		finally
+		{
+			pm.close();
+		}
+		
+		return true;
+	}
+	
 	public String body(Usuario usuario)
 	{
 		String body = "<body style='background: #F5F5F5; font-family: Helvetica; padding: 15px 0'>"+

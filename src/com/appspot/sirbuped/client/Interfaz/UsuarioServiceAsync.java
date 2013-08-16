@@ -17,4 +17,5 @@ public interface UsuarioServiceAsync
 	public void getUsuario(AsyncCallback<Usuario> async);
 	public void editarUsuario(Usuario editado, AsyncCallback<Void> async);
 	public void getDesaparecidosUsuario(AsyncCallback<ArrayList<Desaparecido>> async);
+	public void validarEmail(String email, AsyncCallback<Boolean> async);
 }

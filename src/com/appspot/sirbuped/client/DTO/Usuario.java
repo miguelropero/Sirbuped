@@ -62,7 +62,7 @@ public class Usuario implements Serializable
 	private Ciudad ciudadResidencia;
 	
 	@Persistent
-	ArrayList<Desaparecido> desaparecidos = new ArrayList<Desaparecido>();
+	private ArrayList<Desaparecido> desaparecidos = new ArrayList<Desaparecido>();
 	
 	public Usuario()
 	{
@@ -237,16 +237,12 @@ public class Usuario implements Serializable
 	}
 
 	@Override
-	public String toString() {
-		return "Usuario [id=" + id + ", nombres=" + nombres + ", apellidos="
-				+ apellidos + ", tipoDocumento=" + tipoDocumento
-				+ ", numeroDocumento=" + numeroDocumento + ", fechaNacimiento="
-				+ fechaNacimiento + ", email=" + email + ", telefono="
-				+ telefono + ", telefonoCel=" + telefonoCel + ", direccion="
-				+ direccion + ", password=" + password + ", estado=" + estado
-				+ ", desaparecidos=" + desaparecidos + "]";
+	public String toString() 
+	{
+		return "Usuario [id=" + id + ", nombres=" + nombres + ", apellidos=" + apellidos 
+				+ ", tipoDocumento=" + tipoDocumento + ", numeroDocumento=" + numeroDocumento 
+				+ ", fechaNacimiento=" + fechaNacimiento + ", email=" + email + ", telefono="
+				+ telefono + ", telefonoCel=" + telefonoCel + ", direccion=" + direccion 
+				+ ", password=" + password + ", estado=" + estado + ", desaparecidos=" + desaparecidos + "]";
 	}
-
-	
-	
 }

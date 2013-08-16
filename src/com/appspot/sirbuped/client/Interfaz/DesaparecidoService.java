@@ -14,4 +14,10 @@ public interface DesaparecidoService extends RemoteService
 	ArrayList<Desaparecido> consultarDesaparecido(Desaparecido desaparecido);
 	ArrayList<String> mapaDesaparecidos();
 	ArrayList<Desaparecido> getDesaparecidosDpto(String departamento);
+	void actualizarDesaparecido(Desaparecido actualizado);
+	Desaparecido validarDesaparecidoUsuario(String keyDesaparecido);
+	/* estadisticas */
+	String consultarGenero();
+	ArrayList<String> consultarDesaparecidoEdad();
+	ArrayList<String> consultarDesaparecidoAnio();
 }

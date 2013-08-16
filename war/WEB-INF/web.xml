@@ -79,7 +79,22 @@
    	<servlet-name>lugar</servlet-name>
    	<url-pattern>/sirbuped/lugar</url-pattern>
   </servlet-mapping>
-
+  
+  <servlet>
+  	<servlet-name>contacto</servlet-name>
+  	<servlet-class>com.appspot.sirbuped.server.MensajeServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet>
+   	<servlet-name>contacto</servlet-name>
+   	<servlet-class>com.appspot.sirbuped.server.MensajeServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>contacto</servlet-name>
+  	<url-pattern>/_ah/mail/admin@sirbuped.appspotmail.com</url-pattern>
+  </servlet-mapping>
+  
   <servlet>
     <servlet-name>SystemServiceServlet</servlet-name>
     <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>

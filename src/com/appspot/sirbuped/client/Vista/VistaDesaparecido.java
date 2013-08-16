@@ -7,6 +7,7 @@ import com.appspot.sirbuped.client.Utilidades;
 import com.appspot.sirbuped.client.DTO.DatoDesaparicion;
 import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.DTO.Morfologia;
+import com.appspot.sirbuped.client.DTO.PrendaVestir;
 import com.appspot.sirbuped.client.DTO.SenalParticular;
 import com.appspot.sirbuped.client.Interfaz.DesaparecidoService;
 import com.appspot.sirbuped.client.Interfaz.DesaparecidoServiceAsync;
@@ -45,14 +46,20 @@ import com.google.gwt.user.client.ui.TextBox;
 public class VistaDesaparecido extends Composite 
 {
 	public ArrayList<String> listaSenales = new ArrayList<String>();
+	public ArrayList<String> listaPrendas = new ArrayList<String>();
 	public Boolean error = false;
 	public FormPanel uploadForm = new FormPanel();
-	Desaparecido desaparecido = null;
+	public Desaparecido desaparecido = null;
 	
 	private Utilidades utilidades = new Utilidades();
 	
 	public VistaDesaparecido()
+	{}
+	
+	public VistaDesaparecido(final Desaparecido editar)
 	{
+		this.desaparecido = editar; 
+		
 		HTMLPanel subContent 			= new HTMLPanel("");
 		subContent.setStyleName("desaparecido");
 		subContent.getElement().setId("desaparecido");
@@ -106,7 +113,7 @@ public class VistaDesaparecido extends Composite
 		final HTMLPanel encabezado 		= this.crearEncabezado();
 		final HTMLPanel navegacion 		= new HTMLPanel("");
 		final HTML titulo				= new HTML("<h2>Datos Personales</h2>");
-		final Label descripcion			= new Label("Para registrarse en Sofia Plus debe ingresar informacion basica de identificacion. Tenga en cuenta que los campos marcados con * son obligatorios para continuar el registro.");
+		final Label descripcion				= new Label("Representan los principales filtros de b\u00FAuqeda para que los usuarios puedan ayudar a identificar y suminnistrar informaci\u00F3n de una persona desaparecida. Los campos marcados con (*) son obligatorios.");
 		HTMLPanel DivPasos				= new HTMLPanel("");
 		final HTML paso1				= new HTML("Paso 1");
 		final HTML paso2				= new HTML("Paso 2");
@@ -167,6 +174,9 @@ public class VistaDesaparecido extends Composite
 		{
 			public void onClick(ClickEvent event) 
 			{
+				
+				descripcion.setText("Permiten dar una descripci\u00F3n mas detallada de las caracter\u00EDsticas fisicas de la persona. Su registro no es obligatorio pero resulta importante para que los usuarios puedan contribuir a su b\u00FAsqueda.");
+				
 				error = false;
 				divError.clear();
 				Label errores = new Label();
@@ -178,7 +188,6 @@ public class VistaDesaparecido extends Composite
 				personales.add("nombre1");
 				personales.add("apellido1");
 				personales.add("numeroDocumento");
-				//personales.add("edad");
 				personales.add("tipoDocumento");
 				personales.add("genero");
 				personales.add("paisNacimiento");
@@ -237,7 +246,8 @@ public class VistaDesaparecido extends Composite
 					else
 					{
 						final FileUpload fotografia = (FileUpload) esWidget;
-						if(fotografia.getFilename().isEmpty())
+							
+						if(fotografia.getFilename().isEmpty() && desaparecido == null)
 						{
 							fotografia.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
 							errores = new Label("El formulario contiene campos vacios. Por favor verifique e intente nuevamente");
@@ -251,7 +261,7 @@ public class VistaDesaparecido extends Composite
 						    });
 							error = true;
 						}
-						else
+						else if(!fotografia.getFilename().isEmpty())
 						{
 							String extension = fotografia.getFilename().substring(fotografia.getFilename().length()-3, fotografia.getFilename().length());
 							if(!(extension.equals("gif") || extension.equals("jpg") || extension.equals("png")))
@@ -292,6 +302,7 @@ public class VistaDesaparecido extends Composite
 		{
 			public void onClick(ClickEvent event) 
 			{
+				descripcion.setText("Permiten definir caracter\u00EDsticas unicas y particulares de la persona desaparecida. Su registro no es obligatorio pero resulta importante para que los usuarios puedan contribuir a su identificaci\u00F3n y b\u00FAsqueda.");
 				encabezado.getElementById("punta_personales").setClassName("punta_flecha_pasado");
 				encabezado.getElementById("morfologia").setClassName("flecha_pasado");
 				encabezado.getElementById("punta_morfologia").setClassName("punta_flecha_pasado_ultima");
@@ -312,6 +323,7 @@ public class VistaDesaparecido extends Composite
 		{
 			public void onClick(ClickEvent event) 
 			{
+				descripcion.setText("Representan los principales filtros de b\u00FAuqeda para que los usuarios puedan ayudar a identificar y suminnistrar informaci\u00F3n de una persona desaparecida. Los campos marcados con (*) son obligatorios.");
 				encabezado.getElementById("personales").setClassName("flecha_presente");
 				encabezado.getElementById("punta_personales").setClassName("punta_flecha_presente");
 				encabezado.getElementById("morfologia").setClassName("flecha_futuro");
@@ -394,6 +406,7 @@ public class VistaDesaparecido extends Composite
 				
 				divError.setVisible(false);
 				
+				descripcion.setText("Informaci\u00F3n relacionada con los atuendos que la persona utilizaba al momento de la desaparici\u00F3n. Su registro no es obligatorio pero resulta importante para que los usuarios puedan contribuir a su identificaci\u00F3n y b\u00FAsqueda.");
 				encabezado.getElementById("punta_morfologia").setClassName("punta_flecha_pasado");
 				encabezado.getElementById("senales").setClassName("flecha_pasado");
 				encabezado.getElementById("punta_senales").setClassName("punta_flecha_pasado_ultima");
@@ -414,6 +427,7 @@ public class VistaDesaparecido extends Composite
 		{
 			public void onClick(ClickEvent event) 
 			{
+				descripcion.setText("Permiten dar una descripci\u00F3n mas detallada de las caracter\u00EDsticas fisicas de la persona. Su registro no es obligatorio pero resulta importante para que los usuarios puedan contribuir a su b\u00F3squeda.");
 				encabezado.getElementById("punta_personales").setClassName("punta_flecha_pasado_ultima");
 				encabezado.getElementById("morfologia").setClassName("flecha_presente");
 				encabezado.getElementById("punta_morfologia").setClassName("punta_flecha_presente");
@@ -436,6 +450,69 @@ public class VistaDesaparecido extends Composite
 		{
 			public void onClick(ClickEvent event) 
 			{
+				divError.clear();
+				error = false;
+				IsWidget esWidget = null;
+				com.google.gwt.user.client.Element elemento = null;
+				
+				for(byte i=0; i<listaPrendas.size(); i++)
+				{
+					elemento = DOM.getElementById("checkBox"+listaPrendas.get(i));
+					esWidget = utilidades.getWidget(elemento);
+					
+					if(esWidget != null)
+					{
+						CheckBox seleccionado = (CheckBox) esWidget;
+						if(seleccionado.getValue())
+						{
+							elemento = DOM.getElementById("textAreaCaracteristica"+listaPrendas.get(i));
+							esWidget = utilidades.getWidget(elemento);
+							final TextArea caracteristica = (TextArea) esWidget;
+							
+							elemento = DOM.getElementById("textAreaObservacion"+listaPrendas.get(i));
+							esWidget = utilidades.getWidget(elemento);
+							final TextArea observacion = (TextArea) esWidget;
+							
+							if(caracteristica.getValue().isEmpty() || observacion.getValue().isEmpty())
+							{
+								error = true;
+								caracteristica.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
+								observacion.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
+								
+								caracteristica.addBlurHandler(new BlurHandler()
+								{
+									@Override
+							        public void onBlur(BlurEvent event)
+							        {
+										caracteristica.getElement().setAttribute("style", "");
+							        	divError.setVisible(false);
+							        }
+							    });
+								
+								observacion.addBlurHandler(new BlurHandler()
+								{
+									@Override
+							        public void onBlur(BlurEvent event)
+							        {
+										observacion.getElement().setAttribute("style", "");
+							        	divError.setVisible(false);
+							        }
+							    });
+							}
+						}
+					}
+				}
+				if(error)
+				{
+					Label errores = new Label("Si selecciona una prenda, debe completar los campos asociados de Caracter\u00EDstica Observaci\u00F3n.");
+					divError.add(errores);
+					divError.setVisible(true);
+					return;
+				}
+				
+				divError.setVisible(false);
+				
+				descripcion.setText("Datos asociados del momento de desaparici\u00F3n de la persona, debe ser claro y puntual para describir los hechos. Los campos marcados con (*) son obligatorios.");
 				encabezado.getElementById("punta_senales").setClassName("punta_flecha_pasado");	//encabezado.getElementById("punta_medicos").setClassName("punta_flecha_pasado");
 				encabezado.getElementById("prendas").setClassName("flecha_pasado");
 				encabezado.getElementById("punta_prendas").setClassName("punta_flecha_pasado_ultima");
@@ -456,6 +533,7 @@ public class VistaDesaparecido extends Composite
 		{
 			public void onClick(ClickEvent event) 
 			{
+				descripcion.setText("Permiten definir caracter\u00EDsticas unicas y particulares de la persona desaparecida. Su registro no es obligatorio pero resulta importante para que los usuarios puedan contribuir a su identificaci\u00F3n y b\u00FAsqueda.");
 				encabezado.getElementById("punta_morfologia").setClassName("punta_flecha_pasado_ultima");
 				encabezado.getElementById("senales").setClassName("flecha_presente");	
 				encabezado.getElementById("punta_senales").setClassName("punta_flecha_presente");
@@ -579,6 +657,10 @@ public class VistaDesaparecido extends Composite
 				esWidget = utilidades.getWidget(elemento);
 				ListBox anioNacimiento = (ListBox) esWidget;
 				
+				elemento = DOM.getElementById("fotografia");
+				esWidget = utilidades.getWidget(elemento);
+				FileUpload fotografia = (FileUpload) esWidget;
+				
 				Date fechaNacimiento = null;
 				if(diaNacimiento.getSelectedIndex() != 0)
 				{
@@ -587,10 +669,6 @@ public class VistaDesaparecido extends Composite
 					fechaNacimiento.setMonth((mesNacimiento.getSelectedIndex()-1));
 					fechaNacimiento.setDate(diaNacimiento.getSelectedIndex());
 				}
-				
-				/*elemento = DOM.getElementById("edad");
-				esWidget = getWidget(elemento);
-				TextBox edad = (TextBox) esWidget;*/
 				
 				elemento = DOM.getElementById("genero");
 				esWidget = utilidades.getWidget(elemento);
@@ -610,7 +688,8 @@ public class VistaDesaparecido extends Composite
 				esWidget = utilidades.getWidget(elemento);
 				TextBox peso = (TextBox) esWidget;
 				
-				desaparecido = new Desaparecido();
+				if(desaparecido == null)
+					desaparecido = new Desaparecido();
 				
 				desaparecido.setNombre1(nombre1.getValue());
 				desaparecido.setNombre2(nombre2.getValue());
@@ -624,6 +703,10 @@ public class VistaDesaparecido extends Composite
 				desaparecido.setEstatura(estatura.getValue());
 				desaparecido.setPeso(peso.getValue());
 				
+				desaparecido.getMorfologia().clear();
+				desaparecido.getSenalParticular().clear();
+				desaparecido.getPrendaVestir().clear();
+				
 				if(!morfologiaRadio.isEmpty())
 				{
 					for(int i=0;i<morfologiaRadio.size();i++)
@@ -631,7 +714,7 @@ public class VistaDesaparecido extends Composite
 						if(morfologiaRadio.get(i).getValue()==true)
 						{
 							Morfologia morfologia = new Morfologia();
-							morfologia.setId(morfologiaRadio.get(i).getElement().getAttribute("identificador"));
+							morfologia.setConsecutivo(morfologiaRadio.get(i).getElement().getAttribute("identificador"));
 							morfologia.setNombre(morfologiaRadio.get(i).getText());
 							morfologia.setTipo(morfologiaRadio.get(i).getElement().getAttribute("tipo"));
 							morfologia.setCaracteristica(morfologiaRadio.get(i).getElement().getAttribute("caracterictica"));
@@ -647,7 +730,7 @@ public class VistaDesaparecido extends Composite
 						if(morfologiaCheckBox.get(i).getValue())
 						{
 							Morfologia morfologia = new Morfologia();
-							morfologia.setId(morfologiaCheckBox.get(i).getElement().getAttribute("identificador"));
+							morfologia.setConsecutivo(morfologiaCheckBox.get(i).getElement().getAttribute("identificador"));
 							morfologia.setNombre(morfologiaCheckBox.get(i).getText());
 							morfologia.setTipo(morfologiaCheckBox.get(i).getElement().getAttribute("tipo"));
 							morfologia.setCaracteristica(morfologiaCheckBox.get(i).getElement().getAttribute("caracterictica"));
@@ -678,6 +761,32 @@ public class VistaDesaparecido extends Composite
 							
 							SenalParticular senal = new SenalParticular(listaSenales.get(i).toString(), ubicacion.getValue(), caracteristica.getValue());
 							desaparecido.getSenalParticular().add(senal);
+						}
+					}
+				}
+				
+				/* Para Capturar las Prendas de Vestir seleccionadas */ 
+				
+				for(byte i=0; i<listaPrendas.size(); i++)
+				{
+					elemento = DOM.getElementById("checkBox"+listaPrendas.get(i));
+					esWidget = utilidades.getWidget(elemento);
+					
+					if(esWidget != null)
+					{
+						CheckBox seleccionado = (CheckBox) esWidget;
+						if(seleccionado.getValue())
+						{
+							elemento = DOM.getElementById("textAreaCaracteristica"+listaPrendas.get(i));
+							esWidget = utilidades.getWidget(elemento);
+							TextArea caracteristicas = (TextArea) esWidget;
+							
+							elemento = DOM.getElementById("textAreaObservacion"+listaPrendas.get(i));
+							esWidget = utilidades.getWidget(elemento);
+							TextArea observacion = (TextArea) esWidget;
+							
+							PrendaVestir prenda = new PrendaVestir(listaPrendas.get(i).toString(), caracteristicas.getValue(), observacion.getValue());
+							desaparecido.getPrendaVestir().add(prenda);
 						}
 					}
 				}
@@ -723,30 +832,78 @@ public class VistaDesaparecido extends Composite
 				cargando.setStyleName("cargando");
 				RootPanel.get("content").add(cargando);
 				
-				UploadImageAsync uploadImagen = GWT.create(UploadImage.class);
-				uploadImagen.getBlobStoreUploadUrl(new AsyncCallback<String>() 
+				if(!fotografia.getFilename().isEmpty())
 				{
-					public void onSuccess(String result) 
+					UploadImageAsync uploadImagen = GWT.create(UploadImage.class);
+					uploadImagen.getBlobStoreUploadUrl(new AsyncCallback<String>() 
 					{
-		                uploadForm.setAction(result.toString());
-		                uploadForm.submit();
-		                //uploadForm.reset();
-		            }
-		            public void onFailure(Throwable caught) 
-		            {
-		            	new Utilidades().ventanaModal("Error", caught.toString() , "error");
-		            }
-		        });
+						public void onSuccess(String result) 
+						{
+			                uploadForm.setAction(result.toString());
+			                uploadForm.submit();
+			                //uploadForm.reset();
+			            }
+			            public void onFailure(Throwable caught) 
+			            {
+			            	new Utilidades().ventanaModal("Error", caught.toString() , "error");
+			            }
+			        });
+				}
 				
-				uploadForm.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() 
+				if(editar == null)
 				{
-					@Override
-					public void onSubmitComplete(SubmitCompleteEvent event) 
+					uploadForm.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() 
 					{
-						desaparecido.setKeyFoto("/sirbuped/uploadImagen?blob-key=" + event.getResults().trim());
-					
+						@Override
+						public void onSubmitComplete(SubmitCompleteEvent event) 
+						{
+							desaparecido.setKeyFoto("/sirbuped/uploadImagen?blob-key=" + event.getResults().trim());
+							
+							DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
+							desaparecidoService.registrar(desaparecido, new AsyncCallback<Void>() 
+							{
+							    public void onSuccess(Void ignore) 
+							    {
+							    	History.newItem("-" + desaparecido.getNumeroDocumento());
+							    }
+							    public void onFailure(Throwable error) 
+								{
+									new Utilidades().ventanaModal("Error", error.toString() , "error");
+								}
+					        });
+						}
+					});
+				}
+				else
+				{
+					if(!fotografia.getFilename().isEmpty())
+					{
+						uploadForm.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() 
+						{
+							@Override
+							public void onSubmitComplete(SubmitCompleteEvent event) 
+							{
+								desaparecido.setKeyFoto("/sirbuped/uploadImagen?blob-key=" + event.getResults().trim());
+							
+								DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
+								desaparecidoService.actualizarDesaparecido(desaparecido, new AsyncCallback<Void>() 
+								{
+								    public void onSuccess(Void ignore) 
+								    {
+								    	History.newItem("-" + desaparecido.getNumeroDocumento());
+								    }
+								    public void onFailure(Throwable error) 
+									{
+										new Utilidades().ventanaModal("Error", error.toString() , "error");
+									}
+						        });
+							}
+						});
+					}
+					else
+					{
 						DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
-						desaparecidoService.registrar(desaparecido, new AsyncCallback<Void>() 
+						desaparecidoService.actualizarDesaparecido(desaparecido, new AsyncCallback<Void>() 
 						{
 						    public void onSuccess(Void ignore) 
 						    {
@@ -758,7 +915,7 @@ public class VistaDesaparecido extends Composite
 							}
 				        });
 					}
-				});
+				}
 			}
 		});
 		
@@ -766,6 +923,7 @@ public class VistaDesaparecido extends Composite
 		{
 			public void onClick(ClickEvent event) 
 			{
+				descripcion.setText("Informaci\u00F3n relacionada con los atuendos que la persona utilizaba al momento de la desaparici\u00F3n. Su registro no es obligatorio pero resulta importante para que los usuarios puedan contribuir a su identificaci\u00F3n y b\u00FAsqueda.");
 				encabezado.getElementById("punta_senales").setClassName("punta_flecha_pasado_ultima");
 				encabezado.getElementById("prendas").setClassName("flecha_presente");
 				encabezado.getElementById("punta_prendas").setClassName("punta_flecha_presente");
@@ -840,6 +998,7 @@ public class VistaDesaparecido extends Composite
 	}
 	
 	
+	@SuppressWarnings("deprecation")
 	public CaptionPanel datosPersonales()
 	{		
 		CaptionPanel fieldsetPersonales = new CaptionPanel("Datos Personales");
@@ -870,7 +1029,7 @@ public class VistaDesaparecido extends Composite
 		final ListBox selectCiudad 		= new ListBox();
 		ListBox selectGenero 			= new ListBox();
 		final TextBox textEdad 			= new TextBox();
-		ListBox dateDia 				= new Utilidades().diaAnio(true);
+		ListBox selectDia 				= new Utilidades().diaAnio(true);
 		ListBox selectMes 				= new Utilidades().listaMeses();
 		ListBox selectAnio 				= new Utilidades().diaAnio(false);
 		FileUpload fotografia 			= new FileUpload();
@@ -895,6 +1054,8 @@ public class VistaDesaparecido extends Composite
 				{
 					selectDepartamento.clear();
 					selectDepartamento.addItem("Departamento...");
+					selectCiudad.clear();
+					selectCiudad.addItem("Ciudad...");
 				}
 			}
 		});
@@ -928,7 +1089,7 @@ public class VistaDesaparecido extends Composite
 		selectCiudad.getElement().setId("ciudadNacimiento");
 		selectGenero.getElement().setId("genero");
 		textEdad.getElement().setId("edad");
-		dateDia.getElement().setId("diaNacimiento");
+		selectDia.getElement().setId("diaNacimiento");
 		selectMes.getElement().setId("mesNacimiento");
 		selectAnio.getElement().setId("anioNacimiento");
 		fotografia.getElement().setId("fotografia");
@@ -952,6 +1113,46 @@ public class VistaDesaparecido extends Composite
 		
 		textEdad.getElement().setAttribute("placeHolder", "al momento de la desaparici\u00F3n");
 		
+		/* Si es para editar desaparecido que cargue los datos del desaparecido en el formulario */
+		if(desaparecido != null)
+		{
+			textNombre1.setValue(desaparecido.getNombre1());
+			textNombre2.setValue(desaparecido.getNombre2());
+			textApellido1.setValue(desaparecido.getApellido1());
+			textApellido2.setValue(desaparecido.getApellido2());
+			
+			for(int i = 0; i < selectTipoDocument.getItemCount(); i++)
+			{
+				if(selectTipoDocument.getValue(i).equals(desaparecido.getTipoDocumento()))
+					selectTipoDocument.setSelectedIndex(i);
+			}
+			
+			textDocumento.setValue(desaparecido.getNumeroDocumento());
+			
+			if(desaparecido.getGenero())
+				selectGenero.setSelectedIndex(1);
+			else
+				selectGenero.setSelectedIndex(2);
+			
+			/* Cargando los datos a los select de Pais, dpto y ciudad con los respectivos valores del desaparecido*/
+			new Utilidades().selectedIndex(selectPais, selectDepartamento, selectCiudad, desaparecido.getCiudadNacimiento().getDepartamento().getPais().getNombre(), desaparecido.getCiudadNacimiento().getDepartamento().getNombre(), desaparecido.getCiudadNacimiento().getNombre());
+			
+			/* Seleccionando los datos correspondientes a la fecha de nacimiento del desaparecido */
+			if(desaparecido.getFechaNacimiento() != null)
+			{
+				for(int i = 1; i < selectAnio.getItemCount(); i++)
+				{
+					if((desaparecido.getFechaNacimiento().getYear()+1900) == Integer.parseInt((selectAnio.getValue(i))))
+					{
+						selectAnio.setSelectedIndex(i);
+						break;
+					}
+				}
+				selectMes.setSelectedIndex(desaparecido.getFechaNacimiento().getMonth()+1);
+				selectDia.setSelectedIndex(desaparecido.getFechaNacimiento().getDate());
+			}
+		}
+		
 		divDatosPersonales1.add(lblNombre1);
 		divDatosPersonales1.add(textNombre1);
 		divDatosPersonales1.add(lblNombre2);
@@ -971,11 +1172,9 @@ public class VistaDesaparecido extends Composite
 		divDatosPersonales2.add(selectDepartamento);
 		divDatosPersonales2.add(selectCiudad);
 		divDatosPersonales2.add(lblFechaNacimiento);
-		divDatosPersonales2.add(dateDia);
+		divDatosPersonales2.add(selectDia);
 		divDatosPersonales2.add(selectMes);
 		divDatosPersonales2.add(selectAnio);
-		//divDatosPersonales2.add(lblEdad);
-		//divDatosPersonales2.add(textEdad);
 				
 		divDatosPersonalesG.add(divDatosPersonales1);
 		divDatosPersonalesG.add(divDatosPersonales2);
@@ -987,7 +1186,6 @@ public class VistaDesaparecido extends Composite
 	    // servlet.  The following parameters must be set
 	    uploadForm.setEncoding(FormPanel.ENCODING_MULTIPART);
 	    uploadForm.setMethod(FormPanel.METHOD_POST);
-		
 		
 		uploadForm.add(divDatosPersonalesG);
 		
@@ -1011,25 +1209,6 @@ public class VistaDesaparecido extends Composite
 		        }
 		    }
 		});
-		
-		/*textEdad.addBlurHandler(new BlurHandler()
-	    {
-	        @Override
-	        public void onBlur(BlurEvent event)
-	        {
-		        try
-		        {
-		        	if(!textEdad.getValue().isEmpty())
-		        		Integer.parseInt(textEdad.getValue());
-		        }
-		        catch(NumberFormatException ex)
-		        {
-		        	new Utilidades().ventanaModal("Error", "El valor Ingresado debe ser num\u00E9rico, comprendido entre los n\u00FAmeros" +
-		        				 " 1 y 99", "error");
-		        	textEdad.setText("");
-		        }
-		    }
-		});*/
 		
 		return fieldsetPersonales;
 	}
@@ -1084,7 +1263,6 @@ public class VistaDesaparecido extends Composite
 		orejas.add("Perforadas");
 		orejas.add("L\u00F3bulo Adherido");
 		orejas.add("L\u00F3bulo Separado");
-		//orejas.add("No Recuerda");
 		
 		general.add(contextura);
 		general.add(labios);
@@ -1176,7 +1354,6 @@ public class VistaDesaparecido extends Composite
 		particularidadCabello.add("Sint\u00E9tico");
 		particularidadCabello.add("Extensiones");
 		particularidadCabello.add("Rasta");
-		//particularidadCabello.add("No Recuerda");
 		
 		cabello.add(longitud);
 		cabello.add(forma);
@@ -1371,6 +1548,12 @@ public class VistaDesaparecido extends Composite
 				
 				div.add(peso);
 				div.add(estatura);
+				
+				if(desaparecido != null)
+				{
+					textEstatura.setValue(desaparecido.getEstatura());
+					textPeso.setValue(desaparecido.getPeso());
+				}
 			}
 			
 			for(byte j = 0; j < tipo.size(); j++)
@@ -1378,6 +1561,10 @@ public class VistaDesaparecido extends Composite
 				ArrayList<String> caracteristica = tipo.get(j);
 				CaptionPanel fieldsetInterno = new CaptionPanel(caracteristica.get(1));
 				HTMLPanel subDiv = new HTMLPanel("");
+				
+				ArrayList<Morfologia> morfo = new ArrayList<Morfologia>();
+				if(desaparecido != null)
+					morfo = desaparecido.getMorfologia();
 				
 				for(byte k = 2; k < caracteristica.size(); k++)
 				{
@@ -1389,6 +1576,23 @@ public class VistaDesaparecido extends Composite
 						radio.getElement().setAttribute("caracterictica", caracteristica.get(1));
 						subDiv.add(radio);
 						morfologiaRadio.add(radio);
+						
+						if(morfologia != null)
+						{
+							for(byte m = 0; m < morfo.size(); m++)
+							{
+								Morfologia nueva = morfo.get(m);
+								if(nueva.getConsecutivo().equals(radio.getElement().getAttribute("identificador")))
+								{
+									morfo.remove(m);
+									radio.setValue(true);
+									break;
+								}
+								
+								if(Byte.parseByte(nueva.getConsecutivo()) > identificador)
+									break;
+							}
+						}
 					}
 					else
 					{
@@ -1398,21 +1602,37 @@ public class VistaDesaparecido extends Composite
 						check.getElement().setAttribute("caracterictica", caracteristica.get(1));
 						subDiv.add(check);
 						morfologiaCheckBox.add(check);
+						
+						for(byte m = 0; m < morfo.size(); m++)
+						{
+							Morfologia nueva = morfo.get(m);
+							if(nueva.getConsecutivo().equals(check.getElement().getAttribute("identificador")))
+							{
+								morfo.remove(m);
+								check.setValue(true);
+								break;
+							}
+							if(Byte.parseByte(nueva.getConsecutivo()) > identificador)
+								break;
+						}
 					}
 				}
 
 				fieldsetInterno.add(subDiv);
 				div.add(fieldsetInterno);
 			}
+			
 			fieldsetGeneral.add(div);
 			subContent.add(fieldsetGeneral);
 		}
+		
 		return subContent;
 	}
 	
 	
 	public HTMLPanel senalesParticulares()
 	{
+		
 		HTMLPanel content = new HTMLPanel("");
 		
 		CaptionPanel fieldsetSenales 			= new CaptionPanel("Se\u0148ales Particulares");
@@ -1434,8 +1654,7 @@ public class VistaDesaparecido extends Composite
   		divEncabezado.add(lblUbicacion);
   		divEncabezado.add(lblCaract);
   		
-  		divSenales.add(divEncabezado);
-        
+  		divSenales.add(divEncabezado);        
   		
   		/* For para generar cada una de las posibles señanes particulares
   		 * del desaparecido en base a un array previamente definido 
@@ -1458,6 +1677,9 @@ public class VistaDesaparecido extends Composite
   	        TextArea textAreaUbicacion 			= new TextArea();
   	        TextArea textAreaCaracteristica		= new TextArea();
   	        
+  	        if(i == 0)
+  	        	textAreaCaracteristica.getElement().setAttribute("placeHolder", "forma, tama\u00F1o, color");
+  	        
   	        /* Asignando id a los componenetes */
   	        check.getElement().setId("checkBox" + listaSenales.get(i));
   	        textAreaUbicacion.getElement().setId("textAreaUbicacion" + listaSenales.get(i));
@@ -1477,6 +1699,21 @@ public class VistaDesaparecido extends Composite
   	        
   	        /* Agregando el div opcion al contenedor de opciones */
   	        divSenales.add(divOpcionSenales);
+  	        
+  	        /* Si el desaparecidno no es null, se cargan en el formulario las senales particulares de la persona*/
+  	        if(desaparecido != null)
+  	        {
+  	        	for(SenalParticular senal : desaparecido.getSenalParticular())
+				{
+					if(senal.getNombre().equals(listaSenales.get(i)))
+					{
+						check.setValue(true);
+						textAreaUbicacion.setValue(senal.getUbicacion());
+						textAreaCaracteristica.setValue(senal.getCaracteristica());
+						break;
+					}
+				}
+  	        }
   		}
   		
   		fieldsetSenales.add(divSenales);
@@ -1484,11 +1721,10 @@ public class VistaDesaparecido extends Composite
 		return content;
 	}
 	
-	
 	public HTMLPanel prendasDeVestir()
 	{
 		HTMLPanel divPrendasVestir 				= new HTMLPanel("");
-        divPrendasVestir.setStyleName("prendas");
+        divPrendasVestir.setStyleName("senales");
  		
  		ArrayList<ArrayList<String>> tipoPrendas= new ArrayList<ArrayList<String>>();
  		
@@ -1524,13 +1760,11 @@ public class VistaDesaparecido extends Composite
  		
  		tipoPrendas.add(superiores);
  		tipoPrendas.add(inferiores);
- 		//tipoPrendas.add(interiores);
  		tipoPrendas.add(exteriores);
  		tipoPrendas.add(calzado);
  		
  		for(byte i=0; i < tipoPrendas.size(); i++)
  		{
- 			
  			ArrayList<String> x 				= tipoPrendas.get(i);
  			
  			CaptionPanel fieldset			 	= new CaptionPanel(x.get(0));
@@ -1540,57 +1774,68 @@ public class VistaDesaparecido extends Composite
  			
  			for(byte j=1; j < x.size(); j++)
  			{
- 		        
  		        HTMLPanel divPrenda				= new HTMLPanel("");
- 		 		divPrenda.setStyleName("opcion-prendas");
+ 		 		divPrenda.setStyleName("opcion-senales");
  		 		
  		        HTMLPanel divCheckPrenda		= new HTMLPanel(" ");
  		        HTMLPanel divLblPrenda			= new HTMLPanel(" ");
- 		        HTMLPanel divMaterialPrenda		= new HTMLPanel(" ");
- 		        HTMLPanel divColorPrenda		= new HTMLPanel(" ");
- 		        //HTMLPanel divTallaPrenda		= new HTMLPanel(" ");
- 		        HTMLPanel divMarcaPrenda		= new HTMLPanel(" ");
+ 		        HTMLPanel divCaracteristicas	= new HTMLPanel(" ");
  		        HTMLPanel divObservacionesPrenda= new HTMLPanel(" ");
  		 			
  		        final CheckBox checkBoxPrenda	= new CheckBox(x.get(j));
  		        Label lblPrenda					= new Label(x.get(j));
- 		        TextBox textMaterialPrenda 		= new TextBox();
- 		        TextBox textColorPrenda 		= new TextBox();
- 		        //TextBox textTallaPrenda 		= new TextBox();
- 		        TextBox textMarcaPrenda 		= new TextBox();
+ 		        TextArea textCaracteristicas	= new TextArea();
  		        TextArea textObservacionesPrenda= new TextArea();
+ 		        
+ 		        if(i == 1)
+ 		        {
+	 		        textCaracteristicas.getElement().setAttribute("placeHolder", "material, color, talla, marca");
+	 		        textObservacionesPrenda.getElement().setAttribute("placeHolder", "estampados, modificaciones, estado");
+ 		        }
+ 		        
+ 		        /* Llenando el array de prendas que se utiliza para capturar los datos*/
+ 		        listaPrendas.add(x.get(j));
+ 		        checkBoxPrenda.getElement().setId("checkBox" + x.get(j));
+ 		        textCaracteristicas.getElement().setId("textAreaCaracteristica" + x.get(j));
+ 		        textObservacionesPrenda.getElement().setId("textAreaObservacion" + x.get(j));
  		        
  		        divCheckPrenda.add(checkBoxPrenda);
  		        divLblPrenda.add(lblPrenda);
- 		        divMaterialPrenda.add(textMaterialPrenda);
- 		        divColorPrenda.add(textColorPrenda);
- 		        //divTallaPrenda.add(textTallaPrenda);
- 		        divMarcaPrenda.add(textMarcaPrenda);
+ 		        divCaracteristicas.add(textCaracteristicas);
  		        divObservacionesPrenda.add(textObservacionesPrenda);
  		        
  		        divPrenda.add(divCheckPrenda);
  		        divPrenda.add(divLblPrenda);
- 		        divPrenda.add(divMaterialPrenda);
- 		        divPrenda.add(divColorPrenda);
- 		        //divPrenda.add(divTallaPrenda);
- 		        divPrenda.add(divMarcaPrenda);
+ 		        divPrenda.add(divCaracteristicas);
  		        divPrenda.add(divObservacionesPrenda);
  		        
  		        divFieldset.add(divPrenda);
+ 		        
+ 		        /* Si el desaparecidno no es null, se cargan en el formulario las senales particulares de la persona*/
+ 		        if(desaparecido != null)
+ 			    {
+ 		 			for(PrendaVestir prenda : desaparecido.getPrendaVestir())
+ 					{
+ 						if(prenda.getNombre().equals(x.get(j)))
+ 						{
+ 							checkBoxPrenda.setValue(true);
+ 							textCaracteristicas.setValue(prenda.getCaracteristica());
+ 							textObservacionesPrenda.setValue(prenda.getObservacion());
+ 							break;
+ 						}
+ 					}
+ 			    }
  			}
+ 			
  			fieldset.add(divFieldset);
  			divPrendasVestir.add(fieldset);
  		}
  		
- 		/*
-        if(RootPanel.get().getOffsetWidth() < 500)
-        {
-		}
-		*/
         return divPrendasVestir;
 	}
 	
 	
+	@SuppressWarnings("deprecation")
 	public HTMLPanel datoDesaparicion()
 	{
 		HTMLPanel content					= new HTMLPanel("");
@@ -1598,7 +1843,6 @@ public class VistaDesaparecido extends Composite
 		HTMLPanel divDesaparicion 			= new HTMLPanel("");
 		   
         Label lblFechaDes					= new Label("Fecha de Desaparici\u00F3n: *");
-        //Label lblPaisDes					= new Label("Pais de Desaparicion");
         Label lblDepartamentoDes			= new Label("Departamento de desaparici\u00F3n: *");
         Label lblMunicipioDes				= new Label("Ciudad o Municipio de Desaparici\u00F3n: *");
         Label lblCorregimiento				= new Label("Corregimiento o Vereda de Desaparici\u00F3n: ");
@@ -1606,9 +1850,9 @@ public class VistaDesaparecido extends Composite
         Label lblDescrip					= new Label("Descripci\u00F3n del Hecho: ");
         
         ListBox diaDesaparicion				= new Utilidades().diaAnio(true);
-        ListBox  mesDesaparicion			= new Utilidades().listaMeses();
+        ListBox mesDesaparicion				= new Utilidades().listaMeses();
         ListBox anioDesaparicion			= new Utilidades().diaAnio(false);
-        //ListBox paisDes 					= new ListBox();
+        ListBox paisDesaparicion 			= new ListBox();
         final ListBox dptoDesaparicion		= new ListBox();
         final ListBox ciudadDesaparicion	= new ListBox();
         TextBox textCorregimiento			= new TextBox();
@@ -1617,7 +1861,6 @@ public class VistaDesaparecido extends Composite
 		RichTextToolbar descripcion			= new RichTextToolbar(textDescripcion);
 		
 		fieldsetDesaparicion.setStyleName("desaparicion");
-		//paisDes.addItem("Seleccione...");
         dptoDesaparicion.addItem("Seleccione...");
         dptoDesaparicion.setStyleName("departamento");
         diaDesaparicion.getElement().setAttribute("placeHolder", "entre 1 y 31");
@@ -1639,8 +1882,6 @@ public class VistaDesaparecido extends Composite
 		divDesaparicion.add(diaDesaparicion);
 		divDesaparicion.add(mesDesaparicion);
 		divDesaparicion.add(anioDesaparicion);
-		//divDesaparicion.add(lblPaisDes);
-		//divDesaparicion.add(paisDes);
 		divDesaparicion.add(lblDepartamentoDes);
 		divDesaparicion.add(dptoDesaparicion);
 		divDesaparicion.add(lblMunicipioDes);
@@ -1678,7 +1919,8 @@ public class VistaDesaparecido extends Composite
 		textDescripcion.addKeyUpHandler(new KeyUpHandler()
 		{
 			@Override
-			public void onKeyUp(KeyUpEvent event) {
+			public void onKeyUp(KeyUpEvent event) 
+			{
 				if (textDescripcion.getText().length() > 490) 
 				{
 					textDescripcion.setText(textDescripcion.getText().substring(0, 499));
@@ -1687,30 +1929,45 @@ public class VistaDesaparecido extends Composite
 			}
 		});
 		
+		if(desaparecido != null)
+		{
+			/* Seleccionando los datos correspondientes a la fecha de desaparicion del desaparecido */
+			for(int i = 1; i < anioDesaparicion.getItemCount(); i++)
+			{
+				if((desaparecido.getDatoDesaparicion().getFechaDesaparicion().getYear()+1900) == Integer.parseInt((anioDesaparicion.getValue(i))))
+				{
+					anioDesaparicion.setSelectedIndex(i);
+					break;
+				}
+			}
+			mesDesaparicion.setSelectedIndex(desaparecido.getDatoDesaparicion().getFechaDesaparicion().getMonth()+1);
+			diaDesaparicion.setSelectedIndex(desaparecido.getDatoDesaparicion().getFechaDesaparicion().getDate());
+			
+			/* Cargando los datos a los select de Pais, dpto y ciudad con los respectivos valores del desaparecido*/
+			new Utilidades().selectedIndex(paisDesaparicion, dptoDesaparicion, ciudadDesaparicion, desaparecido.getDatoDesaparicion().getCiudadDesaparicion().getDepartamento().getPais().getNombre(), desaparecido.getDatoDesaparicion().getCiudadDesaparicion().getDepartamento().getNombre(), desaparecido.getDatoDesaparicion().getCiudadDesaparicion().getNombre());
+			
+			textCorregimiento.setValue(desaparecido.getDatoDesaparicion().getCorregimiento());
+			textInspeccion.setValue(desaparecido.getDatoDesaparicion().getInspeccionPolicia());
+			textDescripcion.setText(desaparecido.getDatoDesaparicion().getDescripcion());
+		}
+		
 		return content;
 	}
 	
-	
+	/* Encabezado de la Tabla Prendas de vestir */
 	public HTMLPanel encabezadoPrendas()
 	{
-		/* Encabezado de la Tabla Prendas de vestir */
         HTMLPanel divEncabezado				= new HTMLPanel("");
-        divEncabezado.setStyleName("encabezado-prendas");
+        divEncabezado.setStyleName("encabezado-senales");
         
         Label lblTrue						= new Label("Si/No");
         Label lblTipoPrenda					= new Label("Tipo");
-        Label lblMaterial					= new Label("Material");
-   		Label lblColor						= new Label("Color");
-   		//Label lblTalla						= new Label("Talla");
-   		Label lblMarca						= new Label("Marca");
+        Label lblCaracteristicas			= new Label("Caracteristicas");
  		Label lblObservaciones				= new Label("Observaciones"); 
  		
  		divEncabezado.add(lblTrue);
  		divEncabezado.add(lblTipoPrenda);
- 		divEncabezado.add(lblMaterial);
- 		divEncabezado.add(lblColor);
- 		//divEncabezado.add(lblTalla);
- 		divEncabezado.add(lblMarca);
+ 		divEncabezado.add(lblCaracteristicas);
  		divEncabezado.add(lblObservaciones);
  		
  		return divEncabezado;

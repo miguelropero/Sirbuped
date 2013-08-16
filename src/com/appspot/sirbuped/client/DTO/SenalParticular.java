@@ -2,14 +2,22 @@ package com.appspot.sirbuped.client.DTO;
 
 import java.io.Serializable;
 
+import javax.jdo.annotations.Extension;
+import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable
 public class SenalParticular implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-
+	
+	@PrimaryKey
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
+	private String id;
+	
 	@Persistent
 	private String nombre;
 	
@@ -29,6 +37,16 @@ public class SenalParticular implements Serializable
 		this.caracteristica = caracteristica;
 	}
 	
+	public String getId() 
+	{
+		return id;
+	}
+
+	public void setId(String id) 
+	{
+		this.id = id;
+	}
+
 	public String getNombre() 
 	{
 		return nombre;
@@ -63,11 +81,12 @@ public class SenalParticular implements Serializable
 	{
 		return serialVersionUID;
 	}
-	
+
 	@Override
-	public String toString()
+	public String toString() 
 	{
-		return (this.getNombre() + " \n " + this.getUbicacion() + " \n " + this.getCaracteristica());
+		return "SenalParticular [id=" + id + ", nombre=" + nombre + ", ubicacion=" + ubicacion + ", caracteristica="
+				+ caracteristica + "]";
 	}
 	
 }

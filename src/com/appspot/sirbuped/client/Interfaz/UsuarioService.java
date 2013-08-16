@@ -19,4 +19,5 @@ public interface UsuarioService extends RemoteService
 	public Usuario getUsuario();
 	public void editarUsuario(Usuario editado);
 	public ArrayList<Desaparecido> getDesaparecidosUsuario();
+	public boolean validarEmail(String email);
 }

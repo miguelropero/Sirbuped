@@ -139,12 +139,12 @@ public class DatoDesaparicion implements Serializable
 	@Override
 	public String toString() {
 		return "DatoDesaparicion [id=" + id + ", fechaDesaparicion="
-				+ fechaDesaparicion + ", corregimiento=" + corregimiento
+				+ fechaDesaparicion + ", keyCiudadDesaparicion="
+				+ keyCiudadDesaparicion + ", ciudadDesaparicion="
+				+ ciudadDesaparicion + ", corregimiento=" + corregimiento
 				+ ", inspeccionPolicia=" + inspeccionPolicia + ", descripcion="
-				+ descripcion +"]";
+				+ descripcion + "]";
 	}
-
-	
 	
 	
 }

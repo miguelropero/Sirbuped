@@ -1,9 +1,12 @@
 package com.appspot.sirbuped.client.Vista;
 
 import java.util.ArrayList;
+
+import com.appspot.sirbuped.client.Utilidades;
 import com.appspot.sirbuped.client.DTO.DatoDesaparicion;
 import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.DTO.Morfologia;
+import com.appspot.sirbuped.client.DTO.PrendaVestir;
 import com.appspot.sirbuped.client.DTO.SenalParticular;
 import com.appspot.sirbuped.client.Interfaz.DesaparecidoService;
 import com.appspot.sirbuped.client.Interfaz.DesaparecidoServiceAsync;
@@ -12,6 +15,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
@@ -25,21 +29,20 @@ public class VistaVerDesaparecidos extends Composite
 	private HTMLPanel content;
 	
 	public VistaVerDesaparecidos()
-	{
-	}
+	{}
 	
 	public VistaVerDesaparecidos(Desaparecido desaparecido)
 	{
-		this.retornardesaparecido(desaparecido, "");
+		this.retornarDesaparecido(desaparecido, "");
 		initWidget(content);
 	}
 	public VistaVerDesaparecidos(String documento)
 	{
-		this.retornardesaparecido(null, documento);
+		this.retornarDesaparecido(null, documento);
 		initWidget(content);
 	}
 	
-	public HTMLPanel retornardesaparecido(Desaparecido desaparecido, String documento)
+	public HTMLPanel retornarDesaparecido(Desaparecido desaparecido, String documento)
 	{	
 		content = new HTMLPanel("");
 		content.setStyleName("verDesaparecido");
@@ -53,13 +56,42 @@ public class VistaVerDesaparecidos extends Composite
 			DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
 			desaparecidoService.getDesaparecido(documento, new AsyncCallback<Desaparecido>()
 			{
-			    public void onSuccess(Desaparecido desaparecido) 
+			    public void onSuccess(final Desaparecido desaparecido) 
 			    {
     				RootPanel.get("verDesaparecido").add(devolverDatosPersonales(desaparecido));
     				RootPanel.get("verDesaparecido").add(devolverMorfologia(desaparecido));
     				RootPanel.get("verDesaparecido").add(devolverSenales(desaparecido.getSenalParticular()));
+    				RootPanel.get("verDesaparecido").add(devolverPrendas(desaparecido.getPrendaVestir()));
     				RootPanel.get("verDesaparecido").add(devolverDatoDesaparicion(desaparecido.getDatoDesaparicion()));
 			    	cargando.getElement().setAttribute("style", "display:none");
+			    	
+					final HTMLPanel divBotones = new HTMLPanel("");
+					content.add(divBotones);
+					
+					DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
+				    desaparecidoService.validarDesaparecidoUsuario(desaparecido.getId(), new AsyncCallback<Desaparecido>() 
+				    {
+				    	@Override
+						public void onSuccess(Desaparecido valido) 
+				    	{
+				    		if(desaparecido != null)
+				    		{
+				    			Button editarUsuario = new Button("Actualizar Datos");
+				    			divBotones.add(editarUsuario);
+				    			editarUsuario.addClickHandler(new ClickHandler() 
+				    			{
+				    				public void onClick(ClickEvent event) 
+				    				{
+				    					new Utilidades().crearSesion("keyDesaparecido", desaparecido.getId());
+				    					History.newItem("editar-desaparecido");
+				    				}
+				    			});
+				    		}
+						}
+				    	public void onFailure(Throwable error) 
+				    	{
+				    	}
+				    });
 			    }
 			    public void onFailure(Throwable error) 
 				{
@@ -94,7 +126,9 @@ public class VistaVerDesaparecidos extends Composite
 			content.add(this.devolverDatosPersonales(desaparecido));
 			content.add(this.devolverMorfologia(desaparecido));
 			content.add(this.devolverSenales(desaparecido.getSenalParticular()));
+			content.add(this.devolverPrendas(desaparecido.getPrendaVestir()));
 			content.add(this.devolverDatoDesaparicion(desaparecido.getDatoDesaparicion()));
+			
 			cargando.getElement().setAttribute("style", "display:none");
 		}
 		return content;
@@ -376,6 +410,65 @@ public class VistaVerDesaparecidos extends Composite
   		return fieldsetSenales;
 	}
 	
+	public CaptionPanel devolverPrendas(ArrayList<PrendaVestir> prendas)
+	{
+		CaptionPanel fieldsetPrendas = new CaptionPanel("Prendas de Vestir");
+		HTMLPanel divPrendas = new HTMLPanel("");
+		
+		if(prendas != null && prendas.size() > 0)
+		{
+			/* Encabezado de la Tabla Prendas de vestir */
+	        HTMLPanel divEncabezado 				= new HTMLPanel(" ");
+	        divEncabezado.setStyleName("encabezado-senales");
+	        
+	  		Label lblTipo							= new Label("Prenda");
+	  		Label lblCaracteristica					= new Label("Caracter\u00EDsticas");
+	  		Label lblObservacion					= new Label("Observaci\u00F3n");
+	  		
+	  		divEncabezado.add(lblTipo);
+	  		divEncabezado.add(lblCaracteristica);
+	  		divEncabezado.add(lblObservacion);
+	  		
+	  		divPrendas.add(divEncabezado);
+	  		
+	  		for(byte i = 0; i < prendas.size(); i++)
+	  		{
+	  			HTMLPanel divOpcion 				= new HTMLPanel(" ");
+	  		    divOpcion.setStyleName("opcion-senales");
+	  		    
+	  		    PrendaVestir nueva = prendas.get(i);
+	  		    
+	  	  		Label nombreSenal					= new Label(nueva.getNombre());
+	  	  		Label caracteristica				= new Label(nueva.getCaracteristica());
+	  	  		Label observacion					= new Label(nueva.getObservacion());
+	  	  		
+	  	  		HTMLPanel o1 = new HTMLPanel("");
+	  	  		HTMLPanel o2 = new HTMLPanel("");
+	  	  		HTMLPanel o3 = new HTMLPanel("");
+	  	  		
+	  	  		o1.add(nombreSenal);
+	  	  		o2.add(caracteristica);
+	  	  		o3.add(observacion);
+	  	  		
+	  	  		divOpcion.add(o1);
+	  	  		divOpcion.add(o2);
+	  	  		divOpcion.add(o3);
+	  			
+	  	  		divPrendas.add(divOpcion);
+	  		}
+		}
+		else
+		{
+			Label sinRegistros = new Label("No tiene informaci\u00F3n registrada");
+			divPrendas.add(sinRegistros);
+		}
+
+  		
+  		fieldsetPrendas.add(divPrendas);
+  		
+  		return fieldsetPrendas;
+	}
+	
 	public CaptionPanel devolverDatoDesaparicion(DatoDesaparicion dato)
 	{
 		CaptionPanel fieldsetDesaparicion = new CaptionPanel("Datos de Desaparici\u00F3n");
@@ -442,7 +535,7 @@ public class VistaVerDesaparecidos extends Composite
     		{
     			public void onClick(final ClickEvent event) 
     			{
-    				History.newItem("-" + desaparecido.getNumeroDocumento());
+    				History.newItem("-" + desaparecido.getId());
     				//RootPanel.get("verDesaparecido").add(devolverDatosPersonales(desaparecido));
     				//RootPanel.get("verDesaparecido").add(devolverMorfologia(desaparecido));
     				//RootPanel.get("verDesaparecido").add(devolverSenales(desaparecido.getSenalParticular()));

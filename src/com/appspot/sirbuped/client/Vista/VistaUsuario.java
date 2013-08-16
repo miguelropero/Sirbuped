@@ -1,6 +1,7 @@
 package com.appspot.sirbuped.client.Vista;
 
 import java.util.Date;
+
 import com.appspot.sirbuped.client.JCrypt;
 import com.appspot.sirbuped.client.Utilidades;
 import com.appspot.sirbuped.client.DTO.Usuario;
@@ -127,7 +128,6 @@ public class VistaUsuario extends Composite
 		final TextBox textDireccion		= new TextBox();
 		
 		/* Cargando los datos a los select de Pais, dpto y ciudad */
-		
 		if(usuario != null && (!usuario.getKeyCiudadResidencia().isEmpty()))
 			new Utilidades().selectedIndex(selectPais, selectDepartamento, selectCiudad, usuario.getCiudadResidencia().getDepartamento().getPais().getNombre(), usuario.getCiudadResidencia().getDepartamento().getNombre(), usuario.getCiudadResidencia().getNombre());
 		else
@@ -152,6 +152,37 @@ public class VistaUsuario extends Composite
 			}
 		});
 		
+		textEmail.addBlurHandler(new BlurHandler()
+		{
+			@Override
+			public void onBlur(BlurEvent event)
+		    {
+				if(!textEmail.getValue().matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"))
+				{
+					textEmail.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
+					new Utilidades().ventanaModal("Error", "La sintaxis del correo electronico no es valida", "error");
+				}
+				else
+				{
+					UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
+					usuarioService.validarEmail(textEmail.getValue(), new AsyncCallback<Boolean>() 
+					{
+						public void onSuccess(Boolean esValido) 
+						{
+							if(!esValido)
+								new Utilidades().ventanaModal("Error", "El correo electronico ya se encuentra registrado", "error");
+							else
+								textEmail.getElement().setAttribute("style", "");
+						}
+						public void onFailure(Throwable error) 
+						{
+							
+						}
+					});
+				}
+			}
+		});
+		
 		selectDepartamento.addChangeHandler(new ChangeHandler()
 		{
 			public void onChange(ChangeEvent event)
@@ -170,6 +201,7 @@ public class VistaUsuario extends Composite
 				}
 			}
 		});
+		
 		
 		divContacto.add(lblEmail);
 		divContacto.add(textEmail);
@@ -285,7 +317,7 @@ public class VistaUsuario extends Composite
 		{
 			textNombres.setText(usuario.getNombres());
 			textApellidos.setText(usuario.getApellidos());
-			for(int i=0; i<4; i++)
+			for(int i = 0; i < selectTipoDoc.getItemCount(); i++)
 			{
 				if(usuario.getTipoDocumento().equals(selectTipoDoc.getValue(i)))
 					selectTipoDoc.setSelectedIndex(i);
@@ -466,7 +498,7 @@ public class VistaUsuario extends Composite
 						}
 					});
 				}
-					
+				
 				if(hayErrores)
 				{
 					divError.setVisible(true);
@@ -538,26 +570,50 @@ public class VistaUsuario extends Composite
 					 * Realización asincrona para guardar los datos
 					 */
 					
-					UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
-					Usuario usuario = new Usuario(textNombres.getText(), textApellidos.getText(), selectTipoDoc.getValue(selectTipoDoc.getSelectedIndex()), textDocumento.getText(), fechaNacimiento, textEmail.getText(), textTelefono.getText(), textCelular.getText(), textDireccion.getText(), password);
+					//UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
+					final Usuario usuario = new Usuario(textNombres.getText(), textApellidos.getText(), selectTipoDoc.getValue(selectTipoDoc.getSelectedIndex()), textDocumento.getText(), fechaNacimiento, textEmail.getText(), textTelefono.getText(), textCelular.getText(), textDireccion.getText(), password);
 					
 					// Si seleccionó una ciudada, agreguela al desaparecido 
 					if(selectCiudad.getSelectedIndex() > 0)
 						usuario.setKeyCiudadResidencia(selectCiudad.getValue(selectCiudad.getSelectedIndex()));
 					
-					usuarioService.addUsuario(usuario, new AsyncCallback<Void>() 
+					final UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
+					usuarioService.validarEmail(textEmail.getValue(), new AsyncCallback<Boolean>() 
 					{
-						public void onSuccess(Void ignore) 
+						public void onSuccess(Boolean esValido) 
 						{
-							cargando.getElement().setAttribute("style", "display:none");
-							new Utilidades().ventanaModal("Registro Exitoso", "El usuario se ha registrado correctamente. Verfique su correo electronico para activar su cuenta", "Exito");
-							History.newItem("iniciar-sesion");
+							if(!esValido)
+							{
+								cargando.getElement().setAttribute("style", "display:none");
+								textEmail.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
+								Label lblError = new Label("El correo electr\u00F3nico ya se encuentra registrado");
+								divError.add(lblError);
+								divError.setVisible(true);
+								subContent.setVisible(true);
+								return;
+							}
+							else
+							{
+								usuarioService.addUsuario(usuario, new AsyncCallback<Void>() 
+								{
+									public void onSuccess(Void ignore) 
+									{
+										cargando.getElement().setAttribute("style", "display:none");
+										new Utilidades().ventanaModal("Registro Exitoso", "El usuario se ha registrado correctamente. Verfique su correo electronico para activar su cuenta", "Exito");
+										History.newItem("iniciar-sesion");
+									}
+									public void onFailure(Throwable error) 
+									{
+										new Utilidades().ventanaModal("Error", error.toString(), "error");
+										cargando.getElement().setAttribute("style", "display:none");
+										subContent.setVisible(true);
+									}
+								});
+							}
 						}
 						public void onFailure(Throwable error) 
 						{
-							new Utilidades().ventanaModal("Error", error.toString(), "error");
-							cargando.getElement().setAttribute("style", "display:none");
-							subContent.setVisible(true);
+							
 						}
 					});
 				}
@@ -567,9 +623,7 @@ public class VistaUsuario extends Composite
 					subContent.setVisible(false);
 					final HTMLPanel cargando = new HTMLPanel("");
 					cargando.setStyleName("cargando");
-					RootPanel.get("content").add(cargando);
-						
-					UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
+					RootPanel.get("content").add(cargando);						
 						
 					usuario.setNombres(textNombres.getValue());
 					usuario.setApellidos(textApellidos.getValue());
@@ -586,7 +640,8 @@ public class VistaUsuario extends Composite
 						usuario.setKeyCiudadResidencia(selectCiudad.getValue(selectCiudad.getSelectedIndex()));
 					else
 						usuario.setKeyCiudadResidencia("");
-						
+					
+					UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
 					usuarioService.editarUsuario(usuario, new AsyncCallback<Void>() 
 					{
 						public void onSuccess(Void ignore) 

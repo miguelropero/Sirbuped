@@ -1,2 +1,0 @@
-serviceClass: com.appspot.sirbuped.client.Interfaz.DesaparecidoService
-path: B5F4F4C78744A2A74499DAF3F5022924.gwt.rpc

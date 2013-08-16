@@ -72,8 +72,8 @@ public class Desaparecido implements Serializable
 	@Persistent
 	private ArrayList<SenalParticular> senalParticular = new ArrayList<SenalParticular>();
 	
-	/*@Persistent
-	private ArrayList<PrendaVestir> prendaVestir = new ArrayList<PrendaVestir>();*/
+	@Persistent
+	private ArrayList<PrendaVestir> prendaVestir = new ArrayList<PrendaVestir>();
 	
 	@Persistent
 	private DatoDesaparicion datoDesaparicion;
@@ -86,7 +86,7 @@ public class Desaparecido implements Serializable
 	public Desaparecido(String nombre1, String nombre2, String apellido1, String apellido2, String tipoDocumento,
 						String numeroDocumento, Date fechaNacimiento, byte edad, boolean genero, String estatura, String peso, 
 						String keyFoto, Date fechaRegistro, ArrayList<Morfologia> morfologia, ArrayList<SenalParticular> senalParticular,
-						DatoDesaparicion datoDesaparicion) 
+						DatoDesaparicion datoDesaparicion, ArrayList<PrendaVestir> prendas) 
 	{
 		this.nombre1 = nombre1;
 		this.nombre2 = nombre2;
@@ -104,6 +104,7 @@ public class Desaparecido implements Serializable
 		this.morfologia = morfologia;
 		this.senalParticular = senalParticular;
 		this.datoDesaparicion = datoDesaparicion;
+		this.prendaVestir = prendas;
 	}
 
 	public String getId() 
@@ -290,7 +291,7 @@ public class Desaparecido implements Serializable
 	{
 		this.senalParticular = senalParticular;
 	}
-	/*
+	
 	public ArrayList<PrendaVestir> getPrendaVestir() 
 	{
 		return prendaVestir;
@@ -300,7 +301,7 @@ public class Desaparecido implements Serializable
 	{
 		this.prendaVestir = prendaVestir;
 	}
-	*/
+	
 	public DatoDesaparicion getDatoDesaparicion() 
 	{
 		return datoDesaparicion;
@@ -312,18 +313,15 @@ public class Desaparecido implements Serializable
 	}
 
 	@Override
-	public String toString() {
-		return "Desaparecido [id=" + id + ", nombre1=" + nombre1 + ", nombre2="
-				+ nombre2 + ", apellido1=" + apellido1 + ", apellido2="
-				+ apellido2 + ", tipoDocumento=" + tipoDocumento
-				+ ", numeroDocumento=" + numeroDocumento + ", fechaNacimiento="
-				+ fechaNacimiento + ", edad=" + edad + ", genero=" + genero
-				+ ", estatura=" + estatura + ", peso=" + peso + ", keyFoto="
-				+ keyFoto + ", fechaRegistro=" + fechaRegistro
-				+ ", morfologia=" + morfologia + ", senalParticular="
-				+ senalParticular + ", datoDesaparicion=" + datoDesaparicion
-				+ "]";
+	public String toString() 
+	{
+		return "Desaparecido [id=" + id + ", nombre1=" + nombre1 + ", nombre2=" + nombre2 + ", apellido1=" + apellido1 
+				+ ", apellido2=" + apellido2 + ", tipoDocumento=" + tipoDocumento + ", numeroDocumento=" + numeroDocumento 
+				+ ", fechaNacimiento=" + fechaNacimiento + ", edad=" + edad + ", genero=" + genero + ", estatura=" + estatura 
+				+ ", peso=" + peso + ", keyFoto=" + keyFoto + ", keyCiudadNacimiento=" + keyCiudadNacimiento 
+				+ ", ciudadNacimiento=" + ciudadNacimiento + ", fechaRegistro=" + fechaRegistro + ", morfologia=" + morfologia
+				+ ", senalParticular=" + senalParticular + ", prendaVestir="
+				+ prendaVestir + ", datoDesaparicion=" + datoDesaparicion + "]";
 	}
-	
 	
 }

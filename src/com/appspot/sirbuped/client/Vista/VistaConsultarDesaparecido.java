@@ -174,7 +174,7 @@ public class VistaConsultarDesaparecido extends Composite
 						if(morfologiaRadio.get(i).getValue()==true)
 						{
 							Morfologia morfologia = new Morfologia();
-							morfologia.setId(morfologiaRadio.get(i).getElement().getAttribute("identificador"));
+							morfologia.setConsecutivo(morfologiaRadio.get(i).getElement().getAttribute("identificador"));
 							morfologia.setNombre(morfologiaRadio.get(i).getText());
 							morfologia.setTipo(morfologiaRadio.get(i).getElement().getAttribute("tipo"));
 							morfologia.setCaracteristica(morfologiaRadio.get(i).getElement().getAttribute("caracterictica"));
@@ -190,7 +190,7 @@ public class VistaConsultarDesaparecido extends Composite
 						if(morfologiaCheckBox.get(i).getValue())
 						{
 							Morfologia morfologia = new Morfologia();
-							morfologia.setId(morfologiaCheckBox.get(i).getElement().getAttribute("identificador"));
+							morfologia.setConsecutivo(morfologiaCheckBox.get(i).getElement().getAttribute("identificador"));
 							morfologia.setNombre(morfologiaCheckBox.get(i).getText());
 							morfologia.setTipo(morfologiaCheckBox.get(i).getElement().getAttribute("tipo"));
 							morfologia.setCaracteristica(morfologiaCheckBox.get(i).getElement().getAttribute("caracterictica"));
@@ -247,6 +247,15 @@ public class VistaConsultarDesaparecido extends Composite
 				String tipo = "";
 				if(tipoDocumento.getSelectedIndex() != 0)
 					tipo = tipoDocumento.getItemText(tipoDocumento.getSelectedIndex());
+				
+				elemento = DOM.getElementById("genero");
+				esWidget = getWidget(elemento);
+				ListBox listGenero = (ListBox) esWidget;
+				
+				if(listGenero.getValue(listGenero.getSelectedIndex()).equals("Masculino"))
+					desaparecido.setGenero(true);
+				else 
+					desaparecido.setGenero(false);
 				
 				desaparecido.setNombre1(nombre1.getValue());
 				desaparecido.setNombre2(nombre2.getValue());

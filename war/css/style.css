@@ -1495,18 +1495,18 @@ footer nav li:last-child a
 	margin-bottom: 0.5em;
 }
  
-/*****************************************************************
- *********** ESTILOS DE LAS SEÑALES DEL DESAPARECIDO *************
- *****************************************************************/
+/***************************************************************************
+ *********** ESTILOS DE LAS SEÑALES Y PRENDAS DEL DESAPARECIDO *************
+ ***************************************************************************/
 
-.senales .encabezado-senales, .prendas .encabezado-prendas 
+.senales .encabezado-senales 
 {
  	background: #f1f1f1 url("../image/otro.png");
  	border: 1px solid #D1D1D1;
  	height: 50px;
 	width: 100%;
 }
-.senales .encabezado-senales .gwt-Label, .prendas .encabezado-prendas .gwt-Label 
+.senales .encabezado-senales .gwt-Label 
 {
  	border-right: 1px solid #CCC; 
  	display: inline-block;
@@ -1514,12 +1514,11 @@ footer nav li:last-child a
  	height: 100%;
  	text-align: center;
 }
-.senales .encabezado-senales .gwt-Label:first-child, .prendas .encabezado-prendas .gwt-Label:first-child
+.senales .encabezado-senales .gwt-Label:first-child
 {
  	font-size: 0.7em;
 }
-.senales .encabezado-senales .gwt-Label:first-child, .senales .opcion-senales div:first-child,
-.prendas .encabezado-prendas .gwt-Label:first-child,.prendas .opcion-prendas > div:first-child 
+.senales .encabezado-senales .gwt-Label:first-child, .senales .opcion-senales div:first-child 
 {
  	width: 8%;
 }
@@ -1536,26 +1535,25 @@ footer nav li:last-child a
  	border-right: none;
  	width: 33.5%;
 }
-.senales .opcion-senales, .prendas .opcion-prendas
+.senales .opcion-senales
 {
  	border: 1px solid #D1D1D1;
  	height: 75px;
 	width: 100%;
 }
- .senales .opcion-senales > div, .prendas .opcion-prendas > div
+ .senales .opcion-senales > div
 {		
  	border-right: 1px solid #D1D1D1;
  	display: inline-block;
  	height: 75px;
  	vertical-align: top;
 }
-.senales .opcion-senales div:nth-child(1) .gwt-CheckBox,
-.prendas .opcion-prendas div:nth-child(1) .gwt-CheckBox 
+.senales .opcion-senales div:nth-child(1) .gwt-CheckBox
 {
  	line-height: 75px;
  	text-align: center;
 }
-.senales .opcion-senales div:nth-child(2) .gwt-Label, .prendas .opcion-prendas div:nth-child(2) .gwt-Label
+.senales .opcion-senales div:nth-child(2) .gwt-Label
 {
  	line-height: 75px;
  	margin-left: 5%;
@@ -1566,49 +1564,13 @@ footer nav li:last-child a
  	margin: 15px 5% 15px 3%;
  	width: 94%;	
 }
-.senales .opcion-senales div .gwt-CheckBox input, .prendas .opcion-prendas div .gwt-CheckBox input
+.senales .opcion-senales div .gwt-CheckBox input
 {
  	margin: 0;
 }
-.senales .opcion-senales div label, .prendas .opcion-prendas div label
+.senales .opcion-senales div label
 {
  	display: none;
-}
- 
-/*****************************************************************
- ************** ESTILOS DE LAS PRENDAS DE VERSTIR ****************
- *****************************************************************/
-
-.prendas .opcion-prendas > div
-{
-	text-align: center;
-}
-.prendas .opcion-prendas > div:nth-child(2)
-{
-	text-align: left;
-}
-.prendas .opcion-prendas div .gwt-TextBox, .prendas .opcion-prendas div .gwt-TextArea
-{
- 	margin: 18px 0;
- 	width: 88%;
-}
-.prendas .opcion-prendas div:nth-child(2), .prendas .encabezado-prendas .gwt-Label:nth-child(2)
-{
-	width: 15%;
-}
-.prendas .opcion-prendas div:nth-child(3), .prendas .encabezado-prendas .gwt-Label:nth-child(3),
-.prendas .opcion-prendas div:nth-child(5), .prendas .encabezado-prendas .gwt-Label:nth-child(5)
-{
-	width: 15%;
-}
-.prendas .opcion-prendas div:nth-child(4), .prendas .encabezado-prendas .gwt-Label:nth-child(4)
-{
-	width: 10%;
-}
-.prendas .opcion-prendas div:nth-child(6), .prendas .encabezado-prendas .gwt-Label:nth-child(6)
-{
-	border-right: none;
-	width: 37%;
 }
 
 /*****************************************************************
@@ -2613,4 +2575,46 @@ footer nav li:last-child a
 {
 	padding: 0.5em;
 	color: #606060;
+}
+
+
+
+
+
+
+/**********************************************************************************
+*************************ESTILOS ESTADISTICAS**************************************
+**********************************************************************************/
+.div-estadistica
+{
+       border: 1px solid #CCC;
+       margin: 2em auto;
+       max-width: 952px;
+       padding: 1em;
+       position: relative;        
+}
+.info-estadistica
+{ 
+       border: 1px solid #CCC;
+       width: 49%;
+       margin: 1em 0 0 0.5em;
+       display: inline-block;
+       vertical-align: top;
+}
+.info-estadistica .title
+{
+       background: url("../image/bg_header_enlaces.png");
+       border-bottom: 1px solid #E5E5E5;
+       color: #00BEBC;
+       height: 100px;
+       line-height: 100px;
+       text-indent: 1em;
+}
+
+.info-estadistica .grafica
+{
+       padding:1em 0 0 0;
+       width:100%;
+       overflow:hidden;
+       
 }

@@ -6,6 +6,8 @@ import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.DTO.ListaBoletin;
 import com.appspot.sirbuped.client.DTO.LoginInfo;
 import com.appspot.sirbuped.client.DTO.Usuario;
+import com.appspot.sirbuped.client.Interfaz.DesaparecidoService;
+import com.appspot.sirbuped.client.Interfaz.DesaparecidoServiceAsync;
 import com.appspot.sirbuped.client.Interfaz.ListaBoletinService;
 import com.appspot.sirbuped.client.Interfaz.ListaBoletinServiceAsync;
 import com.appspot.sirbuped.client.Interfaz.LugarService;
@@ -13,12 +15,12 @@ import com.appspot.sirbuped.client.Interfaz.LugarServiceAsync;
 import com.appspot.sirbuped.client.Interfaz.UsuarioService;
 import com.appspot.sirbuped.client.Interfaz.UsuarioServiceAsync;
 import com.appspot.sirbuped.client.Vista.Error404;
-import com.appspot.sirbuped.client.Vista.Mapa;
 import com.appspot.sirbuped.client.Vista.VistaComoActuar;
 import com.appspot.sirbuped.client.Vista.VistaConsultarDesaparecido;
 import com.appspot.sirbuped.client.Vista.VistaContactenos;
 import com.appspot.sirbuped.client.Vista.VistaCuentaUsuario;
 import com.appspot.sirbuped.client.Vista.VistaDesaparecido;
+import com.appspot.sirbuped.client.Vista.VistaEstadistica;
 import com.appspot.sirbuped.client.Vista.VistaHome;
 import com.appspot.sirbuped.client.Vista.VistaIniciarSesion;
 import com.appspot.sirbuped.client.Vista.VistaMapaDesaparecidos;
@@ -51,6 +53,7 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	
 	private boolean haySesion;
 	private String usuario;
+	Utilidades utilidades = new Utilidades();
 	
 	/**
 	 * This is the entry point method.
@@ -67,7 +70,7 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	    
 	    if (History.getToken().length() == 0) 
 	    {
-	    	new Utilidades().crearBotonesDeSesion(false);
+	    	utilidades.crearBotonesDeSesion(false);
 	    	validarSesion("home");
 			this.cargarSlider();
 	    }
@@ -101,13 +104,13 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	    	{
 	    		if(result != null)
 	    		{
-	    			new Utilidades().crearBotonesDeSesion(true);
+	    			utilidades.crearBotonesDeSesion(true);
 	    			usuario = result;
 	    			haySesion = true;
 	    		}
 	    		else
 	    		{
-	    			new Utilidades().crearBotonesDeSesion(false);
+	    			utilidades.crearBotonesDeSesion(false);
 	    			usuario = "";
 	    			haySesion = false;
 	    		}
@@ -116,7 +119,7 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	    	public void onFailure(Throwable error) 
 	    	{
 	    		Window.alert(error.toString());
-	    		new Utilidades().crearBotonesDeSesion(false);
+	    		utilidades.crearBotonesDeSesion(false);
 	    		mostrarVista("Home");
 	    	}
 	   });
@@ -126,7 +129,7 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	{
 		String subToken = String.valueOf(token.charAt(0));
 		RootPanel.get("content").clear();
-		RootPanel.get("content").add(new Utilidades().actualizarEncabezadoContenido(token));
+		RootPanel.get("content").add(utilidades.actualizarEncabezadoContenido(token));
 		
 		if(token.equals("home") || token.isEmpty() || token.equals(" "))
 		{
@@ -147,13 +150,13 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	    {
 			RootPanel.get("content").add(new VistaUsuario(null));
 	    }
+		else if(token.equals("estadisticas"))
+	    {
+			RootPanel.get("content").add(new VistaEstadistica());
+	    }
 		else if(token.equals("mapa-de-desaparecidos"))
 	    {
 			RootPanel.get("content").add(new VistaMapaDesaparecidos());
-	    }
-		else if(token.equals("mapa"))
-	    {
-			new Mapa();
 	    }
 		else if(token.equals("nosotros"))
 	    {
@@ -171,46 +174,38 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 		{
 			RootPanel.get("content").add(new VistaTerminosCondiciones());
 		}
+		else if(token.equals("contactenos"))
+	    {
+			RootPanel.get("content").add(new VistaContactenos());
+	    }
 		else if(token.equals("iniciar-sesion"))
 	    {
 			if(haySesion)
 				History.newItem("mi-cuenta");
 			else
-				RootPanel.get("content").add(new VistaIniciarSesion(new Utilidades().deleteSesion("token")));
+				RootPanel.get("content").add(new VistaIniciarSesion(utilidades.deleteSesion("token")));
 	    }
 		else if(token.equals("registrar-desaparecido"))
 	    {
 			if(haySesion)
 			{
-				RootPanel.get("content").add(new VistaDesaparecido());
+				RootPanel.get("content").add(new VistaDesaparecido(null));
 			}
 			else
 			{
-				new Utilidades().crearSesion("token", token);
-		    	History.newItem("iniciar-sesion");
-		    }
-	    }
-		else if(token.equals("contactenos"))
-	    {
-			if(haySesion)
-			{
-			    RootPanel.get("content").add(new VistaContactenos());
-		    }
-		    else
-		    {
-		    	new Utilidades().crearSesion("token", token);
+				utilidades.crearSesion("token", token);
 		    	History.newItem("iniciar-sesion");
 		    }
 	    }
 		else if(token.equals("cerrar-sesion"))
 	    {
-			new Utilidades().cerrarSesion(new Utilidades().deleteSesion("token"));
+			utilidades.cerrarSesion(utilidades.deleteSesion("token"));
 	    }
 		else if(subToken.equals("-"))
 	    {
 			RootPanel.get("content").clear();
 			subToken = token.replace("-", "");
-			RootPanel.get("content").add(new Utilidades().actualizarEncabezadoContenido("detalle-de-desaparicion"));
+			RootPanel.get("content").add(utilidades.actualizarEncabezadoContenido("detalle-de-desaparicion"));
 			RootPanel.get("content").add(new HTMLPanel("<div id='verDesaparecido' class='verDesaparecido'></div>"));
 			RootPanel.get("content").add(new VistaVerDesaparecidos(subToken));
 	    }
@@ -225,7 +220,7 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 		    }
 		    else
 		    {
-		    	new Utilidades().crearSesion("token", token);
+		    	utilidades.crearSesion("token", token);
 		    	History.newItem("iniciar-sesion");
 		    }
 		}
@@ -243,20 +238,20 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 		    		{
 		    			if(loginInfo.getRegistrado())
 		    			{
-		    				new Utilidades().crearSesion("logout", loginInfo.getLogoutUrl());
+		    				utilidades.crearSesion("logout", loginInfo.getLogoutUrl());
 		    				
-			    			if(new Utilidades().getSesion("token") == null)
+			    			if(utilidades.getSesion("token") == null)
 			    			{
 			    				History.newItem("mi-cuenta");
 			    			}
 			    			else
 			    			{
-			    				History.newItem(new Utilidades().deleteSesion("token"));
+			    				History.newItem(utilidades.deleteSesion("token"));
 			    			}
 		    			}
 		    			else
 		    			{
-		    				new Utilidades().ventanaModal("Error", "usted se ecuentra logueado con la cuenta de google "+ loginInfo.getEmailAddress() +",  sin embargo, su correo electronico no se encuentra registrado en el sistema. Debe registrarse para iniciar sesi\u00F3n", "error" );
+		    				utilidades.ventanaModal("Error", "usted se ecuentra logueado con la cuenta de google "+ loginInfo.getEmailAddress() +",  sin embargo, su correo electronico no se encuentra registrado en el sistema. Debe registrarse para iniciar sesi\u00F3n", "error" );
 		    				History.newItem("registrarse");
 		    			}
 		    		} 
@@ -298,7 +293,7 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 			}
 			else
 			{
-				new Utilidades().crearSesion("token", token);
+				utilidades.crearSesion("token", token);
 		    	History.newItem("iniciar-sesion");
 			}
 		}
@@ -337,15 +332,63 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 			    	public void onFailure(Throwable error) 
 			    	{
 			    		cargando.getElement().setAttribute("style", "display:none");
-			    		new Utilidades().ventanaModal("Error", "En esto moneto no podemos consultar sus registros. Por favor intente nuevamente.", "error");
+			    		utilidades.ventanaModal("Error", "En esto moneto no podemos consultar sus registros. Por favor intente nuevamente.", "error");
 			    	}
 			   });
 			}
 			else
 			{
-				new Utilidades().crearSesion("token", token);
+				utilidades.crearSesion("token", token);
 		    	History.newItem("iniciar-sesion");
 			}
+		}
+		else if(token.equals("editar-desaparecido"))
+		{
+			if(haySesion)
+			{
+				if(utilidades.getSesion("keyDesaparecido") != null)
+				{
+					final HTMLPanel cargando = new HTMLPanel("");
+					cargando.setStyleName("cargando");
+					RootPanel.get("content").add(cargando);
+						
+					DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
+				    desaparecidoService.validarDesaparecidoUsuario(utilidades.getSesion("keyDesaparecido"), new AsyncCallback<Desaparecido>() 
+				    {
+				    	@Override
+						public void onSuccess(Desaparecido desaparecido) 
+				    	{
+				    		if(desaparecido != null)
+				    		{
+				    			cargando.getElement().setAttribute("style", "display:none");
+				    			RootPanel.get("content").add(new VistaDesaparecido(desaparecido));
+				    		}
+				    		else
+				    		{
+				    			utilidades.ventanaModal("Error", "Usted no tiene permisos para editar los datos de esta persona.", "error");
+				    		}
+						}
+				    	public void onFailure(Throwable error) 
+				    	{
+				    		utilidades.ventanaModal("Error", "No se puede comprobar si el registro de la persona desaparecida pertenece a su cuenta", "error");
+				    	}
+				    });
+				}
+				else
+				{
+					utilidades.ventanaModal("Informaci\u00F3n", "Para actualizar los datos de la persona desaparecida dirijase a Mi Cuenta > Personas Registradas y seleccione la persona a editar", "Exito");
+					History.newItem("mi-cuenta");
+				}
+			}
+			else
+			{
+				utilidades.crearSesion("token", token);
+		    	History.newItem("iniciar-sesion");
+			}
+		}
+		else if(token.equals("mensajes-de-usuario"))
+		{
+			
 		}
 		else
 		{
