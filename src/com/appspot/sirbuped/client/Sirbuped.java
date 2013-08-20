@@ -16,20 +16,24 @@ import com.appspot.sirbuped.client.Interfaz.UsuarioService;
 import com.appspot.sirbuped.client.Interfaz.UsuarioServiceAsync;
 import com.appspot.sirbuped.client.Vista.Error404;
 import com.appspot.sirbuped.client.Vista.VistaComoActuar;
-import com.appspot.sirbuped.client.Vista.VistaConsultarDesaparecido;
 import com.appspot.sirbuped.client.Vista.VistaContactenos;
-import com.appspot.sirbuped.client.Vista.VistaCuentaUsuario;
 import com.appspot.sirbuped.client.Vista.VistaDesaparecido;
+import com.appspot.sirbuped.client.Vista.VistaDesaparecidoConsultar;
+import com.appspot.sirbuped.client.Vista.VistaDesaparecidoDepartamento;
+import com.appspot.sirbuped.client.Vista.VistaDesaparecidoDetallar;
+import com.appspot.sirbuped.client.Vista.VistaDesaparecidoMapa;
+import com.appspot.sirbuped.client.Vista.VistaDesaparecidoUsuario;
 import com.appspot.sirbuped.client.Vista.VistaEstadistica;
 import com.appspot.sirbuped.client.Vista.VistaHome;
 import com.appspot.sirbuped.client.Vista.VistaIniciarSesion;
-import com.appspot.sirbuped.client.Vista.VistaMapaDesaparecidos;
-import com.appspot.sirbuped.client.Vista.VistaMisDesaparecidos;
+import com.appspot.sirbuped.client.Vista.VistaMensaje;
 import com.appspot.sirbuped.client.Vista.VistaNosotros;
+import com.appspot.sirbuped.client.Vista.VistaPista;
+import com.appspot.sirbuped.client.Vista.VistaPrevencion;
 import com.appspot.sirbuped.client.Vista.VistaRequisitos;
 import com.appspot.sirbuped.client.Vista.VistaTerminosCondiciones;
 import com.appspot.sirbuped.client.Vista.VistaUsuario;
-import com.appspot.sirbuped.client.Vista.VistaVerDesaparecidos;
+import com.appspot.sirbuped.client.Vista.VistaUsuarioCuenta;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -140,11 +144,11 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 		else if(token.equals("personas-desaparecidas"))
 	    {
 			Desaparecido nulo = null;
-			RootPanel.get("content").add(new VistaVerDesaparecidos(nulo));
+			RootPanel.get("content").add(new VistaDesaparecidoDetallar(nulo));
 	    }
 		else if(token.equals("consultar-desaparecido"))
 	    {
-			RootPanel.get("content").add(new VistaConsultarDesaparecido());
+			RootPanel.get("content").add(new VistaDesaparecidoConsultar());
 	    }
 		else if(token.equals("registrarse"))
 	    {
@@ -156,12 +160,16 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	    }
 		else if(token.equals("mapa-de-desaparecidos"))
 	    {
-			RootPanel.get("content").add(new VistaMapaDesaparecidos());
+			RootPanel.get("content").add(new VistaDesaparecidoMapa());
 	    }
 		else if(token.equals("nosotros"))
 	    {
 			RootPanel.get("content").add(new VistaNosotros());
 	    }
+		else if(token.equals("prevencion"))
+		{
+			RootPanel.get("content").add(new VistaPrevencion());
+		}
 		else if(token.equals("como-actuar"))
 		{
 			RootPanel.get("content").add(new VistaComoActuar());
@@ -199,7 +207,7 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 	    }
 		else if(token.equals("cerrar-sesion"))
 	    {
-			utilidades.cerrarSesion(utilidades.deleteSesion("token"));
+			utilidades.cerrarSesion();
 	    }
 		else if(subToken.equals("-"))
 	    {
@@ -207,7 +215,32 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 			subToken = token.replace("-", "");
 			RootPanel.get("content").add(utilidades.actualizarEncabezadoContenido("detalle-de-desaparicion"));
 			RootPanel.get("content").add(new HTMLPanel("<div id='verDesaparecido' class='verDesaparecido'></div>"));
-			RootPanel.get("content").add(new VistaVerDesaparecidos(subToken));
+			RootPanel.get("content").add(new VistaDesaparecidoDetallar(subToken));
+	    }
+		else if(subToken.equals("_"))
+	    {
+			RootPanel.get("content").clear();
+			subToken = token.replace("_", "");
+			String departamento = subToken.split("-") [2];
+		
+			RootPanel.get("content").add(utilidades.actualizarEncabezadoContenido(subToken));
+			RootPanel.get("content").add(new HTMLPanel("<div id='verDesaparecido' class='verDesaparecido'></div>"));
+			new VistaDesaparecidoDepartamento(departamento);
+	    }
+		else if(subToken.equals("*"))
+	    {
+			if(haySesion)
+			{
+				RootPanel.get("content").clear();
+				subToken = token.replace("*", "");
+				RootPanel.get("content").add(utilidades.actualizarEncabezadoContenido("registrar-pista"));
+				RootPanel.get("content").add(new VistaPista(subToken));
+			}
+			else
+			{
+				utilidades.crearSesion("token", token);
+		    	History.newItem("iniciar-sesion");
+			}
 	    }
 		else if(token.equals("mi-cuenta"))
 		{
@@ -216,7 +249,7 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 				HTML bienvenida = new HTML("<div><span>Usuario: </span>" + usuario + "</div>");
 				bienvenida.setStyleName("bienvenida");
 				RootPanel.get("content").add(bienvenida);
-				RootPanel.get("content").add(new VistaCuentaUsuario());
+				RootPanel.get("content").add(new VistaUsuarioCuenta());
 		    }
 		    else
 		    {
@@ -314,7 +347,7 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 			    	{
 			    		if(desaparecidos.size() > 0)
 			    		{
-			    			RootPanel.get("content").add(new VistaMisDesaparecidos(desaparecidos));
+			    			RootPanel.get("content").add(new VistaDesaparecidoUsuario(desaparecidos));
 			    		}
 			    		else
 			    		{
@@ -388,7 +421,15 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 		}
 		else if(token.equals("mensajes-de-usuario"))
 		{
-			
+			if(haySesion)
+			{
+				RootPanel.get("content").add(new VistaMensaje());
+			}
+			else
+			{
+				utilidades.crearSesion("token", token);
+		    	History.newItem("iniciar-sesion");
+			}
 		}
 		else
 		{

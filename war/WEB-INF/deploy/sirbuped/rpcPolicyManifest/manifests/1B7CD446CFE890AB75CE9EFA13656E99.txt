@@ -1,0 +1,2 @@
+serviceClass: com.appspot.sirbuped.client.Interfaz.MensajeService
+path: B0336EC423D0CEF331B74D97754742CB.gwt.rpc

@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
-public class VistaMensaje  extends Composite
+public class VistaMensaje extends Composite
 {
 	
 	public VistaMensaje()
@@ -25,7 +25,7 @@ public class VistaMensaje  extends Composite
 		
 		final HTMLPanel cargando = new HTMLPanel("");
 		cargando.setStyleName("cargando");
-		RootPanel.get("mensajes").add(cargando);
+		RootPanel.get("content").add(cargando);
 		
 		MensajeServiceAsync mensajeService = GWT.create(MensajeService.class);
 		mensajeService.consultarMensajes( new AsyncCallback<ArrayList<Mensaje>>() 
@@ -33,6 +33,7 @@ public class VistaMensaje  extends Composite
 			public void onSuccess(ArrayList<Mensaje> msj) 
 			{
 				cargando.getElement().setAttribute("style", "display:none");
+				
 				
 				for(byte i = 0; i < msj.size(); i++)
 				{
@@ -45,22 +46,24 @@ public class VistaMensaje  extends Composite
 					HTMLPanel asunto=new HTMLPanel(m.getAsunto());
 					asunto.setStyleName("asunto");
 					
-					DateTimeFormat format = DateTimeFormat.getFormat("dd 'de' MMMM 'de' yyyy HH:mm");
+					DateTimeFormat format = DateTimeFormat.getFormat("dd 'de' MMMM HH:mm");
 					String date = format.format(m.getFechaRegistro());
 					
 					HTMLPanel fecha=new HTMLPanel(date);
 					fecha.setStyleName("fecha");
-					final HTMLPanel contenido=new HTMLPanel(m.getMensaje());
+					
+					final HTMLPanel contenido = new HTMLPanel(m.getMensaje());
 					contenido.setStyleName("cont-mensaje");
 					contenido.setVisible(false);
 					
-					HTML zonaClick = new HTML();
-					zonaClick.setStyleName("zonaClick");
+					HTML zonaClick = new HTML("<img src='image/mas.jpg' />");
+					zonaClick.setStyleName("verMas");
 					
-					mensaje.add(zonaClick);
+					
 					mensaje.add(nombre);
 					mensaje.add(asunto);
 					mensaje.add(fecha);
+					mensaje.add(zonaClick);
 					mensaje.add(contenido);
 					
 					subContent.add(mensaje);

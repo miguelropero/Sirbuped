@@ -8,16 +8,17 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("desaparecido")
 public interface DesaparecidoService extends RemoteService
 {
-	void registrar(Desaparecido desaparecido);
-	ArrayList<Desaparecido> getDesaparecidos(byte cantidad);
-	Desaparecido getDesaparecido(String documento);
-	ArrayList<Desaparecido> consultarDesaparecido(Desaparecido desaparecido);
-	ArrayList<String> mapaDesaparecidos();
-	ArrayList<Desaparecido> getDesaparecidosDpto(String departamento);
-	void actualizarDesaparecido(Desaparecido actualizado);
-	Desaparecido validarDesaparecidoUsuario(String keyDesaparecido);
+	public String registrar(Desaparecido desaparecido);
+	public ArrayList<Desaparecido> getDesaparecidos(byte cantidad);
+	public Desaparecido getDesaparecido(String documento);
+	public ArrayList<Desaparecido> consultarDesaparecido(Desaparecido desaparecido);
+	public ArrayList<String> mapaDesaparecidos();
+	public ArrayList<Desaparecido> getDesaparecidosDpto(String departamento, int cantidad);
+	public void actualizarDesaparecido(Desaparecido actualizado);
+	public Desaparecido validarDesaparecidoUsuario(String keyDesaparecido);
+	
 	/* estadisticas */
-	String consultarGenero();
-	ArrayList<String> consultarDesaparecidoEdad();
-	ArrayList<String> consultarDesaparecidoAnio();
+	public String consultarGenero();
+	public ArrayList<String> consultarDesaparecidoEdad();
+	public ArrayList<String> consultarDesaparecidoAnio();
 }

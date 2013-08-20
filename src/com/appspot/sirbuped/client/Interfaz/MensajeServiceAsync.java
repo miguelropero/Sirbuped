@@ -7,6 +7,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface MensajeServiceAsync 
 {	
-	void addMensaje(Mensaje mensaje, AsyncCallback<Void> callback);
-	void consultarMensajes(AsyncCallback<ArrayList<Mensaje>> callback);
+	public void addMensaje(Mensaje mensaje, AsyncCallback<Void> callback);
+	public void consultarMensajes(AsyncCallback<ArrayList<Mensaje>> callback);
 }

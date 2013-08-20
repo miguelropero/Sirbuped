@@ -1,7 +1,9 @@
 # Module sirbuped
 # RPC service class, partial path of RPC policy file
-com.appspot.sirbuped.client.Interfaz.UsuarioService, 0343579FB11EA271C6DE7C37DEF4742F.gwt.rpc
+com.appspot.sirbuped.client.Interfaz.DesaparecidoService, 91433C779C172CF612FA3C19B8AFB01F.gwt.rpc
+com.appspot.sirbuped.client.Interfaz.MensajeService, B0336EC423D0CEF331B74D97754742CB.gwt.rpc
 com.appspot.sirbuped.client.Interfaz.LugarService, A260EBBD24F9AD930029E6210DAF051C.gwt.rpc
 com.appspot.sirbuped.client.Interfaz.UploadImage, 82DCDD137C6E2796F544F0661FFD5F81.gwt.rpc
-com.appspot.sirbuped.client.Interfaz.DesaparecidoService, 9E54D35FE4F76EF0B19ACB9BE92144A3.gwt.rpc
+com.appspot.sirbuped.client.Interfaz.UsuarioService, 1AC82A5224263A0397295B9ED00E765D.gwt.rpc
 com.appspot.sirbuped.client.Interfaz.ListaBoletinService, 9ED6E18745810B0F3E06B79371ABEFC4.gwt.rpc
+com.appspot.sirbuped.client.Interfaz.PistaService, C2975F01E65B6B1FD3A619A70EBA55B8.gwt.rpc

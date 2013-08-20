@@ -8,16 +8,15 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
-
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import com.appspot.sirbuped.client.DTO.Ciudad;
 import com.appspot.sirbuped.client.DTO.DatoDesaparicion;
 import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.DTO.Morfologia;
+import com.appspot.sirbuped.client.DTO.PrendaVestir;
 import com.appspot.sirbuped.client.DTO.SenalParticular;
 import com.appspot.sirbuped.client.DTO.Usuario;
 import com.appspot.sirbuped.client.Interfaz.DesaparecidoService;
@@ -28,10 +27,16 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 	private static final long serialVersionUID = 1L;	
 	private static final Logger log = Logger.getLogger(Desaparecido.class.getName());
 	
-	public void registrar(Desaparecido desaparecido)
+	
+	/**
+	 * Metodo que permite registrar una persona desaparecida. Para ello obtiene el usuario de la sesión actual y agrega la 
+	 * persona desaparecida a su ArrayList de desaparecidos.
+	 * @param desaparecido, la persona desaparecida que se va a registrar al usuario.
+	 */
+	public String registrar(Desaparecido desaparecido)
 	{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		
+		String keyDesaparecido = "";
 		try 
 		{
 			HttpServletRequest request = this.getThreadLocalRequest();
@@ -41,16 +46,26 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 			Usuario usuario = pm.getObjectById(Usuario.class, keyUsuario);
 			
 			desaparecido.setFechaRegistro(new Date());
-			desaparecido.setEdad(this.calcularEdad(desaparecido.getFechaNacimiento()));
+			desaparecido.setEdad(this.calcularEdad(desaparecido.getFechaNacimiento(), new Date()));
 			
 			usuario.getDesaparecidos().add(desaparecido);
+			
+			keyDesaparecido = usuario.getDesaparecidos().get(usuario.getDesaparecidos().size()-1).getId();
 		}
 		finally 
         {
             pm.close();
         }
+		
+		log.warning(keyDesaparecido);
+		
+		return keyDesaparecido;
 	}
 	
+	/**
+	 * Metodo que permite actualizar los diferentes datos asociados a una persona desaparecida
+	 * @param actualizado, objeto detipo Desaparecido que contiene la información acualizada de la persona 
+	 */
 	public void actualizarDesaparecido(Desaparecido actualizado)
 	{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
@@ -68,7 +83,7 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 			original.setKeyCiudadNacimiento(actualizado.getKeyCiudadNacimiento());
 			original.setFechaNacimiento(actualizado.getFechaNacimiento());
 			original.setKeyFoto(actualizado.getKeyFoto());
-			original.setEdad(this.calcularEdad(actualizado.getFechaNacimiento()));
+			original.setEdad(this.calcularEdad(actualizado.getFechaNacimiento(), new Date()));
 			original.setPeso(actualizado.getPeso());
 			original.setEstatura(actualizado.getEstatura());
 			pm.deletePersistentAll(original.getMorfologia());
@@ -93,7 +108,13 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 		}
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	/**
+	 * Metodo que permite obtener un numero determinado de las ultimas personas desaparecidas registradas en el sistema.
+	 * @param cantidad, determina la cantidad de personas desaparecidas a ser devueltas, si el valor es cero, retorna
+	 * todos los registros de desaparecidos existentes en el datastore.
+	 * @return ArrayList<Desaparecido>, el listado de desaparecidos solicitados por el usuario.
+	 */
+	@SuppressWarnings({ "unchecked" })
 	public ArrayList<Desaparecido> getDesaparecidos(byte cantidad)
 	{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
@@ -103,58 +124,24 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 		if(cantidad > 0)
 			query.setRange(0, cantidad);
 	    
-	    List<Desaparecido> malos = null;
-	    ArrayList<Desaparecido> results = null;
+	    List<Desaparecido> desapaercidos;
+	    ArrayList<Desaparecido> desaparecidosDetached;
 	    
 		try 
 		{
-			malos = (List<Desaparecido>) query.execute();
-			results = new ArrayList<Desaparecido>();
+			desapaercidos = (List<Desaparecido>) query.execute();
+			desaparecidosDetached = new ArrayList<Desaparecido>();
 			
-			Desaparecido des = new Desaparecido();
-			for(Desaparecido x : malos)
+			Desaparecido desaparecidoDetached = new Desaparecido();
+			for(Desaparecido nuevo : desapaercidos)
 			{
-				des = (pm.detachCopy(x));
-				ArrayList<Morfologia> morfologia = x.getMorfologia();
-				ArrayList<Morfologia> morfologiaDetached = new ArrayList<Morfologia>();
+				desaparecidoDetached = (pm.detachCopy(nuevo));
+				desaparecidoDetached.setMorfologia(null);
+				desaparecidoDetached.setSenalParticular(null);
+				desaparecidoDetached.setPrendaVestir(null);
+				desaparecidoDetached.setDatoDesaparicion(pm.detachCopy(nuevo.getDatoDesaparicion()));
 				
-				for(Morfologia y : morfologia)
-					morfologiaDetached.add(pm.detachCopy(y));
-				
-				ArrayList<SenalParticular> senal = x.getSenalParticular();
-				ArrayList<SenalParticular> SenalDetached = new ArrayList<SenalParticular>();
-				
-				for(SenalParticular y : senal)
-					SenalDetached.add(pm.detachCopy(y));
-				
-				DatoDesaparicion dato = x.getDatoDesaparicion();
-				DatoDesaparicion datoDetached = new DatoDesaparicion();
-				
-				datoDetached = pm.detachCopy(dato);
-				
-				Collections.sort(morfologiaDetached, new Comparator() 
-				{
-				    public int compare(Object o1, Object o2) 
-				    {				    
-				        Morfologia e1 = (Morfologia) o1;  
-				        Morfologia e2 = (Morfologia) o2;  
-				        
-				        if (Integer.parseInt(e1.getConsecutivo()) > Integer.parseInt(e2.getConsecutivo())) 
-				            return 1;  
-				        
-				        else if (Integer.parseInt(e1.getConsecutivo()) < Integer.parseInt(e2.getConsecutivo()))  				      
-				            return -1;
-				        
-				        else 				         
-				            return 0;  				        				       
-				    }  
-				}); 
-				
-				des.setMorfologia(morfologiaDetached);
-				des.setSenalParticular(SenalDetached);
-				des.setDatoDesaparicion(datoDetached);
-				
-				results.add(des);
+				desaparecidosDetached.add(desaparecidoDetached);
 			}
         }
 		finally 
@@ -163,7 +150,7 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
             query.closeAll();
         }
 		
-		return results;
+		return desaparecidosDetached;
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -200,7 +187,16 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 				for(SenalParticular y : senal)
 					SenalDetached.add(pm.detachCopy(y));
 			}
+			
+			ArrayList<PrendaVestir> prenda = desaparecido.getPrendaVestir();
+			ArrayList<PrendaVestir> prendaDetached = new ArrayList<PrendaVestir>();
 				
+			if(prenda.size() > 0)
+			{
+				for(PrendaVestir y : prenda)
+					prendaDetached.add(pm.detachCopy(y));
+			}
+			
 			DatoDesaparicion dato = desaparecido.getDatoDesaparicion();
 			DatoDesaparicion datoDetached = new DatoDesaparicion();
 				
@@ -226,6 +222,7 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 				
 			desaparecidoDetached.setMorfologia(morfologiaDetached);
 			desaparecidoDetached.setSenalParticular(SenalDetached);
+			desaparecidoDetached.setPrendaVestir(prendaDetached);
 			desaparecidoDetached.setDatoDesaparicion(datoDetached);
 				
 			desaparecidoDetached.setCiudadNacimiento(pm.detachCopy(ciudadNacimiento));
@@ -236,10 +233,6 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 			desaparecidoDetached.getDatoDesaparicion().getCiudadDesaparicion().setDepartamento(pm.detachCopy(ciudadDesaparicion.getDepartamento()));
 			desaparecidoDetached.getDatoDesaparicion().getCiudadDesaparicion().getDepartamento().setPais(pm.detachCopy(ciudadDesaparicion.getDepartamento().getPais()));
         }
-		/*catch(Exception e)
-		{
-			log.warning(e.toString());
-		}*/
 		finally 
         {
             pm.close();
@@ -248,15 +241,23 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 		return desaparecidoDetached;
 	}
 	
+	/**
+	 * Metodo que permite consultar personas desaprecidas de acuerdo a los filtros que contiene el desaparecido que 
+	 * llega como parametro.
+	 * @param desaparecido, objeto que contiene los filtros de busqueda ingresados por el usuario para realizar la consulta.
+	 * @return ArrayList<Desaparedidos> que coinciden con los filtros de búsqueda ingresados por el uuario. 
+	 */
 	@SuppressWarnings("unchecked")
 	public ArrayList<Desaparecido> consultarDesaparecido(Desaparecido desaparecido)
 	{
 		
-		ArrayList<Desaparecido> resultFinal = new ArrayList<Desaparecido>();
-		
 		PersistenceManager pm = PMF.get().getPersistenceManager();
+		
+		ArrayList<Desaparecido> resultFinal = new ArrayList<Desaparecido>();
 		List<Desaparecido> results = null;
 		
+		
+		/* Filtros de busqueda por datos personales */
 		String operador = "";
 		
 		String nombre1="";
@@ -301,18 +302,18 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 			operador = "&&";
 		}
 		
-		/*String genero = "";
-		if(desaparecido.getGenero() != null)
+		String genero = "";
+		if(!desaparecido.getGenero().isEmpty())
 		{
 			genero = operador + " genero == " + "\'" + desaparecido.getGenero() + "\' ";
 			operador = "&&";
-		}*/
+		}
 		
 		String edad = "";
 		if(desaparecido.getEdad() != 0)
 			edad = operador + " edad == " + desaparecido.getEdad();
 		
-		Query query = pm.newQuery(Desaparecido.class, nombre1 + nombre2 + apellido1 + apellido2 + tipoDocumento + numeroDocumento + edad);
+		Query query = pm.newQuery(Desaparecido.class, nombre1 + nombre2 + apellido1 + apellido2 + tipoDocumento + numeroDocumento + genero + edad);
 		//query.setOrdering("fechaRegistro desc");
 		log.warning(query.toString());
 		
@@ -320,6 +321,7 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 		{
 			results = (List<Desaparecido>) query.execute();
 			
+			/* Filtros de búsqueda deacuerdo a la morfologia ingresadapor el usuario */
 			List<Desaparecido> filterMorfologia = new ArrayList<Desaparecido>();
 			
 			if(desaparecido.getMorfologia().size() > 0)
@@ -349,6 +351,7 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 				filterMorfologia = results;
 			}
 			
+			/* Filtros de búsqueda de acuerdo a la señales particulares ingresadas por el usuario */
 			List<Desaparecido> filterSenales = new ArrayList<Desaparecido>();
 			
 			if(desaparecido.getSenalParticular().size() > 0)
@@ -378,9 +381,39 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 				filterSenales = filterMorfologia;
 			}
 			
+			/* Filtros de búsqueda de acuerdo a las prendas de vestir ingresadas por el usuario */
+			List<Desaparecido> filterPrendas = new ArrayList<Desaparecido>();
+			
+			if(desaparecido.getPrendaVestir().size() > 0)
+			{
+				for(Desaparecido filter: filterSenales)
+				{
+					byte indicador = 0;
+					for(byte i = 0; i < desaparecido.getPrendaVestir().size(); i++)
+					{
+						for(byte j = 0; j < filter.getPrendaVestir().size(); j++)
+						{
+							if(desaparecido.getPrendaVestir().get(i).getNombre().equals(filter.getPrendaVestir().get(j).getNombre()))
+							{
+								indicador++;
+								break;
+							}
+						}
+					}
+					if(indicador == desaparecido.getPrendaVestir().size())
+					{
+						filterPrendas.add(filter);
+					}
+				}
+			}
+			else
+			{
+				filterPrendas = filterSenales;
+			}
+			
 			Desaparecido serializado;
 			
-			for(Desaparecido x : filterSenales)
+			for(Desaparecido x : filterPrendas)
 			{
 				serializado = (pm.detachCopy(x));
 				serializado.setMorfologia(null);
@@ -399,6 +432,10 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 		return resultFinal;
 	}
 	
+	/**
+	 * Metodo que permite obtener la cantidad de personas desaparecidas registradas en cada deparamento de Colombia
+	 * @return ArrayList<String> donde cada String se compone de el nombre del departamento + "-" + catidad de personas
+	 */
 	public ArrayList<String> mapaDesaparecidos()
 	{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
@@ -460,7 +497,13 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 		return dpto;
 	}
 	
-	public ArrayList<Desaparecido> getDesaparecidosDpto(String departamento)
+	/**
+	 * Metodo que permite retornar una cantidad determinada de personas desaparecidas para un determinado departamento.
+	 * @param departamento, el departamento para el cual quiero consultar los desaparecidos registrados. 
+	 * @param cantidad, cantidad de personas desaparecidas que se quiere obtener para el departamento indicado.
+	 * @return la cantidad especificada de personas desaparecidas registradas en el departamento especificado. 
+	 */
+	public ArrayList<Desaparecido> getDesaparecidosDpto(String departamento, int cantidad)
 	{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		ArrayList<Desaparecido> results = new ArrayList<Desaparecido>();
@@ -478,7 +521,7 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 					results.add(desaparecido);
 				}
 				
-				if(results.size() == 3)
+				if(cantidad > 0 && results.size() == cantidad)
 					break;
 			}
 		}
@@ -490,6 +533,13 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 		return results;
 	}
 	
+	/**
+	 * Metodo que permite validar si el key de la persona desaparecida que recibe como parametro se corresponde con aluno de los
+	 * desaparecidos registrados por el usuario que ha iniciado sesión, esto para otorgar en la vista los permisos de actualización 
+	 * de datos de la persona desaparecida.
+	 * @param keyDesaparecido, el id de la persona desaparecida que se quiere validar.
+	 * @return la persona desaparecida si su registro pertenece al usuario, null en caso contrario. 
+	 */
 	public Desaparecido validarDesaparecidoUsuario(String keyDesaparecido)
 	{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
@@ -520,6 +570,11 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 		return null;
 	}
 	
+	/** Permite validar que el número de documento de la persona desaparecida que intenta registrarse 
+	 * por un usuario, no se ecuentre ya registrado en el DataStore.
+	 * @param el numero de documento con el cual se intenta registrar la persona desaparecida.
+	 * @return true si el documento es valido para registrar, false en caso contrario. 
+	 */
 	@SuppressWarnings("unchecked")
 	public boolean validarDocumento(String documento)
 	{
@@ -540,14 +595,19 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 		return true;
 	}
 	
-	private int calcularEdad(Date fechaNacimiento)
+	/**
+	 * Metodo que permite calcular la edad de la persona desaparecida en base a la fecha de nacimiento que
+	 * recibe como parametro y la fecha actual del sistema.
+	 * @param fechaNacimiento, la fecha de nacimiento de la persona.
+	 * @return la edad de la persona desaparecida de a cuerdo a la fecha que recibe como parametro.
+	 */
+	public int calcularEdad(Date fechaInicial, Date fechaFinal)
 	{
-		Date fechaActual = new Date();
 		
 	    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-	    String hoy = formato.format(fechaActual);
+	    String hoy = formato.format(fechaFinal);
 	    
-	    String fNacimiento = formato.format(fechaNacimiento);
+	    String fNacimiento = formato.format(fechaInicial);
 	    
 	    String[] dat1 = fNacimiento.split("/");
 	    String[] dat2 = hoy.split("/");
@@ -569,7 +629,6 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 	    
 	    return anos;
 	}
-	
 	
 	
 	/******************************************************************************

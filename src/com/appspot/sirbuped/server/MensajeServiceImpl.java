@@ -1,24 +1,17 @@
 package com.appspot.sirbuped.server;
 
-import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Logger;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.appspot.sirbuped.client.DTO.Mensaje;
 import com.appspot.sirbuped.client.Interfaz.MensajeService;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-public class MensajeServiceImpl extends HttpServlet implements MensajeService
+public class MensajeServiceImpl extends RemoteServiceServlet implements MensajeService, Serializable
 {
 
 	private static final long serialVersionUID = 1L;
@@ -38,46 +31,41 @@ public class MensajeServiceImpl extends HttpServlet implements MensajeService
 	    {
 	    	pm.close();
 	    }
-	}
-	
+	}	
 	
 	@SuppressWarnings({ "unchecked" })
 	public ArrayList<Mensaje> consultarMensajes()
 	{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query query = pm.newQuery(Mensaje.class);
-		query.setOrdering("nombre");
+		query.setOrdering("fechaRegistro desc");
 		
 	    List<Mensaje> mensajes = null;
-	    ArrayList<Mensaje> results = null;
+	    ArrayList<Mensaje> mensajesDetached = new ArrayList<Mensaje>();;
 	    
 		try 
 		{
 			mensajes = (List<Mensaje>) query.execute();
+			
 			log.warning(mensajes.toString());
-			results = new ArrayList<Mensaje>();
-			Mensaje msj = new Mensaje();
 			
 			for(Mensaje x : mensajes)
 			{
-				msj = (pm.detachCopy(x));
-				results.add(msj);
+				Mensaje nuevo = pm.detachCopy(x);
+				mensajesDetached.add(nuevo);
 			}
         }
-		catch(Exception e)
-		{
-			log.warning(e.toString());
-		}
+		
 		finally 
         {
+			query.closeAll();
             pm.close();
-            query.closeAll();
         }
 		
-		return (results);
+		return mensajesDetached;
 	}
 	
-	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
+	/*public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
 	{ 
 		Properties props = new Properties(); 
 		Session session = Session.getDefaultInstance(props, null); 
@@ -91,7 +79,7 @@ public class MensajeServiceImpl extends HttpServlet implements MensajeService
 		{
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	
 }

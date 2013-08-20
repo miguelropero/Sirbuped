@@ -1,7 +1,6 @@
 package com.appspot.sirbuped.client;
 
 import java.util.ArrayList;
-
 import com.appspot.sirbuped.client.DTO.Ciudad;
 import com.appspot.sirbuped.client.DTO.Departamento;
 import com.appspot.sirbuped.client.DTO.Pais;
@@ -225,7 +224,7 @@ public class Utilidades
 		return value;
 	}-*/;
 	
-	public void cerrarSesion(String key)
+	public void cerrarSesion()
 	{
 		UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
 	    
@@ -412,8 +411,10 @@ public class Utilidades
         });
 	}
 	
-	/* Metodo que permite validar si el Objeto Element que llega como Parametro 
-	 * es un Widget.
+	/** 
+	 * Metodo que permite validar si el Objeto Element que llega como Parametro es un Widget.
+	 * @param element, objeto que representa un componente de la vista para determinar si es widget o no.
+	 * @return if es widget retorna el mismo, en caso contrario retorna null 
 	 */
 	public IsWidget getWidget(com.google.gwt.user.client.Element element) 
 	{

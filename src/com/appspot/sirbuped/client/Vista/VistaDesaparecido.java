@@ -673,12 +673,6 @@ public class VistaDesaparecido extends Composite
 				elemento = DOM.getElementById("genero");
 				esWidget = utilidades.getWidget(elemento);
 				ListBox listGenero = (ListBox) esWidget;
-				Boolean genero;
-				
-				if(listGenero.getValue(listGenero.getSelectedIndex()).equals("Masculino"))
-					genero = true;
-				else 
-					genero = false;
 				
 				elemento = DOM.getElementById("estatura");
 				esWidget = utilidades.getWidget(elemento);
@@ -699,7 +693,7 @@ public class VistaDesaparecido extends Composite
 				desaparecido.setNumeroDocumento(numeroDocumento.getValue());
 				desaparecido.setKeyCiudadNacimiento(ciudadNacimiento.getValue(ciudadNacimiento.getSelectedIndex()));
 				desaparecido.setFechaNacimiento(fechaNacimiento);
-				desaparecido.setGenero(genero);
+				desaparecido.setGenero(listGenero.getValue(listGenero.getSelectedIndex()));
 				desaparecido.setEstatura(estatura.getValue());
 				desaparecido.setPeso(peso.getValue());
 				
@@ -860,11 +854,11 @@ public class VistaDesaparecido extends Composite
 							desaparecido.setKeyFoto("/sirbuped/uploadImagen?blob-key=" + event.getResults().trim());
 							
 							DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
-							desaparecidoService.registrar(desaparecido, new AsyncCallback<Void>() 
+							desaparecidoService.registrar(desaparecido, new AsyncCallback<String>() 
 							{
-							    public void onSuccess(Void ignore) 
+							    public void onSuccess(String keyDesaparecido) 
 							    {
-							    	History.newItem("-" + desaparecido.getNumeroDocumento());
+							    	History.newItem("-" + keyDesaparecido);
 							    }
 							    public void onFailure(Throwable error) 
 								{
@@ -1129,7 +1123,7 @@ public class VistaDesaparecido extends Composite
 			
 			textDocumento.setValue(desaparecido.getNumeroDocumento());
 			
-			if(desaparecido.getGenero())
+			if(desaparecido.getGenero().equals("Masculino"))
 				selectGenero.setSelectedIndex(1);
 			else
 				selectGenero.setSelectedIndex(2);

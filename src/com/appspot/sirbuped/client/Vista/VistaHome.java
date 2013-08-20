@@ -86,25 +86,33 @@ public class VistaHome extends Composite
 												"<a href='#colaborar'>Colaborar</a>" +
 											"</div>");
 		
-		HTML suscribase		= new HTML("<div class='box-header-enlace'>" +
-											"<h4>Colabore con Nosotros</h4>" +
+		HTML contactenos		= new HTML("<div class='box-header-enlace'>" +
+											"<h4>Cont\u00E1ctenos</h4>" +
 										"</div>" +
 										"<div class='content-enlace'>" +
 											"<figure>" +
 												"<div><img alt='Colabore con nosotros' src='image/suscribase.png' ></div>" +
 												"<figcaption>" +
-													"Suscriba se a nuestro boletin mensual de desaparecidos y comparta la informacion con sus contactos." +
+													"Tiene un comentario, pregunta, duda o sugerencia, no dude en ponerse en cont\u00E1cto con nosotros." +
 												"</figcaption>" +
 											"</figure>" +
 										"</div>" +
 										"<div class='box-boton-enlace'>" +
-											"<a href='#colaborar'>Colaborar</a>" +
+											"<a href='#contactenos'>Contactar</a>" +
 										"</div>");
 		
 		
 		
 		HTMLPanel contentDeInteres	= new HTMLPanel("<div class='separator'></div>" +
 				   					   				"<h2>Informaci\u00F3n de Inter\u00E9s</h2>");
+		
+		HTML prevencion 			= new HTML("<a href='#prevencion'>" +
+													"<h3>Prevenci\u00F3n</h3>" +
+													"<p>" +
+														"Pasos para evitar que sus hijos o personas con algun tipo de discapacidad sean victimas del flagelo" +
+														"de la desaparici\u00F3n. <span>Mas informaci\u00F3n.</span>" +
+													"</p>" +
+												"</a>");
 		
 		HTML comoActuar 			= new HTML("<a href='#como-actuar'>" +
 													"<h3>\u00BFC\u00F3mo Actuar?</h3>" +
@@ -125,19 +133,10 @@ public class VistaHome extends Composite
 		HTML avisoLegal 			= new HTML("<a href='#terminos-y-condiciones'>" +
 													"<h3>Aviso Legal</h3>" +
 													"<p>" +
-														"Importante gu\u00EDa que le indica como actuar en caso de desaparici\u00F3n de un familiar o ser quierido. " + 
-														"Importante gu\u00EDa que le indica como actuar. <span>Leer mas.</span>" +
+														"Tenga en cuenta que la informaci\u00F3n registrada sera comprobada para estblecer su veracidad." + 
+														"Conozca los t\u00E9rminos y condiciones. <span>Mas informaci\u00F3n.</span>" +
 													"</p>" +
 												"</a>");
-		
-		HTML contactenos 			= new HTML("<a href='#contactenos'>" +
-													"<h3>Cont\u00E1ctenos</h3>" +
-													"<p>" +
-														"Tiene un comentario, pregunta o sugerencia acerca de nuestros servicios, no dude en ponerse " + 
-														"en contacto con nosotros. <span>Enviar mensaje.</span>" +
-													"</p>" +
-												"</a>");
-		
 		
 		
     	ultimasDesapariciones.setStyleName("verDesaparecido");
@@ -145,22 +144,6 @@ public class VistaHome extends Composite
     	final HTMLPanel cargando = new HTMLPanel("");
 		cargando.setStyleName("cargando");
 		ultimasDesapariciones.add(cargando);
-    	
-		/*ArrayList<String> im = new ArrayList<String>();
-		im.add("../image/fotos/1.png");
-		im.add("../image/fotos/2.png");
-		im.add("../image/fotos/3.png");
-		im.add("../image/fotos/4.png");
-		im.add("../image/fotos/5.png");
-		im.add("../image/fotos/1.png");
-		
-		ArrayList<String> nom = new ArrayList<String>();
-		nom.add("Felipe Antonio Alarcon Bustamante");
-		nom.add("Ximena Andrea Ulloa Peña");
-		nom.add("Cristian Adolfo Briceño Echavarria");
-		nom.add("Carlos Rene Angarita Sanguino");
-		nom.add("Moises Abraham Guinel Collante");
-		nom.add("Moises Abraham Guinel Collante");*/
 		
 		DesaparecidoServiceAsync desaparecidoService = GWT.create(DesaparecidoService.class);
 		desaparecidoService.getDesaparecidos((byte)6, new AsyncCallback<ArrayList<Desaparecido>>()
@@ -179,12 +162,9 @@ public class VistaHome extends Composite
 			    		
 			    		Image image = new Image();
 			    		image.setUrl(desaparecido.getKeyFoto());
-			    		//image.setUrl(im.get(i));
 			    		
 			    		HTML figcaption = new HTML(desaparecido.getNombre1() + " " +desaparecido.getNombre2() + " " + 
 			    								   desaparecido.getApellido1() + " " + desaparecido.getApellido2());
-			    		
-			    		//HTML figcaption = new HTML(nom.get(i));
 			    		
 			    		figcaption.setStyleName("figcaption");
 			    		
@@ -202,7 +182,7 @@ public class VistaHome extends Composite
 			    			public void onClick(final ClickEvent event) 
 			    			{
 			    				subContent.getElement().setAttribute("style", "display:none");
-								History.newItem("-" + desaparecido.getNumeroDocumento());
+								History.newItem("-" + desaparecido.getId());
 			    			}
 			    		});
 			    	}
@@ -218,17 +198,17 @@ public class VistaHome extends Composite
 			}
         });
 		
+		contentDeInteres.add(prevencion);
 		contentDeInteres.add(comoActuar);
 		contentDeInteres.add(requisitos);
 		contentDeInteres.add(avisoLegal);
-		contentDeInteres.add(contactenos);
 		deInteres.add(contentDeInteres);
 		
 		banner.add(contentBanner);
 		enlaces.add(enlaceRegistrar);
 		enlaces.add(enlaceConsultar);
 		enlaces.add(enlaceColaborar);
-		enlaces.add(suscribase);
+		enlaces.add(contactenos);
 		
 		subContent.add(banner);
 		subContent.add(enlaces);

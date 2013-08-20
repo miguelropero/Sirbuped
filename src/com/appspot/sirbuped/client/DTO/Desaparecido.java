@@ -46,7 +46,7 @@ public class Desaparecido implements Serializable
 	private int edad;
 	
 	@Persistent
-	private boolean genero;
+	private String genero;
 	
 	@Persistent
 	private String estatura;
@@ -78,15 +78,18 @@ public class Desaparecido implements Serializable
 	@Persistent
 	private DatoDesaparicion datoDesaparicion;
 	
+	@Persistent(mappedBy = "desaparecido")
+	private ArrayList<Pista> pistas = new ArrayList<Pista>();
+	
 	public Desaparecido() 
 	{
-		
+		this.pistas = new ArrayList<Pista>();
 	}
 	
 	public Desaparecido(String nombre1, String nombre2, String apellido1, String apellido2, String tipoDocumento,
-						String numeroDocumento, Date fechaNacimiento, byte edad, boolean genero, String estatura, String peso, 
+						String numeroDocumento, Date fechaNacimiento, int edad, String genero, String estatura, String peso, 
 						String keyFoto, Date fechaRegistro, ArrayList<Morfologia> morfologia, ArrayList<SenalParticular> senalParticular,
-						DatoDesaparicion datoDesaparicion, ArrayList<PrendaVestir> prendas) 
+						DatoDesaparicion datoDesaparicion, ArrayList<PrendaVestir> prendas, ArrayList<Pista> pistas) 
 	{
 		this.nombre1 = nombre1;
 		this.nombre2 = nombre2;
@@ -105,6 +108,7 @@ public class Desaparecido implements Serializable
 		this.senalParticular = senalParticular;
 		this.datoDesaparicion = datoDesaparicion;
 		this.prendaVestir = prendas;
+		this.pistas = pistas;
 	}
 
 	public String getId() 
@@ -202,12 +206,12 @@ public class Desaparecido implements Serializable
 		this.edad = edad;
 	}
 
-	public boolean getGenero() 
+	public String getGenero() 
 	{
 		return genero;
 	}
 
-	public void setGenero(boolean genero) 
+	public void setGenero(String genero) 
 	{
 		this.genero = genero;
 	}
@@ -310,6 +314,16 @@ public class Desaparecido implements Serializable
 	public void setDatoDesaparicion(DatoDesaparicion datoDesaparicion) 
 	{
 		this.datoDesaparicion = datoDesaparicion;
+	}
+	
+	public ArrayList<Pista> getPistas() 
+	{
+		return pistas;
+	}
+
+	public void setPistas(ArrayList<Pista> pistas) 
+	{
+		this.pistas = pistas;
 	}
 
 	@Override
