@@ -29,6 +29,7 @@ import com.appspot.sirbuped.client.Vista.VistaIniciarSesion;
 import com.appspot.sirbuped.client.Vista.VistaMensaje;
 import com.appspot.sirbuped.client.Vista.VistaNosotros;
 import com.appspot.sirbuped.client.Vista.VistaPista;
+import com.appspot.sirbuped.client.Vista.VistaPistaConsultar;
 import com.appspot.sirbuped.client.Vista.VistaPrevencion;
 import com.appspot.sirbuped.client.Vista.VistaRequisitos;
 import com.appspot.sirbuped.client.Vista.VistaTerminosCondiciones;
@@ -424,6 +425,19 @@ public class Sirbuped implements EntryPoint, ValueChangeHandler<String>
 			if(haySesion)
 			{
 				RootPanel.get("content").add(new VistaMensaje());
+			}
+			else
+			{
+				utilidades.crearSesion("token", token);
+		    	History.newItem("iniciar-sesion");
+			}
+		}
+		
+		else if(token.equals("consultar-pistas"))
+		{
+			if(haySesion)
+			{
+				RootPanel.get("content").add(new VistaPistaConsultar());
 			}
 			else
 			{

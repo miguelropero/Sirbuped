@@ -82,9 +82,7 @@ public class Desaparecido implements Serializable
 	private ArrayList<Pista> pistas = new ArrayList<Pista>();
 	
 	public Desaparecido() 
-	{
-		this.pistas = new ArrayList<Pista>();
-	}
+	{}
 	
 	public Desaparecido(String nombre1, String nombre2, String apellido1, String apellido2, String tipoDocumento,
 						String numeroDocumento, Date fechaNacimiento, int edad, String genero, String estatura, String peso, 

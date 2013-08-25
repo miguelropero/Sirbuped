@@ -1431,7 +1431,7 @@ public class LugarServiceImpl extends RemoteServiceServlet implements LugarServi
 			
 			Pais col = lista.get(0);
 			
-			for(byte j = 1; j < 7; j++)
+			for(byte j = 26; j < departamentos.get(0).size(); j++)
 			{
 				Departamento dptoNuevo = new Departamento(departamentos.get(0).get(j));
 				col.getDepartamentos().add(dptoNuevo);

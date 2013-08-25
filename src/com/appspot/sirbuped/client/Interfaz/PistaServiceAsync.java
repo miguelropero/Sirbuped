@@ -6,11 +6,9 @@ import com.appspot.sirbuped.client.DTO.Desaparecido;
 import com.appspot.sirbuped.client.DTO.Pista;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public interface PistaServiceAsync {
-
-	
-	void registrar(Pista pista, String id, AsyncCallback<Void> callback);
-	void  getPistasEnviadas(AsyncCallback<ArrayList<Pista>> callback);
-	void  getPistasRecibidas(AsyncCallback<ArrayList<Desaparecido>> callback);
-	void getusuarioPista(String id, AsyncCallback<String> callback);
+public interface PistaServiceAsync 
+{	
+	public void registrar(Pista pista, String id, AsyncCallback<Void> callback);
+	public void  getPistasEnviadas(AsyncCallback<ArrayList<Pista>> callback);
+	public void  getPistasRecibidas(AsyncCallback<ArrayList<Desaparecido>> callback);
 }

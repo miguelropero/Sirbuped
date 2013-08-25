@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CaptionPanel;
@@ -106,19 +107,24 @@ public class VistaPista extends Composite
 					return;
 				}
 				
-				Date fechaSuceso = new Date();
-				fechaSuceso.setYear(Integer.parseInt(selectAnio.getValue(selectAnio.getSelectedIndex()))-1900); 
-				fechaSuceso.setMonth((selectMes.getSelectedIndex()-1));
-				fechaSuceso.setDate(selectDia.getSelectedIndex());
-				
-			    pista = new Pista();
+				pista = new Pista();
 				pista.setMensaje(mensaje.getText());
-				pista.setFechaSuceso(fechaSuceso);
+				
+				if(selectAnio.getSelectedIndex() > 0 && selectMes.getSelectedIndex() > 0 && selectDia.getSelectedIndex() > 0)
+				{
+					Date fechaSuceso = new Date();
+					fechaSuceso.setYear(Integer.parseInt(selectAnio.getValue(selectAnio.getSelectedIndex()))-1900); 
+					fechaSuceso.setMonth((selectMes.getSelectedIndex()-1));
+					fechaSuceso.setDate(selectDia.getSelectedIndex());
+					
+					pista.setFechaSuceso(fechaSuceso);
+				}
 				
 				
 				final HTMLPanel cargando = new HTMLPanel("");
 				cargando.setStyleName("cargando");
 				RootPanel.get("content").add(cargando);
+				content.setVisible(false);
 				
 				PistaServiceAsync pistaService = GWT.create(PistaService.class);
 				pistaService.registrar(pista, id, new AsyncCallback<Void>() 
@@ -126,12 +132,14 @@ public class VistaPista extends Composite
 				    public void onSuccess(Void ignore) 
 				    {
 				    	cargando.getElement().setAttribute("style", "display:none");
-						new Utilidades().ventanaModal("Envio de Pista Exitoso", "La Pista sobre el Desaparecido se ha enviado Correctamente ", "Exito");
-				    	
+						new Utilidades().ventanaModal("Envio Exitoso", "La informaci\u00F3n se ha enviado correctamente. Gracias pos su colaboraci\u00F3.", "Exito");
+						String token = History.getToken().replace("*", "-"); 
+				    	History.newItem(token);
 				    }
 				    public void onFailure(Throwable error) 
 					{
 						new Utilidades().ventanaModal("Error", error.toString() , "error");
+						content.setVisible(true);
 					}
 		        });
 				

@@ -97,11 +97,20 @@ public class  VistaEstadistica extends DockLayoutPanel
 				{
 		    public void onSuccess(String size) 
 		    {
-		    	String[] desaparecidos=size.split("-");
+		    	String[] desaparecidos = size.split("-");
 		    	dataTable.setValue(0, 0, "Femenino");
-			    dataTable.setValue(0, 1, Integer.parseInt(desaparecidos[0]));
-			    dataTable.setValue(1, 0, "Masculino");
-				dataTable.setValue(1, 1, Integer.parseInt(desaparecidos[1]));
+		    	
+		    	if(!desaparecidos[0].isEmpty())
+		    		dataTable.setValue(0, 1, Integer.parseInt(desaparecidos[0]));
+		    	else
+		    		dataTable.setValue(0, 1, 0);
+		    	
+		    	dataTable.setValue(1, 0, "Masculino");
+		    	
+		    	if(!desaparecidos[1].isEmpty())
+		    		dataTable.setValue(1, 1, Integer.parseInt(desaparecidos[1]));
+		    	else
+		    		dataTable.setValue(1, 1, 0);
 				
 
 				// Set options

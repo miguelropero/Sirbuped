@@ -30,7 +30,8 @@ public class Morfologia implements Serializable
 	@Persistent
 	private String caracteristica;
 	
-	public Morfologia() { }
+	public Morfologia() 
+	{ }
 	
 	public Morfologia(String consecutivo, String nombre, String tipo, String caracteristica) 
 	{
@@ -59,30 +60,37 @@ public class Morfologia implements Serializable
 	{
 		return consecutivo;
 	}
+	
 	public void setConsecutivo(String consecutivo) 
 	{
 		this.consecutivo = consecutivo;
 	}
+	
 	public String getNombre() 
 	{
 		return nombre;
 	}
+	
 	public void setNombre(String nombre) 
 	{
 		this.nombre = nombre;
 	}
+	
 	public String getTipo() 
 	{
 		return tipo;
 	}
+	
 	public void setTipo(String tipo) 
 	{
 		this.tipo = tipo;
 	}
+	
 	public String getCaracteristica() 
 	{
 		return caracteristica;
 	}
+	
 	public void setCaracteristica(String caracteristica) 
 	{
 		this.caracteristica = caracteristica;

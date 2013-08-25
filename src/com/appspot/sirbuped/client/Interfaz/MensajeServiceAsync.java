@@ -9,4 +9,6 @@ public interface MensajeServiceAsync
 {	
 	public void addMensaje(Mensaje mensaje, AsyncCallback<Void> callback);
 	public void consultarMensajes(AsyncCallback<ArrayList<Mensaje>> callback);
+	public void actualizarEstado(String id, AsyncCallback<Void> callback);
+	public void responderMensaje(String email, String mensaje, AsyncCallback<Void> callback);
 }

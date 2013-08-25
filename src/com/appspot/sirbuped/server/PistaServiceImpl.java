@@ -1,5 +1,6 @@
 package com.appspot.sirbuped.server;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,9 +17,7 @@ import com.appspot.sirbuped.client.DTO.Usuario;
 import com.appspot.sirbuped.client.Interfaz.PistaService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-
-
-public class PistaServiceImpl extends RemoteServiceServlet implements PistaService
+public class PistaServiceImpl extends RemoteServiceServlet implements PistaService, Serializable
 {
 	
 	private static final long serialVersionUID = 1L;
@@ -36,12 +35,12 @@ public class PistaServiceImpl extends RemoteServiceServlet implements PistaServi
 			
     		String keyUsuario = session.getAttribute("keyUsuario").toString();
     		pista.setFechaRegistro(new Date());
-			pista.setKeyUsuario(keyUsuario);
+			pista.setKeyRemitente(keyUsuario);
 			
 			Desaparecido desaparecido = pm.getObjectById(Desaparecido.class, id);
 			desaparecido.getPistas().add(pista);
-
 		}
+		
 		finally 
         {
             pm.close();
@@ -53,37 +52,31 @@ public class PistaServiceImpl extends RemoteServiceServlet implements PistaServi
 	public ArrayList<Pista> getPistasEnviadas()
 	{
 		PersistenceManager pm= PMF.get().getPersistenceManager();
+		
 		HttpServletRequest request = this.getThreadLocalRequest();
 		HttpSession session = request.getSession();
 		
 		Query query= pm.newQuery(Pista.class);
-		query.setFilter("this.keyUsuario==keyUsuario");
-		query.declareParameters("String keyUsuario ");
+		query.setFilter("this.keyRemitente == keyUsuario");
+		query.declareParameters("String keyUsuario");
 		
 		List<Pista> result=new ArrayList<Pista>();
 		ArrayList<Pista> pistas= new ArrayList<Pista>();
 		
 		try
 		{
-		   String keyUsuario = session.getAttribute("keyUsuario").toString();
-		   result= (List<Pista>) query.execute(keyUsuario);
-		   log.warning(result.toString());
-		    Pista pista=new Pista();
+		   result = (List<Pista>) query.execute(session.getAttribute("keyUsuario").toString());
+		   Pista pista = new Pista();
 		   
-		   for(Pista p:result)
+		   for(Pista p : result)
 		   {
 			   pista = (pm.detachCopy(p));
-			   log.warning(pista.toString());
 			 
 			   Desaparecido desDetach=pm.detachCopy(p.getDesaparecido());
 			   pista.setDesaparecido(desDetach);
 			   
-			   log.warning(pista.toString());
 			   pistas.add(pista);
-			   
 		   }
-  
-		
 		}
 		
 		finally
@@ -102,8 +95,7 @@ public class PistaServiceImpl extends RemoteServiceServlet implements PistaServi
 		HttpServletRequest request = this.getThreadLocalRequest();
 		HttpSession session = request.getSession();
 		
-		ArrayList<Desaparecido> desaparecidosDetached= new ArrayList<Desaparecido>();
-		
+		ArrayList<Desaparecido> desaparecidosDetached = new ArrayList<Desaparecido>();
 		
 		try
 		{
@@ -112,26 +104,29 @@ public class PistaServiceImpl extends RemoteServiceServlet implements PistaServi
 		 
 		   ArrayList<Desaparecido> desaparecidos = usuario.getDesaparecidos();
 		   
-		  
-		   
-			for(Desaparecido desaparecido : desaparecidos)
-			{
-				Desaparecido DesaparecidoDetached = pm.detachCopy(desaparecido);
+		   for(Desaparecido desaparecido : desaparecidos)
+		   {
+			   Desaparecido DesaparecidoDetached = pm.detachCopy(desaparecido);
 				
-				ArrayList<Pista> pista=desaparecido.getPistas();
-				ArrayList<Pista> pistaDetached=new ArrayList<Pista>();
+			   ArrayList<Pista> pistasDetached = new ArrayList<Pista>();
 				
-				for(Pista p:pista)
-					pistaDetached.add(pm.detachCopy(p));
+			   for(Pista pista : desaparecido.getPistas())
+			   {
+				   Usuario remitente = pm.getObjectById(Usuario.class, pista.getKeyRemitente());
+				   
+				   pistasDetached.add(pm.detachCopy(pista));
+				   pistasDetached.get(pistasDetached.size()-1).setRemitente(pm.detachCopy(remitente));
+				   
+				   log.warning(pistasDetached.toString());
+			   }
+			   
+			   DesaparecidoDetached.setCiudadNacimiento(null);
+			   DesaparecidoDetached.setMorfologia(null);
+			   DesaparecidoDetached.setSenalParticular(null);
+			   DesaparecidoDetached.setPistas(pistasDetached);
 				
-				DesaparecidoDetached.setCiudadNacimiento(null);
-				DesaparecidoDetached.setMorfologia(null);
-				DesaparecidoDetached.setSenalParticular(null);
-				DesaparecidoDetached.setPistas(pistaDetached);
-				
-				desaparecidosDetached.add(DesaparecidoDetached);
-			}
-		
+			   desaparecidosDetached.add(DesaparecidoDetached);
+		   }		
 		}
 		
 		finally
@@ -142,30 +137,4 @@ public class PistaServiceImpl extends RemoteServiceServlet implements PistaServi
 	
 		return desaparecidosDetached;
 	}
-	
-	
-	public String  getusuarioPista(String id)
-	{
-		
-		PersistenceManager pm= PMF.get().getPersistenceManager();
-		String nombre="";
-		
-		try
-		{
-		  
-		   Usuario usuario = pm.getObjectById(Usuario.class, id);
-		   Usuario usuarioDetached=pm.detachCopy(usuario);
-		   
-		   nombre=usuarioDetached.getNombres()+" "+usuarioDetached.getApellidos();
-		}
-		
-		finally
-		{
-			pm.close();
-			
-		}
-		
-		return nombre;
-	}
-
 }

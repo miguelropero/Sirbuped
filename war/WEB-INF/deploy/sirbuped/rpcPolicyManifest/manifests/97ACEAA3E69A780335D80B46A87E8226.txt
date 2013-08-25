@@ -1,0 +1,2 @@
+serviceClass: com.appspot.sirbuped.client.Interfaz.PistaService
+path: 104E8E47C22581574BDC38D600D6959A.gwt.rpc

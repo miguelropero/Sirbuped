@@ -155,7 +155,7 @@ public class VistaContactenos extends Composite
 				RootPanel.get("content").add(cargando);
 				subContent.setVisible(false);
 				
-				Mensaje mensaje=new Mensaje(textUsuario.getValue(), textEmail.getValue(), textAsunto.getValue(), areaMensaje.getText(), null);
+				Mensaje mensaje = new Mensaje(textUsuario.getValue(), textEmail.getValue(), textAsunto.getValue(), areaMensaje.getText(), null, true);
 				
 				MensajeServiceAsync mensajeService = GWT.create(MensajeService.class);
 				mensajeService.addMensaje(mensaje, new AsyncCallback<Void>() 

@@ -582,7 +582,6 @@ public class VistaDesaparecido extends Composite
 					if(select.getSelectedIndex() == 0)
 					{
 						select.getElement().setAttribute("style", "border: 1px solid rgb(255, 157, 157)");
-						errores = new Label("El formulario contiene campos vacios. Por favor verifique e intente nuevamente");
 						select.addBlurHandler(new BlurHandler()
 					    {
 							@Override
@@ -592,10 +591,16 @@ public class VistaDesaparecido extends Composite
 					        	divError.setVisible(false);
 					        }
 					    });
-					error = true;
+						
+						error = true;
 					}
 				}
 				
+				if(error)
+				{
+					errores = new Label("El formulario contiene campos vacios. Por favor verifique e intente nuevamente");
+					divError.add(errores);
+				}
 				
 				elemento = DOM.getElementById("descripcionHecho");
 				esWidget = utilidades.getWidget(elemento);
@@ -901,7 +906,7 @@ public class VistaDesaparecido extends Composite
 						{
 						    public void onSuccess(Void ignore) 
 						    {
-						    	History.newItem("-" + desaparecido.getNumeroDocumento());
+						    	History.newItem("-" + desaparecido.getId());
 						    }
 						    public void onFailure(Throwable error) 
 							{

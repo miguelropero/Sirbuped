@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -24,10 +25,10 @@ public class Pista implements Serializable
 	private String mensaje;
 	
 	@Persistent
-	private Desaparecido desaparecido = new Desaparecido();
+	private Desaparecido desaparecido;
 	
 	@Persistent
-	private String keyUsuario;
+	private String keyRemitente;
 	
 	@Persistent
 	private Date fechaRegistro;
@@ -35,20 +36,26 @@ public class Pista implements Serializable
 	@Persistent
 	private Date fechaSuceso;
 	
+	@NotPersistent
+	private Usuario remitente;
+	
 	public Pista()
-	{
-		
-	}
+	{}
 
-	public Pista(String id, String mensaje, Desaparecido desaparecido, String keyUsuario, Date fechaRegistro, Date fechaSuceso) 
+	public Pista(String id, String mensaje, Desaparecido desaparecido, String keyRemitente, Date fechaRegistro, Date fechaSuceso) 
 	{
 		this.mensaje = mensaje;
 		this.desaparecido = desaparecido;
-		this.keyUsuario = keyUsuario;
+		this.keyRemitente = keyRemitente;
 		this.fechaRegistro = fechaRegistro;
 		this.fechaSuceso= fechaSuceso;
 	}
-
+	
+	public static long getSerialversionuid() 
+	{
+		return serialVersionUID;
+	}
+	
 	public String getId() 
 	{
 		return id;
@@ -79,14 +86,14 @@ public class Pista implements Serializable
 		this.desaparecido = desaparecido;
 	}
 
-	public String getKeyUsuario() 
+	public String getKeyRemitente() 
 	{
-		return keyUsuario;
+		return keyRemitente;
 	}
 
-	public void setKeyUsuario(String keyUsuario) 
+	public void setKeyRemitente(String keyRemitente) 
 	{
-		this.keyUsuario = keyUsuario;
+		this.keyRemitente = keyRemitente;
 	}
 
 	public Date getFechaRegistro() 
@@ -108,11 +115,24 @@ public class Pista implements Serializable
 	{
 		this.fechaSuceso = fechaSuceso;
 	}
+	
+	public Usuario getRemitente() 
+	{
+		return remitente;
+	}
+
+	public void setRemitente(Usuario remitente) 
+	{
+		this.remitente = remitente;
+	}
 
 	@Override
 	public String toString() 
 	{
-		return "Pista [id=" + id + ", mensaje=" + mensaje + ", keyUsuario=" + keyUsuario 
-				+ ", fechaRegistro=" + fechaRegistro + ", fechaSuceso=" + fechaSuceso + "]";
+		return "Pista [id=" + id + ", mensaje=" + mensaje + ", desaparecido=" + desaparecido 
+				+ ", keyRemitente=" + keyRemitente + ", fechaRegistro=" + fechaRegistro 
+				+ ", fechaSuceso=" + fechaSuceso + ", remitente=" + remitente + "]";
 	}
+	
+	
 }

@@ -34,10 +34,11 @@ a
     transition-timing-function: ease;
     transition-delay: 0.2s;    
 }
-#google
+/*#google
 {
 	display: none;	
-}
+}*/
+
 /************************************************************************************
  ************************ ESTILOS PARA EL HEADER PRINCIPAL **************************
  ************************************************************************************/
@@ -252,7 +253,7 @@ nav a#pull
 	margin: 3em auto;
 	max-width: 984px;
 	padding: 0 1em;
-	text-align: center;
+	/*text-align: center;*/
 }
 .enlaces-rapidos .gwt-HTML
 {
@@ -261,16 +262,16 @@ nav a#pull
 	margin: 0em 1%;
 	text-align: center;
 	vertical-align: top;
-	width: 23.5%;
+	width: 23%;
 }
-.enlaces-rapidos .gwt-HTML:first-child
+/*.enlaces-rapidos .gwt-HTML:first-child
 {
 	margin-left: 0;
 }
 .enlaces-rapidos .gwt-HTML:last-child
 {
 	margin-right: 0;
-}
+}*/
 .enlaces-rapidos .gwt-HTML .box-header-enlace
 {
 	background: #66CDCC;
@@ -318,7 +319,9 @@ nav a#pull
 	background: url("../image/bg_menu.png");
 }
 
-/* Para mi cuenta */
+
+/****** Para mi cuenta ******/
+
 .bienvenida
 {
 	margin: 1.5em auto -2em auto;
@@ -341,10 +344,18 @@ nav a#pull
 	font-size: 1.2em !important;
 	margin-right: 0.5em;
 }
+.cuenta
+{
+	margin: 3em auto 1em auto;
+}
+.cuenta .gwt-HTML
+{
+	margin-bottom: 1.5em;
+}
 
 /***********************************************************************************
  ************** ESTILOS DEL SEPARATOR QUE CONTIENE EL BOTON VER TODOS **************
-/***********************************************************************************/
+ ***********************************************************************************/
 																
 .separator
 {
@@ -1670,9 +1681,6 @@ footer nav li:last-child a
 	display: inline-block;
 	margin-bottom: 2px;
 }
-
-
-
 .verDesaparecido .encabezado-senales 
 {
  	background: #f1f1f1 url("../image/otro.png");
@@ -1839,31 +1847,54 @@ footer nav li:last-child a
  	display: none;
  }
 
-
 /************************************************************************************
 *********************************ESTILOS BUZON DE MENSAJES***************************
 ************************************************************************************/
 
 .div-buzon
 {
-    /*border: 1px solid #CCC;*/
 	margin: 2em auto;
 	max-width: 984px;
-	/*padding: 0.7em;*/
 	position: relative;	
+}
+.div-buzon > table
+{
+	width: 100%;
+}
+.div-buzon > table table tr td:first-child
+{
+	display: none;
+}
+.div-buzon > table table tr td:nth-child(2), 
+.div-buzon > table table tr td:nth-child(3)
+{
+	background: #F1F1F1;
+	border-right: 1px solid #DDD;
+	border-top: 1px solid #DDD;
+	color: #777;
+	cursor: pointer;
+	padding: 1em;
+}
+.div-buzon > table table tr td:nth-child(2)
+{
+	border-left: 1px solid #DDD;	
+}
+.div-buzon > table table tr td:nth-child(3)
+{
+	background: #FAFAFA;
+}
+.div-buzon > table table tr td:nth-child(2):hover, 
+.div-buzon > table table tr td:nth-child(3):hover
+{
+	background: #EAEAEA;
 }
 .div-buzon .mensaje
 {
    background: rgba(243,243,243,.85);
-   border: 1px solid #E5E5E5;
-   border-bottom: none;
+   border-top: 1px solid #E5E5E5;
    color:#777;
    font-size: 0.95em;
    padding: 0.6em;   
-}
-.mensaje:last-child
-{
-	border-bottom: 1px solid #E5E5E5;
 }
 .div-buzon .mensaje .verMas
 {
@@ -1885,19 +1916,60 @@ footer nav li:last-child a
    text-align: right;
    width:25%;
 }
-.div-buzon .mensaje .nombre, .div-buzon .mensaje .asunto, .div-buzon .mensaje .fecha, .div-buzon .mensaje .verMas
+.div-buzon .mensaje .nombre, .div-buzon .mensaje .asunto, .div-buzon .mensaje .fecha, 
+.div-buzon .mensaje .verMas, .div-buzon .mensaje .gwt-CheckBox
 {
   display: inline-block;
   vertical-align: top;
 }
+.div-buzon .gwt-CheckBox
+{
+	margin: 0;
+}
+.div-buzon .gwt-Button
+{
+	margin-top: 1em;
+}
 .div-buzon .cont-mensaje
 {
    background: #FFF;
-   border: 1px solid #E5E5E5;
+   border: 1px solid #EAEAEA;
    color:#777;
    margin-top: 0.5em;
    padding: 1em;
 }
+.div-buzon .cont-mensaje textarea
+{
+	display: block;
+	margin: 1em auto 0.5em auto;
+	min-height: 150px;
+	padding: 0.5em;
+	width: 100%;
+}
+.div-buzon .tab2
+{
+	background: #FAFAFA;
+}
+
+/************************************************************************************
+ ****************************** ESTILOS DE LAS PISTAS  ******************************
+ ************************************************************************************/
+ 
+.div-buzon > table .personaDesaparecida
+{
+	color: #606060;
+	padding: 0.8em;
+}
+.div-buzon > table .gwt-TabPanelBottom
+{
+	border: 1px solid #DDD;
+}
+.div-buzon .mensaje:first-child
+{
+	border-top: none;
+}
+
+
 
 
 
@@ -1924,6 +1996,7 @@ footer nav li:last-child a
 	/************************************************************************************
  	****************************** DESAPARECIDOS DEL HOME *******************************
  	************************************************************************************/
+ 	
 	.verDesaparecido .figure .figcaption
 	{
 		font-size: 0.85em;

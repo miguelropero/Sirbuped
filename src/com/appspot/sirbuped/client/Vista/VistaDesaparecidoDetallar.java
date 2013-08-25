@@ -172,7 +172,7 @@ public class VistaDesaparecidoDetallar extends Composite
 		
 		Label lugarNacimiento = new Label("Lugar de Nacimiento:");
 		lugarNacimiento.addStyleName("negrita");
-		Label valueLugar = new Label(desaparecido.getCiudadNacimiento().getNombre() + ",  \u0020" + desaparecido.getCiudadNacimiento().getDepartamento().getNombre() + ", \u0020" + desaparecido.getCiudadNacimiento().getDepartamento().getPais().getNombre());
+		Label valueLugar = new Label(desaparecido.getCiudadNacimiento().getNombre() + ", " + desaparecido.getCiudadNacimiento().getDepartamento().getNombre() + ", " + desaparecido.getCiudadNacimiento().getDepartamento().getPais().getNombre());
 		
 		Label fechaNacimiento = new Label("Fecha de Nacimiento:");
 		fechaNacimiento.addStyleName("negrita");
@@ -255,7 +255,7 @@ public class VistaDesaparecidoDetallar extends Composite
 		
 		Label edad = new Label("Edad al momento de la desaparici\u00F3n:");
 		edad.addStyleName("negrita");
-		Label valueEdad = new Label( desaparecido.getEdad() + " A\u0148os");
+		Label valueEdad = new Label( Utilidades.calcularEdad(desaparecido.getFechaNacimiento(), desaparecido.getDatoDesaparicion().getFechaDesaparicion())  + " A\u0148os");
 		
 		Label edadActual = new Label("Edad Actual:");
 		edadActual.addStyleName("negrita");

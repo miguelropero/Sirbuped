@@ -1,6 +1,8 @@
 package com.appspot.sirbuped.client;
 
 import java.util.ArrayList;
+import java.util.Date;
+
 import com.appspot.sirbuped.client.DTO.Ciudad;
 import com.appspot.sirbuped.client.DTO.Departamento;
 import com.appspot.sirbuped.client.DTO.Pais;
@@ -15,6 +17,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.History;
@@ -432,4 +435,38 @@ public class Utilidades
 	    return null;
 	}
 	
+	/**
+	 * Metodo que permite calcular la edad de la persona desaparecida en base a la fecha de nacimiento que
+	 * recibe como parametro y la fecha actual del sistema.
+	 * @param fechaNacimiento, la fecha de nacimiento de la persona.
+	 * @return la edad de la persona desaparecida de a cuerdo a la fecha que recibe como parametro.
+	 */
+	public static int calcularEdad(Date fechaInicial, Date fechaFinal)
+	{
+		DateTimeFormat formato = DateTimeFormat.getFormat("dd/MM/yyyy");
+		
+	    String hoy = formato.format(fechaFinal);
+	    
+	    String fNacimiento = formato.format(fechaInicial);
+	    
+	    String[] dat1 = fNacimiento.split("/");
+	    String[] dat2 = hoy.split("/");
+	    
+	    int anos = Integer.parseInt(dat2[2]) - Integer.parseInt(dat1[2]);
+	    int mes = Integer.parseInt(dat2[1]) - Integer.parseInt(dat1[1]);
+	    if (mes < 0) 
+	    {
+	      anos = anos - 1;
+	    } 
+	    else if (mes == 0) 
+	    {
+	      int dia = Integer.parseInt(dat2[0]) - Integer.parseInt(dat1[0]);
+	      if (dia > 0) 
+	      {
+	        anos = anos - 1;
+	      }
+	    }
+	    
+	    return anos;
+	}
 }

@@ -8,11 +8,9 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("pista")
-public interface PistaService extends RemoteService{
-
-		void registrar(Pista pista, String id);
-		ArrayList<Pista>  getPistasEnviadas();
-		ArrayList<Desaparecido>getPistasRecibidas();
-		String getusuarioPista(String id);
-		
+public interface PistaService extends RemoteService
+{
+	public void registrar(Pista pista, String id);
+	public ArrayList<Pista>  getPistasEnviadas();
+	public ArrayList<Desaparecido>getPistasRecibidas();
 }

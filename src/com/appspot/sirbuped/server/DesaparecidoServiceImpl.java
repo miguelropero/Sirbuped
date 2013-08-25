@@ -1,17 +1,19 @@
 package com.appspot.sirbuped.server;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import com.appspot.sirbuped.client.Utilidades;
 import com.appspot.sirbuped.client.DTO.Ciudad;
 import com.appspot.sirbuped.client.DTO.DatoDesaparicion;
 import com.appspot.sirbuped.client.DTO.Desaparecido;
@@ -46,7 +48,7 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 			Usuario usuario = pm.getObjectById(Usuario.class, keyUsuario);
 			
 			desaparecido.setFechaRegistro(new Date());
-			desaparecido.setEdad(this.calcularEdad(desaparecido.getFechaNacimiento(), new Date()));
+			desaparecido.setEdad(Utilidades.calcularEdad(desaparecido.getFechaNacimiento(), new Date()));
 			
 			usuario.getDesaparecidos().add(desaparecido);
 			
@@ -83,7 +85,7 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 			original.setKeyCiudadNacimiento(actualizado.getKeyCiudadNacimiento());
 			original.setFechaNacimiento(actualizado.getFechaNacimiento());
 			original.setKeyFoto(actualizado.getKeyFoto());
-			original.setEdad(this.calcularEdad(actualizado.getFechaNacimiento(), new Date()));
+			original.setEdad(Utilidades.calcularEdad(actualizado.getFechaNacimiento(), new Date()));
 			original.setPeso(actualizado.getPeso());
 			original.setEstatura(actualizado.getEstatura());
 			pm.deletePersistentAll(original.getMorfologia());
@@ -593,41 +595,6 @@ public class DesaparecidoServiceImpl extends RemoteServiceServlet implements Des
 		}
 		
 		return true;
-	}
-	
-	/**
-	 * Metodo que permite calcular la edad de la persona desaparecida en base a la fecha de nacimiento que
-	 * recibe como parametro y la fecha actual del sistema.
-	 * @param fechaNacimiento, la fecha de nacimiento de la persona.
-	 * @return la edad de la persona desaparecida de a cuerdo a la fecha que recibe como parametro.
-	 */
-	public int calcularEdad(Date fechaInicial, Date fechaFinal)
-	{
-		
-	    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-	    String hoy = formato.format(fechaFinal);
-	    
-	    String fNacimiento = formato.format(fechaInicial);
-	    
-	    String[] dat1 = fNacimiento.split("/");
-	    String[] dat2 = hoy.split("/");
-	    
-	    int anos = Integer.parseInt(dat2[2]) - Integer.parseInt(dat1[2]);
-	    int mes = Integer.parseInt(dat2[1]) - Integer.parseInt(dat1[1]);
-	    if (mes < 0) 
-	    {
-	      anos = anos - 1;
-	    } 
-	    else if (mes == 0) 
-	    {
-	      int dia = Integer.parseInt(dat2[0]) - Integer.parseInt(dat1[0]);
-	      if (dia > 0) 
-	      {
-	        anos = anos - 1;
-	      }
-	    }
-	    
-	    return anos;
 	}
 	
 	

@@ -40,13 +40,14 @@ public class Mensaje implements Serializable
 	public Mensaje()
 	{}
 	
-	public Mensaje(String nombre, String email, String asunto, String mensaje, Date fechaRegistro) 
+	public Mensaje(String nombre, String email, String asunto, String mensaje, Date fechaRegistro, boolean estado) 
 	{
 		this.nombre = nombre;
 		this.email = email;
 		this.asunto = asunto;
 		this.mensaje = mensaje;
 		this.fechaRegistro=fechaRegistro;
+		this.estado = estado;
 	}
 	
 	public String getId() 
@@ -109,7 +110,7 @@ public class Mensaje implements Serializable
 		this.fechaRegistro = fechaRegistro;
 	}
 
-	public boolean isEstado() 
+	public boolean getEstado() 
 	{
 		return estado;
 	}

@@ -9,7 +9,7 @@ public class VistaUsuarioCuenta extends Composite
 	public VistaUsuarioCuenta()
 	{
 		HTMLPanel subContent = new HTMLPanel("");
-		subContent.setStyleName("enlaces-rapidos");
+		subContent.setStyleName("enlaces-rapidos cuenta");
 		
 		HTML actualizarDatos	= new HTML("<div class='box-header-enlace'>" +
 												"<h4>Actilizar Datos</h4>" +
@@ -25,7 +25,6 @@ public class VistaUsuarioCuenta extends Composite
 											"<div class='box-boton-enlace'>" +
 												"<a href='#editar-usuario'>Actualizar Datos</a>" +
 											"</div>");
-		
 		
 		HTML misRegistros		= new HTML("<div class='box-header-enlace'>" +
 												"<h4>Personas Registradas</h4>" +
@@ -55,7 +54,7 @@ public class VistaUsuarioCuenta extends Composite
 												"</figure>" +
 											"</div>" +
 											"<div class='box-boton-enlace'>" +
-												"<a href='#ver-pistas'>Consultar</a>" +
+												"<a href='#consultar-pistas'>Consultar</a>" +
 											"</div>");
 		
 		
